@@ -7,7 +7,7 @@
   "main": "src/index.js",
   "scripts": {
     "generate_types": "rm -rf types; tsc src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDir types",
-    "compile_js_as_ts": "tsc src/og/index.js --AllowJs --checkJs --outDir dist/@openglobus/src/"
+    "compile_js_as_ts": "tsc src/index.js --AllowJs --checkJs --outDir dist/"
   },
   "keywords": [
     "dagre-d3"
