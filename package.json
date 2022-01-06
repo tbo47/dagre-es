@@ -12,6 +12,10 @@
   "keywords": [
     "dagre-d3"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tbo47/dagre-es"
+  },
   "dependencies": {
     "d3": "5.16",
     "lodash-es": "4.17.21"
