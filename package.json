@@ -1,12 +1,12 @@
 {
   "name": "dagre-d3-es",
-  "version": "5.0.2",
+  "version": "7.0.0",
   "description": "",
   "author": "Thibaut Lassalle",
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
-    "generate_types": "rm -rf types; tsc src/*.js --declaration --allowJs --emitDeclarationOnly --outDir types",
+    "generate_types": "tsc src/*.js --declaration --allowJs --emitDeclarationOnly",
     "compile_js_as_ts": "tsc src/index.js --AllowJs --checkJs --outDir dist/"
   },
   "keywords": [
@@ -17,15 +17,14 @@
     "url": "https://github.com/tbo47/dagre-es"
   },
   "dependencies": {
-    "d3": "5.16",
-    "lodash-es": "4.17.21"
+    "d3": "^7.2.1",
+    "lodash-es": "^4.17.21"
   },
   "devDependencies": {
     "typescript": "^4.5.4"
   },
   "files": [
-    "src/**/*",
-    "types/**/*"
+    "src/**/*"
   ],
-  "types": "./types/index.d.ts"
+  "types": "./src/index.d.ts"
 }
