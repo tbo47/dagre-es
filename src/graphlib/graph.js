@@ -24,7 +24,7 @@ var EDGE_KEY_DELIM = "\x01";
 //    edges up and, object properties, which have string keys, are the closest
 //    we're going to get to a performant hashtable in JavaScript.
 export class Graph {
-  constructor(opts) {
+  constructor(opts = {}) {
     this._isDirected = _.has(opts, "directed") ? opts.directed : true;
     this._isMultigraph = _.has(opts, "multigraph") ? opts.multigraph : false;
     this._isCompound = _.has(opts, "compound") ? opts.compound : false;

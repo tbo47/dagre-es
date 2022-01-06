@@ -1,5 +1,5 @@
 export class Graph {
-    constructor(opts: any);
+    constructor(opts?: {});
     _isDirected: any;
     _isMultigraph: any;
     _isCompound: any;
