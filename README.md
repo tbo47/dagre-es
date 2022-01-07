@@ -17,5 +17,9 @@ npm install dagre-d3-es --save
 import * as dagreD3 from 'dagre-d3-es';
 ...
 const g = new dagreD3.graphlib.Graph().setGraph({});
+...
+const zoom = d3.zoom().on('zoom', (zoomEvent) => {
+  inner.attr('transform', zoomEvent.transform);
+});
 
 ```
