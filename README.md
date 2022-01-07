@@ -13,6 +13,8 @@ npm install dagre-d3-es --save
 
 ## Code example
 
+Coming from the legacy `dagre-d3`, the main changes in your code will be:
+
 ```
 import * as dagreD3 from 'dagre-d3-es';
 ...
