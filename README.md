@@ -6,7 +6,7 @@ dagre-d3-es versions follow d3 versions. Ex: dagre-d3-es version 5 depends on d3
 
 ## Demos
 
-[Demo](https://codesandbox.io/s/dagre-d3-es-tree-9ywg9) using react, dagre-d3-es, d3 version 7.2
+[Simple graph demo](https://codesandbox.io/s/dagre-d3-es-tree-9ywg9) using react, dagre-d3-es, [d3 version 7.2](https://www.npmjs.com/package/d3)
 
 ## Install
 
