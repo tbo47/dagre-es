@@ -1,12 +1,15 @@
 # dagre-d3-es
 
-The [dagrejs](https://github.com/dagrejs) library exported as [ES](https://262.ecma-international.org/6.0/) modules.
+The [dagre-d3](https://github.com/dagrejs) library is not maintained anymore.
 
-dagre-d3-es versions follow d3 versions. Ex: dagre-d3-es version 5 depends on d3 version 5.
+[dagre-d3-es](https://www.npmjs.com/package/dagre-d3-es) is a fork using the more modern ES6 javascript syntax.
+It uses [ES](https://262.ecma-international.org/6.0/) modules, thus the name [dagre-d3-es](https://www.npmjs.com/package/dagre-d3-es).
+
+[dagre-d3-es](https://www.npmjs.com/package/dagre-d3-es) follows [d3](https://www.npmjs.com/package/d3) versions. Ex: dagre-d3-es version 7 depends on [d3](https://www.npmjs.com/package/d3) version 7.
 
 ## Demos
 
-[Simple graph demo](https://codesandbox.io/s/dagre-d3-es-tree-9ywg9) using react, dagre-d3-es, [d3 version 7.2](https://www.npmjs.com/package/d3)
+[Simple graph demo](https://codesandbox.io/s/dagre-d3-es-tree-9ywg9) using react, dagre-d3-es, [d3](https://www.npmjs.com/package/d3) version 7.2.
 
 ## Install
 
