@@ -2,9 +2,9 @@ import * as d3 from "d3";
 import { addLabel } from "./label/add-label";
 import * as util from "./util";
 
-export { createClusters };
+export { createClusters, setCreateClusters };
 
-function createClusters(selection, g) {
+var createClusters = function (selection, g) {
   var clusters = g.nodes().filter(function (v) { return util.isSubgraph(g, v); });
   var svgClusters = selection.selectAll("g.cluster")
     .data(clusters, function (v) { return v; });
@@ -40,4 +40,8 @@ function createClusters(selection, g) {
   });
 
   return svgClusters;
+}
+
+function setCreateClusters(value) {
+  createClusters = value;
 }

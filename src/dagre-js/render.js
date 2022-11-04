@@ -1,15 +1,15 @@
 import * as d3 from "d3";
 import _ from 'lodash-es';
 import { layout } from "../dagre/index";
-import * as arrows from "./arrows";
-import { createClusters } from "./create-clusters";
-import { createEdgeLabels } from "./create-edge-labels";
-import { createEdgePaths } from "./create-edge-paths";
-import { createNodes } from "./create-nodes";
+import { arrows, setArrows } from "./arrows";
+import { createClusters, setCreateClusters } from "./create-clusters";
+import { createEdgeLabels, setCreateEdgeLabels } from "./create-edge-labels";
+import { createEdgePaths, setCreateEdgePaths } from "./create-edge-paths";
+import { createNodes, setCreateNodes } from "./create-nodes";
 import { positionClusters } from "./position-clusters";
 import { positionEdgeLabels } from "./position-edge-labels";
 import { positionNodes } from "./position-nodes";
-import * as shapes from "./shapes";
+import { shapes, setShapes } from "./shapes";
 
 export { render };
 
@@ -38,37 +38,37 @@ function render() {
 
   fn.createNodes = function (value) {
     if (!arguments.length) return createNodes;
-    createNodes = value;
+    setCreateNodes(value);
     return fn;
   };
 
   fn.createClusters = function (value) {
     if (!arguments.length) return createClusters;
-    createClusters = value;
+    setCreateClusters(value);
     return fn;
   };
 
   fn.createEdgeLabels = function (value) {
     if (!arguments.length) return createEdgeLabels;
-    createEdgeLabels = value;
+    setCreateEdgeLabels(value);
     return fn;
   };
 
   fn.createEdgePaths = function (value) {
     if (!arguments.length) return createEdgePaths;
-    createEdgePaths = value;
+    setCreateEdgePaths(value);
     return fn;
   };
 
   fn.shapes = function (value) {
     if (!arguments.length) return shapes;
-    shapes = value;
+    setShapes(value);
     return fn;
   };
 
   fn.arrows = function (value) {
     if (!arguments.length) return arrows;
-    arrows = value;
+    setArrows(value);
     return fn;
   };
 

@@ -1,6 +1,6 @@
 export function render(): {
     (svg: any, g: any): void;
-    createNodes(value: any, ...args: any[]): typeof createNodes;
+    createNodes(...args: any[]): typeof createNodes;
     createClusters(value: any, ...args: any[]): typeof createClusters;
     createEdgeLabels(value: any, ...args: any[]): typeof createEdgeLabels;
     createEdgePaths(value: any, ...args: any[]): typeof createEdgePaths;

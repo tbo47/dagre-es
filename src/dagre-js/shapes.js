@@ -4,11 +4,20 @@ import { intersectPolygon } from "./intersect/intersect-polygon";
 import { intersectRect } from "./intersect/intersect-rect";
 
 export {
+  shapes,
+  setShapes
+};
+
+var shapes = {
   rect,
   ellipse,
   circle,
   diamond
 };
+
+function setShapes(value) {
+  shapes = value;
+}
 
 function rect(parent, bbox, node) {
   var shapeSvg = parent.insert("rect", ":first-child")
