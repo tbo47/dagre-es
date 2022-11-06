@@ -1,9 +1,18 @@
 import * as util from "./util";
 
 export {
+  arrows,
+  setArrows,
+};
+
+var arrows = {
   normal,
   vee,
   undirected
+};
+
+function setArrows(value) {
+  arrows = value;
 };
 
 function normal(parent, id, edge, type) {

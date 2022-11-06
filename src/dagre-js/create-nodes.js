@@ -3,9 +3,9 @@ import _ from 'lodash-es';
 import { addLabel } from "./label/add-label";
 import * as util from "./util";
 
-export { createNodes };
+export { createNodes, setCreateNodes };
 
-function createNodes(selection, g, shapes) {
+var createNodes = function(selection, g, shapes) {
   var simpleNodes = g.nodes().filter(function (v) { return !util.isSubgraph(g, v); });
   var svgNodes = selection.selectAll("g.node")
     .data(simpleNodes, function (v) { return v; })
@@ -68,4 +68,9 @@ function createNodes(selection, g, shapes) {
     .remove();
 
   return svgNodes;
+}
+
+
+function setCreateNodes(value) {
+  createNodes = value;
 }

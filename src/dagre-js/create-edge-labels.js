@@ -3,9 +3,9 @@ import _ from 'lodash-es';
 import { addLabel } from "./label/add-label";
 import * as util from "./util";
 
-export { createEdgeLabels };
+export { createEdgeLabels, setCreateEdgeLabels };
 
-function createEdgeLabels(selection, g) {
+var createEdgeLabels = function(selection, g) {
   var svgEdgeLabels = selection.selectAll("g.edgeLabel")
     .data(g.edges(), function (e) { return util.edgeToId(e); })
     .classed("update", true);
@@ -42,4 +42,8 @@ function createEdgeLabels(selection, g) {
     .remove();
 
   return svgEdgeLabels;
+}
+
+function setCreateEdgeLabels(value) {
+  setCreateEdgeLabels = value;
 }

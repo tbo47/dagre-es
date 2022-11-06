@@ -3,9 +3,9 @@ import _ from 'lodash-es';
 import { intersectNode } from "./intersect/intersect-node";
 import * as util from "./util";
 
-export { createEdgePaths };
+export { createEdgePaths, setCreateEdgePaths };
 
-function createEdgePaths(selection, g, arrows) {
+var createEdgePaths = function(selection, g, arrows) {
   var previousPaths = selection.selectAll("g.edgePath")
     .data(g.edges(), function (e) { return util.edgeToId(e); })
     .classed("update", true);
@@ -57,6 +57,10 @@ function createEdgePaths(selection, g, arrows) {
     });
 
   return svgPaths;
+}
+
+function setCreateEdgePaths(value) {
+  createEdgePaths = value;
 }
 
 function makeFragmentRef(url, fragmentId) {
