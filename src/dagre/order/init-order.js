@@ -1,6 +1,6 @@
 
 
-import _ from 'lodash-es';
+import * as _ from 'lodash-es';
 
 export { initOrder };
 

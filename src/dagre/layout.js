@@ -1,6 +1,6 @@
 
 
-import _ from 'lodash-es';
+import * as _ from 'lodash-es';
 import { Graph } from '../graphlib';
 import { addBorderSegments } from "./add-border-segments";
 import * as coordinateSystem from "./coordinate-system";
