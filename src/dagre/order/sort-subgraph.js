@@ -1,4 +1,4 @@
-import _ from 'lodash-es';
+import * as _ from 'lodash-es';
 import { barycenter } from "./barycenter";
 import { resolveConflicts } from "./resolve-conflicts";
 import { sort } from "./sort";
