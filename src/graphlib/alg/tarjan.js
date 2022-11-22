@@ -9,11 +9,11 @@ function tarjan(g) {
   var results = [];
 
   function dfs(v) {
-    var entry = visited[v] = {
+    var entry = (visited[v] = {
       onStack: true,
       lowlink: index,
-      index: index++
-    };
+      index: index++,
+    });
     stack.push(v);
 
     g.successors(v).forEach(function (w) {

@@ -1,18 +1,15 @@
-import { intersectCircle } from "./intersect/intersect-circle";
-import { intersectEllipse } from "./intersect/intersect-ellipse";
-import { intersectPolygon } from "./intersect/intersect-polygon";
-import { intersectRect } from "./intersect/intersect-rect";
+import { intersectCircle } from './intersect/intersect-circle';
+import { intersectEllipse } from './intersect/intersect-ellipse';
+import { intersectPolygon } from './intersect/intersect-polygon';
+import { intersectRect } from './intersect/intersect-rect';
 
-export {
-  shapes,
-  setShapes
-};
+export { shapes, setShapes };
 
 var shapes = {
   rect,
   ellipse,
   circle,
-  diamond
+  diamond,
 };
 
 function setShapes(value) {
@@ -20,13 +17,14 @@ function setShapes(value) {
 }
 
 function rect(parent, bbox, node) {
-  var shapeSvg = parent.insert("rect", ":first-child")
-    .attr("rx", node.rx)
-    .attr("ry", node.ry)
-    .attr("x", -bbox.width / 2)
-    .attr("y", -bbox.height / 2)
-    .attr("width", bbox.width)
-    .attr("height", bbox.height);
+  var shapeSvg = parent
+    .insert('rect', ':first-child')
+    .attr('rx', node.rx)
+    .attr('ry', node.ry)
+    .attr('x', -bbox.width / 2)
+    .attr('y', -bbox.height / 2)
+    .attr('width', bbox.width)
+    .attr('height', bbox.height);
 
   node.intersect = function (point) {
     return intersectRect(node, point);
@@ -38,11 +36,12 @@ function rect(parent, bbox, node) {
 function ellipse(parent, bbox, node) {
   var rx = bbox.width / 2;
   var ry = bbox.height / 2;
-  var shapeSvg = parent.insert("ellipse", ":first-child")
-    .attr("x", -bbox.width / 2)
-    .attr("y", -bbox.height / 2)
-    .attr("rx", rx)
-    .attr("ry", ry);
+  var shapeSvg = parent
+    .insert('ellipse', ':first-child')
+    .attr('x', -bbox.width / 2)
+    .attr('y', -bbox.height / 2)
+    .attr('rx', rx)
+    .attr('ry', ry);
 
   node.intersect = function (point) {
     return intersectEllipse(node, rx, ry, point);
@@ -53,10 +52,11 @@ function ellipse(parent, bbox, node) {
 
 function circle(parent, bbox, node) {
   var r = Math.max(bbox.width, bbox.height) / 2;
-  var shapeSvg = parent.insert("circle", ":first-child")
-    .attr("x", -bbox.width / 2)
-    .attr("y", -bbox.height / 2)
-    .attr("r", r);
+  var shapeSvg = parent
+    .insert('circle', ':first-child')
+    .attr('x', -bbox.width / 2)
+    .attr('y', -bbox.height / 2)
+    .attr('r', r);
 
   node.intersect = function (point) {
     return intersectCircle(node, r, point);
@@ -75,10 +75,16 @@ function diamond(parent, bbox, node) {
     { x: 0, y: -h },
     { x: -w, y: 0 },
     { x: 0, y: h },
-    { x: w, y: 0 }
+    { x: w, y: 0 },
   ];
-  var shapeSvg = parent.insert("polygon", ":first-child")
-    .attr("points", points.map(function (p) { return p.x + "," + p.y; }).join(" "));
+  var shapeSvg = parent.insert('polygon', ':first-child').attr(
+    'points',
+    points
+      .map(function (p) {
+        return p.x + ',' + p.y;
+      })
+      .join(' ')
+  );
 
   node.intersect = function (p) {
     return intersectPolygon(node, points, p);

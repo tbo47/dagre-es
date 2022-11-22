@@ -1,7 +1,7 @@
 import * as _ from 'lodash-es';
-import { barycenter } from "./barycenter";
-import { resolveConflicts } from "./resolve-conflicts";
-import { sort } from "./sort";
+import { barycenter } from './barycenter';
+import { resolveConflicts } from './resolve-conflicts';
+import { sort } from './sort';
 
 export { sortSubgraph };
 
@@ -23,7 +23,7 @@ function sortSubgraph(g, v, cg, biasRight) {
     if (g.children(entry.v).length) {
       var subgraphResult = sortSubgraph(g, entry.v, cg, biasRight);
       subgraphs[entry.v] = subgraphResult;
-      if (_.has(subgraphResult, "barycenter")) {
+      if (_.has(subgraphResult, 'barycenter')) {
         mergeBarycenters(entry, subgraphResult);
       }
     }
@@ -39,12 +39,12 @@ function sortSubgraph(g, v, cg, biasRight) {
     if (g.predecessors(bl).length) {
       var blPred = g.node(g.predecessors(bl)[0]),
         brPred = g.node(g.predecessors(br)[0]);
-      if (!_.has(result, "barycenter")) {
+      if (!_.has(result, 'barycenter')) {
         result.barycenter = 0;
         result.weight = 0;
       }
-      result.barycenter = (result.barycenter * result.weight +
-        blPred.order + brPred.order) / (result.weight + 2);
+      result.barycenter =
+        (result.barycenter * result.weight + blPred.order + brPred.order) / (result.weight + 2);
       result.weight += 2;
     }
   }
@@ -54,19 +54,22 @@ function sortSubgraph(g, v, cg, biasRight) {
 
 function expandSubgraphs(entries, subgraphs) {
   _.forEach(entries, function (entry) {
-    entry.vs = _.flatten(entry.vs.map(function (v) {
-      if (subgraphs[v]) {
-        return subgraphs[v].vs;
-      }
-      return v;
-    }), true);
+    entry.vs = _.flatten(
+      entry.vs.map(function (v) {
+        if (subgraphs[v]) {
+          return subgraphs[v].vs;
+        }
+        return v;
+      }),
+      true
+    );
   });
 }
 
 function mergeBarycenters(target, other) {
   if (!_.isUndefined(target.barycenter)) {
-    target.barycenter = (target.barycenter * target.weight +
-      other.barycenter * other.weight) /
+    target.barycenter =
+      (target.barycenter * target.weight + other.barycenter * other.weight) /
       (target.weight + other.weight);
     target.weight += other.weight;
   } else {

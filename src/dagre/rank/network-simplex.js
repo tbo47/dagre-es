@@ -1,8 +1,8 @@
 import * as _ from 'lodash-es';
-import * as alg from "../../graphlib/alg";
-import { simplify } from "../util";
-import { feasibleTree } from "./feasible-tree";
-import { longestPath, slack } from "./util";
+import * as alg from '../../graphlib/alg';
+import { simplify } from '../util';
+import { feasibleTree } from './feasible-tree';
+import { longestPath, slack } from './util';
 
 export { networkSimplex };
 
@@ -179,11 +179,15 @@ function enterEdge(t, g, edge) {
   }
 
   var candidates = _.filter(g.edges(), function (edge) {
-    return flip === isDescendant(t, t.node(edge.v), tailLabel) &&
-      flip !== isDescendant(t, t.node(edge.w), tailLabel);
+    return (
+      flip === isDescendant(t, t.node(edge.v), tailLabel) &&
+      flip !== isDescendant(t, t.node(edge.w), tailLabel)
+    );
   });
 
-  return _.minBy(candidates, function (edge) { return slack(g, edge); });
+  return _.minBy(candidates, function (edge) {
+    return slack(g, edge);
+  });
 }
 
 function exchangeEdges(t, g, e, f) {
@@ -197,7 +201,9 @@ function exchangeEdges(t, g, e, f) {
 }
 
 function updateRanks(t, g) {
-  var root = _.find(t.nodes(), function (v) { return !g.node(v).parent; });
+  var root = _.find(t.nodes(), function (v) {
+    return !g.node(v).parent;
+  });
   var vs = alg.preorder(t, root);
   vs = vs.slice(1);
   _.forEach(vs, function (v) {

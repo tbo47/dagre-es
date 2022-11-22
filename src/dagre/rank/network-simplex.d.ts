@@ -1,11 +1,11 @@
 export function networkSimplex(g: any): void;
 export namespace networkSimplex {
-    export { initLowLimValues };
-    export { initCutValues };
-    export { calcCutValue };
-    export { leaveEdge };
-    export { enterEdge };
-    export { exchangeEdges };
+  export { initLowLimValues };
+  export { initCutValues };
+  export { calcCutValue };
+  export { leaveEdge };
+  export { enterEdge };
+  export { exchangeEdges };
 }
 declare function initLowLimValues(tree: any, root: any, ...args: any[]): void;
 declare function initCutValues(t: any, g: any): void;

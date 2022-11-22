@@ -17,7 +17,7 @@ function intersectRect(node, point) {
     if (dy < 0) {
       h = -h;
     }
-    sx = dy === 0 ? 0 : h * dx / dy;
+    sx = dy === 0 ? 0 : (h * dx) / dy;
     sy = h;
   } else {
     // Intersection is left or right of rect.
@@ -25,7 +25,7 @@ function intersectRect(node, point) {
       w = -w;
     }
     sx = w;
-    sy = dx === 0 ? 0 : w * dy / dx;
+    sy = dx === 0 ? 0 : (w * dy) / dx;
   }
 
   return { x: x + sx, y: y + sy };

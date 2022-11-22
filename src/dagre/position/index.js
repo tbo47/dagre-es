@@ -1,6 +1,6 @@
 import * as _ from 'lodash-es';
-import * as util from "../util";
-import { positionX } from "./bk";
+import * as util from '../util';
+import { positionX } from './bk';
 
 export { position };
 
@@ -18,11 +18,14 @@ function positionY(g) {
   var rankSep = g.graph().ranksep;
   var prevY = 0;
   _.forEach(layering, function (layer) {
-    var maxHeight = _.max(_.map(layer, function (v) { return g.node(v).height; }));
+    var maxHeight = _.max(
+      _.map(layer, function (v) {
+        return g.node(v).height;
+      })
+    );
     _.forEach(layer, function (v) {
       g.node(v).y = prevY + maxHeight / 2;
     });
     prevY += maxHeight + rankSep;
   });
 }
-
