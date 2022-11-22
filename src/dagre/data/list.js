@@ -37,7 +37,7 @@ class List {
       strs.push(JSON.stringify(curr, filterOutLinks));
       curr = curr._prev;
     }
-    return "[" + strs.join(", ") + "]";
+    return '[' + strs.join(', ') + ']';
   }
 }
 
@@ -49,7 +49,7 @@ function unlink(entry) {
 }
 
 function filterOutLinks(k, v) {
-  if (k !== "_next" && k !== "_prev") {
+  if (k !== '_next' && k !== '_prev') {
     return v;
   }
 }

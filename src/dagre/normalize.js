@@ -1,10 +1,7 @@
 import * as _ from 'lodash-es';
-import * as util from "./util";
+import * as util from './util';
 
-export {
-  run,
-  undo
-};
+export { run, undo };
 
 /*
  * Breaks any long edges in the graph into short segments that span 1 layer
@@ -24,7 +21,9 @@ export {
  */
 function run(g) {
   g.graph().dummyChains = [];
-  _.forEach(g.edges(), function (edge) { normalizeEdge(g, edge); });
+  _.forEach(g.edges(), function (edge) {
+    normalizeEdge(g, edge);
+  });
 }
 
 function normalizeEdge(g, e) {
@@ -44,15 +43,17 @@ function normalizeEdge(g, e) {
   for (i = 0, ++vRank; vRank < wRank; ++i, ++vRank) {
     edgeLabel.points = [];
     attrs = {
-      width: 0, height: 0,
-      edgeLabel: edgeLabel, edgeObj: e,
-      rank: vRank
+      width: 0,
+      height: 0,
+      edgeLabel: edgeLabel,
+      edgeObj: e,
+      rank: vRank,
     };
-    dummy = util.addDummyNode(g, "edge", attrs, "_d");
+    dummy = util.addDummyNode(g, 'edge', attrs, '_d');
     if (vRank === labelRank) {
       attrs.width = edgeLabel.width;
       attrs.height = edgeLabel.height;
-      attrs.dummy = "edge-label";
+      attrs.dummy = 'edge-label';
       attrs.labelpos = edgeLabel.labelpos;
     }
     g.setEdge(v, dummy, { weight: edgeLabel.weight }, name);
@@ -75,7 +76,7 @@ function undo(g) {
       w = g.successors(v)[0];
       g.removeNode(v);
       origLabel.points.push({ x: node.x, y: node.y });
-      if (node.dummy === "edge-label") {
+      if (node.dummy === 'edge-label') {
         origLabel.x = node.x;
         origLabel.y = node.y;
         origLabel.width = node.width;

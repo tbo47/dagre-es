@@ -1,14 +1,16 @@
 import * as _ from 'lodash-es';
-import * as util from "../util";
+import * as util from '../util';
 
 export { sort };
 
 function sort(entries, biasRight) {
   var parts = util.partition(entries, function (entry) {
-    return _.has(entry, "barycenter");
+    return _.has(entry, 'barycenter');
   });
   var sortable = parts.lhs,
-    unsortable = _.sortBy(parts.rhs, function (entry) { return -entry.i; }),
+    unsortable = _.sortBy(parts.rhs, function (entry) {
+      return -entry.i;
+    }),
     vs = [],
     sum = 0,
     weight = 0,

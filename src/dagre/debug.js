@@ -1,10 +1,8 @@
 import * as _ from 'lodash-es';
-import { Graph } from "./graphlib";
-import * as util from "./util";
+import { Graph } from './graphlib';
+import * as util from './util';
 
-export {
-  debugOrdering
-};
+export { debugOrdering };
 
 /* istanbul ignore next */
 function debugOrdering(g) {
@@ -14,7 +12,7 @@ function debugOrdering(g) {
 
   _.forEach(g.nodes(), function (v) {
     h.setNode(v, { label: v });
-    h.setParent(v, "layer" + g.node(v).rank);
+    h.setParent(v, 'layer' + g.node(v).rank);
   });
 
   _.forEach(g.edges(), function (e) {
@@ -22,10 +20,10 @@ function debugOrdering(g) {
   });
 
   _.forEach(layerMatrix, function (layer, i) {
-    var layerV = "layer" + i;
-    h.setNode(layerV, { rank: "same" });
+    var layerV = 'layer' + i;
+    h.setNode(layerV, { rank: 'same' });
     _.reduce(layer, function (u, v) {
-      h.setEdge(u, v, { style: "invis" });
+      h.setEdge(u, v, { style: 'invis' });
       return v;
     });
   });

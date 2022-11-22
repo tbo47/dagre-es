@@ -1,21 +1,16 @@
 import * as _ from 'lodash-es';
-import { greedyFAS } from "./greedy-fas";
+import { greedyFAS } from './greedy-fas';
 
-export {
-  run,
-  undo
-};
+export { run, undo };
 
 function run(g) {
-  var fas = (g.graph().acyclicer === "greedy"
-    ? greedyFAS(g, weightFn(g))
-    : dfsFAS(g));
+  var fas = g.graph().acyclicer === 'greedy' ? greedyFAS(g, weightFn(g)) : dfsFAS(g);
   _.forEach(fas, function (e) {
     var label = g.edge(e);
     g.removeEdge(e);
     label.forwardName = e.name;
     label.reversed = true;
-    g.setEdge(e.w, e.v, label, _.uniqueId("rev"));
+    g.setEdge(e.w, e.v, label, _.uniqueId('rev'));
   });
 
   function weightFn(g) {

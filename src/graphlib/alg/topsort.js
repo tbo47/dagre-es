@@ -32,5 +32,5 @@ function topsort(g) {
   return results;
 }
 
-function CycleException() { }
+function CycleException() {}
 CycleException.prototype = new Error(); // must be an instance of Error to pass testing

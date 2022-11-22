@@ -1,8 +1,6 @@
-
-
 import * as _ from 'lodash-es';
-import { Graph } from "../../graphlib";
-import { slack } from "./util";
+import { Graph } from '../../graphlib';
+import { slack } from './util';
 
 export { feasibleTree };
 
@@ -57,7 +55,7 @@ function tightTree(t, g) {
   function dfs(v) {
     _.forEach(g.nodeEdges(v), function (e) {
       var edgeV = e.v,
-        w = (v === edgeV) ? e.w : edgeV;
+        w = v === edgeV ? e.w : edgeV;
       if (!t.hasNode(w) && !slack(g, e)) {
         t.setNode(w, {});
         t.setEdge(v, w, {});

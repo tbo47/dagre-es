@@ -5,9 +5,14 @@ export { floydWarshall };
 var DEFAULT_WEIGHT_FUNC = _.constant(1);
 
 function floydWarshall(g, weightFn, edgeFn) {
-  return runFloydWarshall(g,
+  return runFloydWarshall(
+    g,
     weightFn || DEFAULT_WEIGHT_FUNC,
-    edgeFn || function (v) { return g.outEdges(v); });
+    edgeFn ||
+      function (v) {
+        return g.outEdges(v);
+      }
+  );
 }
 
 function runFloydWarshall(g, weightFn, edgeFn) {
