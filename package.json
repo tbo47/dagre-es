@@ -5,6 +5,7 @@
   "author": "Thibaut Lassalle",
   "license": "MIT",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "generate_types": "tsc src/*.js --declaration --allowJs --emitDeclarationOnly",
     "compile_js_as_ts": "tsc src/index.js --AllowJs --checkJs --outDir dist/"
