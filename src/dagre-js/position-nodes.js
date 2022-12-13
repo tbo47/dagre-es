@@ -1,19 +1,19 @@
-import * as d3 from "d3";
-import * as util from "./util";
+import * as d3 from 'd3';
+import * as util from './util';
 
 export { positionNodes };
 
 function positionNodes(selection, g) {
-  var created = selection.filter(function () { return !d3.select(this).classed("update"); });
+  var created = selection.filter(function () {
+    return !d3.select(this).classed('update');
+  });
 
   function translate(v) {
     var node = g.node(v);
-    return "translate(" + node.x + "," + node.y + ")";
+    return 'translate(' + node.x + ',' + node.y + ')';
   }
 
-  created.attr("transform", translate);
+  created.attr('transform', translate);
 
-  util.applyTransition(selection, g)
-    .style("opacity", 1)
-    .attr("transform", translate);
+  util.applyTransition(selection, g).style('opacity', 1).attr('transform', translate);
 }

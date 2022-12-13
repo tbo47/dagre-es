@@ -1,8 +1,8 @@
 import * as _ from 'lodash-es';
 
-var DEFAULT_EDGE_NAME = "\x00";
-var GRAPH_NODE = "\x00";
-var EDGE_KEY_DELIM = "\x01";
+var DEFAULT_EDGE_NAME = '\x00';
+var GRAPH_NODE = '\x00';
+var EDGE_KEY_DELIM = '\x01';
 
 // Implementation notes:
 //
@@ -25,9 +25,9 @@ var EDGE_KEY_DELIM = "\x01";
 //    we're going to get to a performant hashtable in JavaScript.
 export class Graph {
   constructor(opts = {}) {
-    this._isDirected = _.has(opts, "directed") ? opts.directed : true;
-    this._isMultigraph = _.has(opts, "multigraph") ? opts.multigraph : false;
-    this._isCompound = _.has(opts, "compound") ? opts.compound : false;
+    this._isDirected = _.has(opts, 'directed') ? opts.directed : true;
+    this._isMultigraph = _.has(opts, 'multigraph') ? opts.multigraph : false;
+    this._isCompound = _.has(opts, 'compound') ? opts.compound : false;
 
     // Label for the graph itself
     this._label = undefined;
@@ -153,7 +153,9 @@ export class Graph {
   removeNode(v) {
     var self = this;
     if (_.has(this._nodes, v)) {
-      var removeEdge = function (e) { self.removeEdge(self._edgeObjs[e]); };
+      var removeEdge = function (e) {
+        self.removeEdge(self._edgeObjs[e]);
+      };
       delete this._nodes[v];
       if (this._isCompound) {
         this._removeFromParentsChildList(v);
@@ -175,18 +177,17 @@ export class Graph {
   }
   setParent(v, parent) {
     if (!this._isCompound) {
-      throw new Error("Cannot set parent in a non-compound graph");
+      throw new Error('Cannot set parent in a non-compound graph');
     }
 
     if (_.isUndefined(parent)) {
       parent = GRAPH_NODE;
     } else {
       // Coerce parent to string
-      parent += "";
+      parent += '';
       for (var ancestor = parent; !_.isUndefined(ancestor); ancestor = this.parent(ancestor)) {
         if (ancestor === v) {
-          throw new Error("Setting " + parent + " as parent of " + v +
-            " would create a cycle");
+          throw new Error('Setting ' + parent + ' as parent of ' + v + ' would create a cycle');
         }
       }
 
@@ -257,7 +258,7 @@ export class Graph {
     var copy = new this.constructor({
       directed: this._isDirected,
       multigraph: this._isMultigraph,
-      compound: this._isCompound
+      compound: this._isCompound,
     });
 
     copy.setGraph(this.graph());
@@ -332,7 +333,7 @@ export class Graph {
     var valueSpecified = false;
     var arg0 = arguments[0];
 
-    if (typeof arg0 === "object" && arg0 !== null && "v" in arg0) {
+    if (typeof arg0 === 'object' && arg0 !== null && 'v' in arg0) {
       v = arg0.v;
       w = arg0.w;
       name = arg0.name;
@@ -350,10 +351,10 @@ export class Graph {
       }
     }
 
-    v = "" + v;
-    w = "" + w;
+    v = '' + v;
+    w = '' + w;
     if (!_.isUndefined(name)) {
-      name = "" + name;
+      name = '' + name;
     }
 
     var e = edgeArgsToId(this._isDirected, v, w, name);
@@ -365,7 +366,7 @@ export class Graph {
     }
 
     if (!_.isUndefined(name) && !this._isMultigraph) {
-      throw new Error("Cannot set a named edge when isMultigraph = false");
+      throw new Error('Cannot set a named edge when isMultigraph = false');
     }
 
     // It didn't exist, so we need to create it.
@@ -390,21 +391,24 @@ export class Graph {
     return this;
   }
   edge(v, w, name) {
-    var e = (arguments.length === 1
-      ? edgeObjToId(this._isDirected, arguments[0])
-      : edgeArgsToId(this._isDirected, v, w, name));
+    var e =
+      arguments.length === 1
+        ? edgeObjToId(this._isDirected, arguments[0])
+        : edgeArgsToId(this._isDirected, v, w, name);
     return this._edgeLabels[e];
   }
   hasEdge(v, w, name) {
-    var e = (arguments.length === 1
-      ? edgeObjToId(this._isDirected, arguments[0])
-      : edgeArgsToId(this._isDirected, v, w, name));
+    var e =
+      arguments.length === 1
+        ? edgeObjToId(this._isDirected, arguments[0])
+        : edgeArgsToId(this._isDirected, v, w, name);
     return _.has(this._edgeLabels, e);
   }
   removeEdge(v, w, name) {
-    var e = (arguments.length === 1
-      ? edgeObjToId(this._isDirected, arguments[0])
-      : edgeArgsToId(this._isDirected, v, w, name));
+    var e =
+      arguments.length === 1
+        ? edgeObjToId(this._isDirected, arguments[0])
+        : edgeArgsToId(this._isDirected, v, w, name);
     var edge = this._edgeObjs[e];
     if (edge) {
       v = edge.v;
@@ -426,7 +430,9 @@ export class Graph {
       if (!u) {
         return edges;
       }
-      return _.filter(edges, function (edge) { return edge.v === u; });
+      return _.filter(edges, function (edge) {
+        return edge.v === u;
+      });
     }
   }
   outEdges(v, w) {
@@ -436,7 +442,9 @@ export class Graph {
       if (!w) {
         return edges;
       }
-      return _.filter(edges, function (edge) { return edge.w === w; });
+      return _.filter(edges, function (edge) {
+        return edge.w === w;
+      });
     }
   }
   nodeEdges(v, w) {
@@ -453,43 +461,6 @@ Graph.prototype._nodeCount = 0;
 /* Number of edges in the graph. Should only be changed by the implementation. */
 Graph.prototype._edgeCount = 0;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function incrementOrInitEntry(map, k) {
   if (map[k]) {
     map[k]++;
@@ -499,24 +470,25 @@ function incrementOrInitEntry(map, k) {
 }
 
 function decrementOrRemoveEntry(map, k) {
-  if (!--map[k]) { delete map[k]; }
+  if (!--map[k]) {
+    delete map[k];
+  }
 }
 
 function edgeArgsToId(isDirected, v_, w_, name) {
-  var v = "" + v_;
-  var w = "" + w_;
+  var v = '' + v_;
+  var w = '' + w_;
   if (!isDirected && v > w) {
     var tmp = v;
     v = w;
     w = tmp;
   }
-  return v + EDGE_KEY_DELIM + w + EDGE_KEY_DELIM +
-    (_.isUndefined(name) ? DEFAULT_EDGE_NAME : name);
+  return v + EDGE_KEY_DELIM + w + EDGE_KEY_DELIM + (_.isUndefined(name) ? DEFAULT_EDGE_NAME : name);
 }
 
 function edgeArgsToObj(isDirected, v_, w_, name) {
-  var v = "" + v_;
-  var w = "" + w_;
+  var v = '' + v_;
+  var w = '' + w_;
   if (!isDirected && v > w) {
     var tmp = v;
     v = w;

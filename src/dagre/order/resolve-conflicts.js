@@ -30,13 +30,13 @@ export { resolveConflicts };
 function resolveConflicts(entries, cg) {
   var mappedEntries = {};
   _.forEach(entries, function (entry, i) {
-    var tmp = mappedEntries[entry.v] = {
+    var tmp = (mappedEntries[entry.v] = {
       indegree: 0,
-      "in": [],
+      in: [],
       out: [],
       vs: [entry.v],
-      i: i
-    };
+      i: i,
+    });
     if (!_.isUndefined(entry.barycenter)) {
       tmp.barycenter = entry.barycenter;
       tmp.weight = entry.weight;
@@ -67,9 +67,11 @@ function doResolveConflicts(sourceSet) {
       if (uEntry.merged) {
         return;
       }
-      if (_.isUndefined(uEntry.barycenter) ||
+      if (
+        _.isUndefined(uEntry.barycenter) ||
         _.isUndefined(vEntry.barycenter) ||
-        uEntry.barycenter >= vEntry.barycenter) {
+        uEntry.barycenter >= vEntry.barycenter
+      ) {
         mergeEntries(vEntry, uEntry);
       }
     };
@@ -77,7 +79,7 @@ function doResolveConflicts(sourceSet) {
 
   function handleOut(vEntry) {
     return function (wEntry) {
-      wEntry["in"].push(vEntry);
+      wEntry['in'].push(vEntry);
       if (--wEntry.indegree === 0) {
         sourceSet.push(wEntry);
       }
@@ -87,15 +89,18 @@ function doResolveConflicts(sourceSet) {
   while (sourceSet.length) {
     var entry = sourceSet.pop();
     entries.push(entry);
-    _.forEach(entry["in"].reverse(), handleIn(entry));
+    _.forEach(entry['in'].reverse(), handleIn(entry));
     _.forEach(entry.out, handleOut(entry));
   }
 
-  return _.map(_.filter(entries, function (entry) { return !entry.merged; }),
+  return _.map(
+    _.filter(entries, function (entry) {
+      return !entry.merged;
+    }),
     function (entry) {
-      return _.pick(entry, ["vs", "i", "barycenter", "weight"]);
-    });
-
+      return _.pick(entry, ['vs', 'i', 'barycenter', 'weight']);
+    }
+  );
 }
 
 function mergeEntries(target, source) {

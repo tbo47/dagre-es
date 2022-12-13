@@ -8,10 +8,10 @@ function write(g) {
     options: {
       directed: g.isDirected(),
       multigraph: g.isMultigraph(),
-      compound: g.isCompound()
+      compound: g.isCompound(),
     },
     nodes: writeNodes(g),
-    edges: writeEdges(g)
+    edges: writeEdges(g),
   };
   if (!_.isUndefined(g.graph())) {
     json.value = _.clone(g.graph());

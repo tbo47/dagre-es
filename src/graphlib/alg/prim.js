@@ -1,6 +1,6 @@
 import * as _ from 'lodash-es';
-import { PriorityQueue } from "../data/priority-queue";
-import { Graph } from "../graph";
+import { PriorityQueue } from '../data/priority-queue';
+import { Graph } from '../graph';
 
 export { prim };
 
@@ -40,7 +40,7 @@ function prim(g, weightFunc) {
     if (_.has(parents, v)) {
       result.setEdge(v, parents[v]);
     } else if (init) {
-      throw new Error("Input graph is not connected: " + g);
+      throw new Error('Input graph is not connected: ' + g);
     } else {
       init = true;
     }

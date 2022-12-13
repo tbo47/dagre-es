@@ -1,5 +1,5 @@
 import * as _ from 'lodash-es';
-import { Graph } from "../../graphlib";
+import { Graph } from '../../graphlib';
 
 export { buildLayerGraph };
 
@@ -35,14 +35,17 @@ export { buildLayerGraph };
  */
 function buildLayerGraph(g, rank, relationship) {
   var root = createRootNode(g),
-    result = new Graph({ compound: true }).setGraph({ root: root })
-      .setDefaultNodeLabel(function (v) { return g.node(v); });
+    result = new Graph({ compound: true })
+      .setGraph({ root: root })
+      .setDefaultNodeLabel(function (v) {
+        return g.node(v);
+      });
 
   _.forEach(g.nodes(), function (v) {
     var node = g.node(v),
       parent = g.parent(v);
 
-    if (node.rank === rank || node.minRank <= rank && rank <= node.maxRank) {
+    if (node.rank === rank || (node.minRank <= rank && rank <= node.maxRank)) {
       result.setNode(v);
       result.setParent(v, parent || root);
 
@@ -54,10 +57,10 @@ function buildLayerGraph(g, rank, relationship) {
         result.setEdge(u, v, { weight: g.edge(e).weight + weight });
       });
 
-      if (_.has(node, "minRank")) {
+      if (_.has(node, 'minRank')) {
         result.setNode(v, {
           borderLeft: node.borderLeft[rank],
-          borderRight: node.borderRight[rank]
+          borderRight: node.borderRight[rank],
         });
       }
     }
@@ -68,6 +71,6 @@ function buildLayerGraph(g, rank, relationship) {
 
 function createRootNode(g) {
   var v;
-  while (g.hasNode((v = _.uniqueId("_root"))));
+  while (g.hasNode((v = _.uniqueId('_root'))));
   return v;
 }

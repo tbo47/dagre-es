@@ -1,11 +1,11 @@
 import * as _ from 'lodash-es';
-import { Graph } from "../../graphlib";
-import * as util from "../util";
-import { addSubgraphConstraints } from "./add-subgraph-constraints";
-import { buildLayerGraph } from "./build-layer-graph";
-import { crossCount } from "./cross-count";
-import { initOrder } from "./init-order";
-import { sortSubgraph } from "./sort-subgraph";
+import { Graph } from '../../graphlib';
+import * as util from '../util';
+import { addSubgraphConstraints } from './add-subgraph-constraints';
+import { buildLayerGraph } from './build-layer-graph';
+import { crossCount } from './cross-count';
+import { initOrder } from './init-order';
+import { sortSubgraph } from './sort-subgraph';
 
 export { order };
 
@@ -26,8 +26,8 @@ export { order };
  */
 function order(g) {
   var maxRank = util.maxRank(g),
-    downLayerGraphs = buildLayerGraphs(g, _.range(1, maxRank + 1), "inEdges"),
-    upLayerGraphs = buildLayerGraphs(g, _.range(maxRank - 1, -1, -1), "outEdges");
+    downLayerGraphs = buildLayerGraphs(g, _.range(1, maxRank + 1), 'inEdges'),
+    upLayerGraphs = buildLayerGraphs(g, _.range(maxRank - 1, -1, -1), 'outEdges');
 
   var layering = initOrder(g);
   assignOrder(g, layering);

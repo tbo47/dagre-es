@@ -1,9 +1,6 @@
 import * as _ from 'lodash-es';
 
-export {
-  longestPath,
-  slack
-};
+export { longestPath, slack };
 
 /*
  * Initializes ranks for the input graph using the longest path algorithm. This
@@ -36,13 +33,18 @@ function longestPath(g) {
     }
     visited[v] = true;
 
-    var rank = _.min(_.map(g.outEdges(v), function (e) {
-      return dfs(e.w) - g.edge(e).minlen;
-    }));
+    var rank = _.min(
+      _.map(g.outEdges(v), function (e) {
+        return dfs(e.w) - g.edge(e).minlen;
+      })
+    );
 
-    if (rank === Number.POSITIVE_INFINITY || // return value of _.map([]) for Lodash 3
+    if (
+      rank === Number.POSITIVE_INFINITY || // return value of _.map([]) for Lodash 3
       rank === undefined || // return value of _.map([]) for Lodash 4
-      rank === null) { // return value of _.map([null])
+      rank === null
+    ) {
+      // return value of _.map([null])
       rank = 0;
     }
 

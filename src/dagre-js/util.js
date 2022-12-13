@@ -1,13 +1,7 @@
 import * as _ from 'lodash-es';
 
 // Public utility functions
-export {
-  isSubgraph,
-  edgeToId,
-  applyStyle,
-  applyClass,
-  applyTransition
-};
+export { isSubgraph, edgeToId, applyStyle, applyClass, applyTransition };
 
 /*
  * Returns true if the specified node in the graph is a subgraph node. A
@@ -18,25 +12,23 @@ function isSubgraph(g, v) {
 }
 
 function edgeToId(e) {
-  return escapeId(e.v) + ":" + escapeId(e.w) + ":" + escapeId(e.name);
+  return escapeId(e.v) + ':' + escapeId(e.w) + ':' + escapeId(e.name);
 }
 
 var ID_DELIM = /:/g;
 function escapeId(str) {
-  return str ? String(str).replace(ID_DELIM, "\\:") : "";
+  return str ? String(str).replace(ID_DELIM, '\\:') : '';
 }
 
 function applyStyle(dom, styleFn) {
   if (styleFn) {
-    dom.attr("style", styleFn);
+    dom.attr('style', styleFn);
   }
 }
 
 function applyClass(dom, classFn, otherClasses) {
   if (classFn) {
-    dom
-      .attr("class", classFn)
-      .attr("class", otherClasses + " " + dom.attr("class"));
+    dom.attr('class', classFn).attr('class', otherClasses + ' ' + dom.attr('class'));
   }
 }
 

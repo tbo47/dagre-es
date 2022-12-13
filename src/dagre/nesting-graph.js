@@ -1,10 +1,7 @@
 import * as _ from 'lodash-es';
-import * as util from "./util";
+import * as util from './util';
 
-export {
-  run,
-  cleanup
-};
+export { run, cleanup };
 
 /*
  * A nesting graph creates dummy nodes for the tops and bottoms of subgraphs,
@@ -30,7 +27,7 @@ export {
  * Graphs."
  */
 function run(g) {
-  var root = util.addDummyNode(g, "root", {}, "_root");
+  var root = util.addDummyNode(g, 'root', {}, '_root');
   var depths = treeDepths(g);
   var height = _.max(_.values(depths)) - 1; // Note: depths is an Object not an array
   var nodeSep = 2 * height + 1;
@@ -38,7 +35,9 @@ function run(g) {
   g.graph().nestingRoot = root;
 
   // Multiply minlen by nodeSep to align nodes on non-border ranks.
-  _.forEach(g.edges(), function (e) { g.edge(e).minlen *= nodeSep; });
+  _.forEach(g.edges(), function (e) {
+    g.edge(e).minlen *= nodeSep;
+  });
 
   // Calculate a weight that is sufficient to keep subgraphs vertically compact
   var weight = sumWeights(g) + 1;
@@ -62,8 +61,8 @@ function dfs(g, root, nodeSep, weight, height, depths, v) {
     return;
   }
 
-  var top = util.addBorderNode(g, "_bt");
-  var bottom = util.addBorderNode(g, "_bb");
+  var top = util.addBorderNode(g, '_bt');
+  var bottom = util.addBorderNode(g, '_bb');
   var label = g.node(v);
 
   g.setParent(top, v);
@@ -83,13 +82,13 @@ function dfs(g, root, nodeSep, weight, height, depths, v) {
     g.setEdge(top, childTop, {
       weight: thisWeight,
       minlen: minlen,
-      nestingEdge: true
+      nestingEdge: true,
     });
 
     g.setEdge(childBottom, bottom, {
       weight: thisWeight,
       minlen: minlen,
-      nestingEdge: true
+      nestingEdge: true,
     });
   });
 
@@ -109,14 +108,20 @@ function treeDepths(g) {
     }
     depths[v] = depth;
   }
-  _.forEach(g.children(), function (v) { dfs(v, 1); });
+  _.forEach(g.children(), function (v) {
+    dfs(v, 1);
+  });
   return depths;
 }
 
 function sumWeights(g) {
-  return _.reduce(g.edges(), function (acc, e) {
-    return acc + g.edge(e).weight;
-  }, 0);
+  return _.reduce(
+    g.edges(),
+    function (acc, e) {
+      return acc + g.edge(e).weight;
+    },
+    0
+  );
 }
 
 function cleanup(g) {

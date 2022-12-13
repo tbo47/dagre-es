@@ -19,8 +19,7 @@ function parentDummyChains(g) {
       node = g.node(v);
 
       if (ascending) {
-        while ((pathV = path[pathIdx]) !== lca &&
-          g.node(pathV).maxRank < node.rank) {
+        while ((pathV = path[pathIdx]) !== lca && g.node(pathV).maxRank < node.rank) {
           pathIdx++;
         }
 
@@ -30,8 +29,10 @@ function parentDummyChains(g) {
       }
 
       if (!ascending) {
-        while (pathIdx < path.length - 1 &&
-          g.node(pathV = path[pathIdx + 1]).minRank <= node.rank) {
+        while (
+          pathIdx < path.length - 1 &&
+          g.node((pathV = path[pathIdx + 1])).minRank <= node.rank
+        ) {
           pathIdx++;
         }
         pathV = path[pathIdx];
@@ -58,8 +59,7 @@ function findPath(g, postorderNums, v, w) {
   do {
     parent = g.parent(parent);
     vPath.push(parent);
-  } while (parent &&
-    (postorderNums[parent].low > low || lim > postorderNums[parent].lim));
+  } while (parent && (postorderNums[parent].low > low || lim > postorderNums[parent].lim));
   lca = parent;
 
   // Traverse from w to LCA
