@@ -5,7 +5,7 @@ import * as util from './util';
 
 export { createEdgeLabels, setCreateEdgeLabels };
 
-var createEdgeLabels = function (selection, g) {
+let createEdgeLabels = function (selection, g) {
   var svgEdgeLabels = selection
     .selectAll('g.edgeLabel')
     .data(g.edges(), function (e) {
@@ -50,5 +50,5 @@ var createEdgeLabels = function (selection, g) {
 };
 
 function setCreateEdgeLabels(value) {
-  setCreateEdgeLabels = value;
+  createEdgeLabels = value;
 }
