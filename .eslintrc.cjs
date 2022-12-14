@@ -4,10 +4,21 @@ module.exports = {
     es6: true, // todo, increase this es2016 or later to use new Javascript features
     node: true,
   },
-  extends: 'eslint:recommended',
+  extends: ['eslint:recommended', 'plugin:import/recommended'],
   overrides: [],
   parserOptions: {
     sourceType: 'module',
   },
-  rules: {},
+  rules: {
+    // make sure that all files have an extension (required by ESM)
+    'import/extensions': [
+      'error',
+      'always',
+      {
+        js: 'always',
+        jsx: 'never',
+        mjs: 'always',
+      },
+    ],
+  },
 };
