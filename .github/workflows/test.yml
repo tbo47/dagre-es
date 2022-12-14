@@ -19,5 +19,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci # throws an error if the package-lock.json file is out of sync
+      - name: Check for linting errors (run `npm run lint:fix` to fix)
+        run: npm run lint
       - name: Check for prettier errors (run `npm run format` to fix)
         run: npx prettier --check .
