@@ -1,5 +1,5 @@
 import * as _ from 'lodash-es';
-import { Graph } from './graph';
+import { Graph } from './graph.js';
 
 export { write, read };
 

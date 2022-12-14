@@ -1,7 +1,7 @@
-import { intersectCircle } from './intersect/intersect-circle';
-import { intersectEllipse } from './intersect/intersect-ellipse';
-import { intersectPolygon } from './intersect/intersect-polygon';
-import { intersectRect } from './intersect/intersect-rect';
+import { intersectCircle } from './intersect/intersect-circle.js';
+import { intersectEllipse } from './intersect/intersect-ellipse.js';
+import { intersectPolygon } from './intersect/intersect-polygon.js';
+import { intersectRect } from './intersect/intersect-rect.js';
 
 export { shapes, setShapes };
 

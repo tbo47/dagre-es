@@ -1,15 +1,15 @@
 import * as d3 from 'd3';
 import * as _ from 'lodash-es';
-import { layout } from '../dagre/index';
-import { arrows, setArrows } from './arrows';
-import { createClusters, setCreateClusters } from './create-clusters';
-import { createEdgeLabels, setCreateEdgeLabels } from './create-edge-labels';
-import { createEdgePaths, setCreateEdgePaths } from './create-edge-paths';
-import { createNodes, setCreateNodes } from './create-nodes';
-import { positionClusters } from './position-clusters';
-import { positionEdgeLabels } from './position-edge-labels';
-import { positionNodes } from './position-nodes';
-import { shapes, setShapes } from './shapes';
+import { layout } from '../dagre/index.js';
+import { arrows, setArrows } from './arrows.js';
+import { createClusters, setCreateClusters } from './create-clusters.js';
+import { createEdgeLabels, setCreateEdgeLabels } from './create-edge-labels.js';
+import { createEdgePaths, setCreateEdgePaths } from './create-edge-paths.js';
+import { createNodes, setCreateNodes } from './create-nodes.js';
+import { positionClusters } from './position-clusters.js';
+import { positionEdgeLabels } from './position-edge-labels.js';
+import { positionNodes } from './position-nodes.js';
+import { shapes, setShapes } from './shapes.js';
 
 export { render };
 

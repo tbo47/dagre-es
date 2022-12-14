@@ -1,5 +1,5 @@
 import * as _ from 'lodash-es';
-import { greedyFAS } from './greedy-fas';
+import { greedyFAS } from './greedy-fas.js';
 
 export { run, undo };
 

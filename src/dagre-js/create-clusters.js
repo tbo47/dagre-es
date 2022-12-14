@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
-import { addLabel } from './label/add-label';
-import * as util from './util';
+import { addLabel } from './label/add-label.js';
+import * as util from './util.js';
 
 export { createClusters, setCreateClusters };
 

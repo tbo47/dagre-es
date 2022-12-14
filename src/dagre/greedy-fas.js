@@ -1,6 +1,6 @@
 import * as _ from 'lodash-es';
-import { Graph } from '../graphlib/index';
-import { List } from './data/list';
+import { Graph } from '../graphlib/index.js';
+import { List } from './data/list.js';
 
 /*
  * A greedy heuristic for finding a feedback arc set for a graph. A feedback

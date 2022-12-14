@@ -1,6 +1,6 @@
-import { feasibleTree } from './feasible-tree';
-import { networkSimplex } from './network-simplex';
-import { longestPath } from './util';
+import { feasibleTree } from './feasible-tree.js';
+import { networkSimplex } from './network-simplex.js';
+import { longestPath } from './util.js';
 
 export { rank };
 

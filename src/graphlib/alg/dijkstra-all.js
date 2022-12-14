@@ -1,5 +1,5 @@
 import * as _ from 'lodash-es';
-import { dijkstra } from './dijkstra';
+import { dijkstra } from './dijkstra.js';
 
 export { dijkstraAll };
 

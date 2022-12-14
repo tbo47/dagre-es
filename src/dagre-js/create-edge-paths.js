@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import * as _ from 'lodash-es';
-import { intersectNode } from './intersect/intersect-node';
-import * as util from './util';
+import { intersectNode } from './intersect/intersect-node.js';
+import * as util from './util.js';
 
 export { createEdgePaths, setCreateEdgePaths };
 

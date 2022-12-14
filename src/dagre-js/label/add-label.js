@@ -1,6 +1,6 @@
-import { addHtmlLabel } from './add-html-label';
-import { addSVGLabel } from './add-svg-label';
-import { addTextLabel } from './add-text-label';
+import { addHtmlLabel } from './add-html-label.js';
+import { addSVGLabel } from './add-svg-label.js';
+import { addTextLabel } from './add-text-label.js';
 
 export { addLabel };
 

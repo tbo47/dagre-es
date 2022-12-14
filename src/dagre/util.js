@@ -1,5 +1,5 @@
 import * as _ from 'lodash-es';
-import { Graph } from '../graphlib';
+import { Graph } from '../graphlib/index.js';
 
 export {
   addDummyNode,

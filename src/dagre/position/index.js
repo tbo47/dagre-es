@@ -1,6 +1,6 @@
 import * as _ from 'lodash-es';
-import * as util from '../util';
-import { positionX } from './bk';
+import * as util from '../util.js';
+import { positionX } from './bk.js';
 
 export { position };
 

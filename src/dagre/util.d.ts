@@ -24,4 +24,4 @@ export function partition(
 };
 export function time(name: any, fn: any): any;
 export function notime(name: any, fn: any): any;
-import { Graph } from '../graphlib';
+import { Graph } from '../graphlib/index.js';

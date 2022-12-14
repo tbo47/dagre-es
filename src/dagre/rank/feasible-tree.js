@@ -1,6 +1,6 @@
 import * as _ from 'lodash-es';
-import { Graph } from '../../graphlib';
-import { slack } from './util';
+import { Graph } from '../../graphlib/index.js';
+import { slack } from './util.js';
 
 export { feasibleTree };
 
