@@ -1,6 +1,6 @@
 import * as _ from 'lodash-es';
-import { Graph } from '../../graphlib';
-import * as util from '../util';
+import { Graph } from '../../graphlib/index.js';
+import * as util from '../util.js';
 
 /*
  * This module provides coordinate assignment based on Brandes and Köpf, "Fast

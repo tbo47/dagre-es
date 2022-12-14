@@ -7,9 +7,9 @@ export function render(): {
   shapes(value: any, ...args: any[]): typeof shapes | any;
   arrows(value: any, ...args: any[]): typeof arrows | any;
 };
-import { createNodes } from './create-nodes';
-import { createClusters } from './create-clusters';
-import { createEdgeLabels } from './create-edge-labels';
-import { createEdgePaths } from './create-edge-paths';
-import * as shapes from './shapes';
-import * as arrows from './arrows';
+import { createNodes } from './create-nodes.js';
+import { createClusters } from './create-clusters.js';
+import { createEdgeLabels } from './create-edge-labels.js';
+import { createEdgePaths } from './create-edge-paths.js';
+import * as shapes from './shapes.js';
+import * as arrows from './arrows.js';

@@ -1,4 +1,4 @@
-import { dfs } from './dfs';
+import { dfs } from './dfs.js';
 
 export { postorder };
 

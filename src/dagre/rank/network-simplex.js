@@ -1,8 +1,8 @@
 import * as _ from 'lodash-es';
-import * as alg from '../../graphlib/alg';
-import { simplify } from '../util';
-import { feasibleTree } from './feasible-tree';
-import { longestPath, slack } from './util';
+import * as alg from '../../graphlib/alg/index.js';
+import { simplify } from '../util.js';
+import { feasibleTree } from './feasible-tree.js';
+import { longestPath, slack } from './util.js';
 
 export { networkSimplex };
 

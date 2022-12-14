@@ -1,13 +1,13 @@
 import * as _ from 'lodash-es';
-import { Graph } from '../graphlib';
-import { addBorderSegments } from './add-border-segments';
-import * as coordinateSystem from './coordinate-system';
-import { acyclic, normalize, rank } from './index';
-import * as nestingGraph from './nesting-graph';
-import { order } from './order';
-import { parentDummyChains } from './parent-dummy-chains';
-import { position } from './position';
-import * as util from './util';
+import { Graph } from '../graphlib/index.js';
+import { addBorderSegments } from './add-border-segments.js';
+import * as coordinateSystem from './coordinate-system.js';
+import { acyclic, normalize, rank } from './index.js';
+import * as nestingGraph from './nesting-graph.js';
+import { order } from './order/index.js';
+import { parentDummyChains } from './parent-dummy-chains.js';
+import { position } from './position/index.js';
+import * as util from './util.js';
 
 export { layout };
 

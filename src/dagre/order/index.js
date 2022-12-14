@@ -1,11 +1,11 @@
 import * as _ from 'lodash-es';
-import { Graph } from '../../graphlib';
-import * as util from '../util';
-import { addSubgraphConstraints } from './add-subgraph-constraints';
-import { buildLayerGraph } from './build-layer-graph';
-import { crossCount } from './cross-count';
-import { initOrder } from './init-order';
-import { sortSubgraph } from './sort-subgraph';
+import { Graph } from '../../graphlib/index.js';
+import * as util from '../util.js';
+import { addSubgraphConstraints } from './add-subgraph-constraints.js';
+import { buildLayerGraph } from './build-layer-graph.js';
+import { crossCount } from './cross-count.js';
+import { initOrder } from './init-order.js';
+import { sortSubgraph } from './sort-subgraph.js';
 
 export { order };
 

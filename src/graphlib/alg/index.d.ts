@@ -1,14 +1,14 @@
-import { components } from './components';
-import { dijkstra } from './dijkstra';
-import { dijkstraAll } from './dijkstra-all';
-import { findCycles } from './find-cycles';
-import { floydWarshall } from './floyd-warshall';
-import { isAcyclic } from './is-acyclic';
-import { postorder } from './postorder';
-import { preorder } from './preorder';
-import { prim } from './prim';
-import { tarjan } from './tarjan';
-import { topsort } from './topsort';
+import { components } from './components.js';
+import { dijkstra } from './dijkstra.js';
+import { dijkstraAll } from './dijkstra-all.js';
+import { findCycles } from './find-cycles.js';
+import { floydWarshall } from './floyd-warshall.js';
+import { isAcyclic } from './is-acyclic.js';
+import { postorder } from './postorder.js';
+import { preorder } from './preorder.js';
+import { prim } from './prim.js';
+import { tarjan } from './tarjan.js';
+import { topsort } from './topsort.js';
 export {
   components,
   dijkstra,
