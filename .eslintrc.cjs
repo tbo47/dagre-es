@@ -1,7 +1,7 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true, // todo, increase this es2016 or later to use new Javascript features
+    es2021: true,
     node: true,
   },
   extends: ['eslint:recommended', 'plugin:import/recommended'],
