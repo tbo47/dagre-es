@@ -28,7 +28,7 @@ function sort(entries, biasRight) {
     vsIndex = consumeUnsortable(vs, unsortable, vsIndex);
   });
 
-  var result = { vs: _.flatten(vs, true) };
+  var result = { vs: _.flatten(vs) };
   if (weight) {
     result.barycenter = sum / weight;
     result.weight = weight;

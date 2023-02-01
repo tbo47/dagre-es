@@ -131,6 +131,7 @@ export class Graph {
       return this;
     }
 
+    // @ts-expect-error
     this._nodes[v] = arguments.length > 1 ? value : this._defaultNodeLabelFn(v);
     if (this._isCompound) {
       this._parent[v] = GRAPH_NODE;
@@ -255,6 +256,7 @@ export class Graph {
     return neighbors.length === 0;
   }
   filterNodes(filter) {
+    // @ts-expect-error
     var copy = new this.constructor({
       directed: this._isDirected,
       multigraph: this._isMultigraph,
@@ -271,6 +273,7 @@ export class Graph {
     });
 
     _.each(this._edgeObjs, function (e) {
+      // @ts-expect-error
       if (copy.hasNode(e.v) && copy.hasNode(e.w)) {
         copy.setEdge(e, self.edge(e));
       }
@@ -374,6 +377,7 @@ export class Graph {
     this.setNode(v);
     this.setNode(w);
 
+    // @ts-expect-error
     this._edgeLabels[e] = valueSpecified ? value : this._defaultEdgeLabelFn(v, w, name);
 
     var edgeObj = edgeArgsToObj(this._isDirected, v, w, name);

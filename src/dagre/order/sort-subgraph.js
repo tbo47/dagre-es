@@ -35,7 +35,7 @@ function sortSubgraph(g, v, cg, biasRight) {
   var result = sort(entries, biasRight);
 
   if (bl) {
-    result.vs = _.flatten([bl, result.vs, br], true);
+    result.vs = _.flatten([bl, result.vs, br]);
     if (g.predecessors(bl).length) {
       var blPred = g.node(g.predecessors(bl)[0]),
         brPred = g.node(g.predecessors(br)[0]);
@@ -60,8 +60,7 @@ function expandSubgraphs(entries, subgraphs) {
           return subgraphs[v].vs;
         }
         return v;
-      }),
-      true
+      })
     );
   });
 }

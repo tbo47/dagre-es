@@ -64,6 +64,7 @@ function findType1Conflicts(g, layering) {
             }
           });
         });
+        // @ts-expect-error
         scanPos = i + 1;
         k0 = k1;
       }
@@ -105,6 +106,7 @@ function findType2Conflicts(g, layering) {
         if (predecessors.length) {
           nextNorthPos = g.node(predecessors[0]).order;
           scan(south, southPos, southLookahead, prevNorthPos, nextNorthPos);
+          // @ts-expect-error
           southPos = southLookahead;
           prevNorthPos = nextNorthPos;
         }

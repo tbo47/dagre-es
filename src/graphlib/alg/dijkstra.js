@@ -1,5 +1,5 @@
 import * as _ from 'lodash-es';
-import * as PriorityQueue from '../data/priority-queue.js';
+import { PriorityQueue } from '../data/priority-queue.js';
 
 export { dijkstra };
 

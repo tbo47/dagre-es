@@ -7,7 +7,8 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "generate_types": "tsc src/*.js --declaration --allowJs --emitDeclarationOnly; prettier --write .",
+    "generate_types": "tsc --build --clean && tsc --build && prettier --write .",
+    "prepack": "npm run generate_types",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
