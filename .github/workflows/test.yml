@@ -23,3 +23,9 @@ jobs:
         run: npm run lint
       - name: Check for prettier errors (run `npm run format` to fix)
         run: npx prettier --check .
+      - name: Build the npm package to publish
+        run: npm pack
+      - uses: actions/upload-artifact@v3
+        with:
+          name: package
+          path: '*.tgz'
