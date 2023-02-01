@@ -53,7 +53,9 @@ function normalizeEdge(g, e) {
     if (vRank === labelRank) {
       attrs.width = edgeLabel.width;
       attrs.height = edgeLabel.height;
+      // @ts-expect-error
       attrs.dummy = 'edge-label';
+      // @ts-expect-error
       attrs.labelpos = edgeLabel.labelpos;
     }
     g.setEdge(v, dummy, { weight: edgeLabel.weight }, name);

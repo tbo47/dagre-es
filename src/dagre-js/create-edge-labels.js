@@ -22,7 +22,7 @@ let createEdgeLabels = function (selection, g) {
     var root = d3.select(this);
     root.select('.label').remove();
     var edge = g.edge(e);
-    var label = addLabel(root, g.edge(e), 0, 0).classed('label', true);
+    var label = addLabel(root, g.edge(e), 0).classed('label', true);
     var bbox = label.node().getBBox();
 
     if (edge.labelId) {

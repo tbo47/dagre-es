@@ -44,8 +44,7 @@ function twoLayerCrossCount(g, northLayer, southLayer) {
         }),
         'pos'
       );
-    }),
-    true
+    })
   );
 
   // Build the accumulator tree
@@ -60,14 +59,18 @@ function twoLayerCrossCount(g, northLayer, southLayer) {
   // Calculate the weighted crossings
   var cc = 0;
   _.forEach(
+    // @ts-expect-error
     southEntries.forEach(function (entry) {
       var index = entry.pos + firstIndex;
       tree[index] += entry.weight;
       var weightSum = 0;
+      // @ts-expect-error
       while (index > 0) {
+        // @ts-expect-error
         if (index % 2) {
           weightSum += tree[index + 1];
         }
+        // @ts-expect-error
         index = (index - 1) >> 1;
         tree[index] += entry.weight;
       }

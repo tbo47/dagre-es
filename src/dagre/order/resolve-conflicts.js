@@ -38,7 +38,9 @@ function resolveConflicts(entries, cg) {
       i: i,
     });
     if (!_.isUndefined(entry.barycenter)) {
+      // @ts-expect-error
       tmp.barycenter = entry.barycenter;
+      // @ts-expect-error
       tmp.weight = entry.weight;
     }
   });
@@ -53,6 +55,7 @@ function resolveConflicts(entries, cg) {
   });
 
   var sourceSet = _.filter(mappedEntries, function (entry) {
+    // @ts-expect-error
     return !entry.indegree;
   });
 

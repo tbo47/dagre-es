@@ -243,6 +243,7 @@ function assignRankMinMax(g) {
     if (node.borderTop) {
       node.minRank = g.node(node.borderTop).rank;
       node.maxRank = g.node(node.borderBottom).rank;
+      // @ts-expect-error
       maxRank = _.max(maxRank, node.maxRank);
     }
   });

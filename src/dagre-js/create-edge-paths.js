@@ -85,6 +85,7 @@ function calcPoints(g, e) {
 }
 
 function createLine(edge, points) {
+  // @ts-expect-error
   var line = (d3.line || d3.svg.line)()
     .x(function (d) {
       return d.x;
