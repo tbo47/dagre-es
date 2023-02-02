@@ -1,6 +1,6 @@
 {
   "name": "dagre-d3-es",
-  "version": "7.0.7",
+  "version": "7.0.9",
   "description": "",
   "author": "Thibaut Lassalle",
   "license": "MIT",
@@ -12,6 +12,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
+    "my_1_npm_login": "npm login",
+    "my_2_publish": "echo update_package_version ; git clean -xdf ; npm ci ; npm publish",
     "compile_js_as_ts": "tsc src/index.js --AllowJs --checkJs --outDir dist/"
   },
   "keywords": [
