@@ -10,6 +10,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'import/no-cycle': 'error',
     // make sure that all files have an extension (required by ESM)
     'import/extensions': [
       'error',
