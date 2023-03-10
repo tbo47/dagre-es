@@ -8,7 +8,7 @@ function position(g) {
   g = util.asNonCompoundGraph(g);
 
   positionY(g);
-  _.forEach(positionX(g), function (x, v) {
+  _.forOwn(positionX(g), function (x, v) {
     g.node(v).x = x;
   });
 }
