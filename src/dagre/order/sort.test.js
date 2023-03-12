@@ -1,5 +1,7 @@
-var expect = require("../chai").expect;
-var sort = require("../../lib/order/sort");
+import { describe, it } from 'vitest'
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { sort } from './sort.js';
 
 describe("sort", function() {
   it("sorts nodes by barycenter", function() {

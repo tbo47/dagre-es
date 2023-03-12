@@ -1,6 +1,4 @@
-var chai = require("chai");
-
-module.exports = chai;
+import chai from "chai";
 
 chai.config.includeStack = true;
 
@@ -11,3 +9,5 @@ chai.config.includeStack = true;
 chai.assert.notProperty = function(obj, prop) {
   chai.assert(!(prop in obj), "Found prop " + prop + " in " + obj + " with value " + obj[prop]);
 };
+
+export default chai;

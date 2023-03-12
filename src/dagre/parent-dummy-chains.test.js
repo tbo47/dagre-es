@@ -1,6 +1,8 @@
-var expect = require("./chai").expect;
-var Graph = require("../lib/graphlib").Graph;
-var parentDummyChains = require("../lib/parent-dummy-chains");
+import { beforeEach, describe, it } from 'vitest'
+import chai from "../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from '../graphlib/index.js';
+import { parentDummyChains } from './parent-dummy-chains.js';
 
 describe("parentDummyChains", function() {
   var g;

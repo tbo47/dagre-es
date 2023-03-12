@@ -1,6 +1,8 @@
-var expect = require("./chai").expect;
-var position = require("../lib/position");
-var Graph = require("../lib/graphlib").Graph;
+import { beforeEach, describe, it } from 'vitest'
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { position } from './index.js';
+import { Graph } from '../../graphlib/index.js';
 
 describe("position", function() {
   var g;

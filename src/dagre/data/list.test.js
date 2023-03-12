@@ -1,5 +1,7 @@
-var expect = require("../chai").expect;
-var List = require("../../lib/data/list");
+import { beforeEach, describe, it } from 'vitest'
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { List } from "./list.js";
 
 describe("data.List", function() {
   var list;

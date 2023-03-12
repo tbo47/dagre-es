@@ -1,7 +1,9 @@
-var _ = require("lodash");
-var expect = require("../chai").expect;
-var Graph = require("../../lib/graphlib").Graph;
-var feasibleTree = require("../../lib/rank/feasible-tree");
+import { describe, it } from 'vitest'
+import * as _ from "lodash-es";
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from '../../graphlib/graph.js';
+import { feasibleTree } from './feasible-tree.js';
 
 describe("feasibleTree", function() {
   it("creates a tree for a trivial input graph", function() {

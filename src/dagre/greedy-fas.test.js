@@ -1,8 +1,10 @@
-var _ = require("lodash");
-var expect = require("./chai").expect;
-var Graph = require("../lib/graphlib").Graph;
-var findCycles = require("../lib/graphlib").alg.findCycles;
-var greedyFAS = require("../lib/greedy-fas");
+import { beforeEach, describe, it } from 'vitest'
+import * as _ from "lodash-es";
+import chai from "../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from '../graphlib/index.js';
+import { findCycles } from "../graphlib/alg/find-cycles.js";
+import { greedyFAS } from './greedy-fas.js';
 
 describe("greedyFAS", function() {
   var g;

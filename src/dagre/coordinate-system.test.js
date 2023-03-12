@@ -1,6 +1,8 @@
-var Graph = require("../lib/graphlib").Graph;
-var coordinateSystem = require("../lib/coordinate-system");
-var expect = require("./chai").expect;
+import { beforeEach, describe, it } from 'vitest'
+import { Graph } from '../graphlib/index.js';
+import * as coordinateSystem from "./coordinate-system.js";
+import chai from "../../test/chai.js";
+const expect = chai.expect;
 
 describe("coordinateSystem", function() {
   var g;

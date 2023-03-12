@@ -1,7 +1,9 @@
-var _ = require("lodash");
-var expect = require("../chai").expect;
-var sortSubgraph = require("../../lib/order/sort-subgraph");
-var Graph = require("../../lib/graphlib").Graph;
+import { beforeEach, describe, it } from 'vitest'
+import * as _ from "lodash-es";
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { sortSubgraph } from './sort-subgraph.js';
+import { Graph } from '../../graphlib/graph.js';
 
 describe("order/sortSubgraph", function() {
   var g, cg;

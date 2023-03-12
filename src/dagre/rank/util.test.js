@@ -1,8 +1,9 @@
-var expect = require("../chai").expect;
-var Graph = require("../../lib/graphlib").Graph;
-var normalizeRanks = require("../../lib/util").normalizeRanks;
-var rankUtil = require("../../lib/rank/util");
-var longestPath = rankUtil.longestPath;
+import { beforeEach, describe, it } from 'vitest'
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from '../../graphlib/graph.js';
+import { normalizeRanks } from '../util.js';
+import { longestPath } from './util.js';
 
 describe("rank/util", function() {
   describe("longestPath", function() {

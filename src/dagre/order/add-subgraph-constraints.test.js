@@ -1,7 +1,9 @@
-var _ = require("lodash");
-var expect = require("../chai").expect;
-var Graph = require("../../lib/graphlib").Graph;
-var addSubgraphConstraints = require("../../lib/order/add-subgraph-constraints");
+import { beforeEach, describe, it } from 'vitest'
+import * as _ from "lodash-es";
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from "../../graphlib/graph.js";
+import { addSubgraphConstraints } from "./add-subgraph-constraints.js";
 
 describe("order/addSubgraphConstraints", function() {
   var g, cg;

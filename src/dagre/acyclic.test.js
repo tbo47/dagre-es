@@ -1,8 +1,11 @@
-var _ = require("lodash");
-var expect = require("./chai").expect;
-var acyclic = require("../lib/acyclic");
-var Graph = require("../lib/graphlib").Graph;
-var findCycles = require("../lib/graphlib").alg.findCycles;
+import { beforeEach, describe, it } from 'vitest'
+import * as _ from "lodash-es";
+import chai from "../../test/chai.js";
+const expect = chai.expect;
+
+import * as acyclic from './acyclic.js';
+import { Graph } from '../graphlib/index.js';
+import { findCycles } from "../graphlib/alg/find-cycles.js";
 
 describe("acyclic", function() {
   var ACYCLICERS = [

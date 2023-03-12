@@ -1,6 +1,8 @@
-var expect = require("./chai").expect;
-var addBorderSegments = require("../lib/add-border-segments");
-var Graph = require("../lib/graphlib").Graph;
+import { beforeEach, describe, it } from 'vitest'
+import chai from "../../test/chai.js";
+const expect = chai.expect;
+import { addBorderSegments } from './add-border-segments.js';
+import { Graph } from '../graphlib/index.js';
 
 describe("addBorderSegments", function() {
   var g;

@@ -1,9 +1,11 @@
 /* eslint "no-console": off */
+import { afterEach, beforeEach, describe, it } from 'vitest'
 
-var _ = require("lodash");
-var expect = require("./chai").expect;
-var Graph = require("../lib/graphlib").Graph;
-var util = require("../lib/util");
+import * as _ from "lodash-es";
+import chai from "../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from '../graphlib/index.js';
+import * as util from "./util.js";
 
 describe("util", function() {
   describe("simplify", function() {

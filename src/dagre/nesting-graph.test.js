@@ -1,7 +1,9 @@
-var expect = require("./chai").expect;
-var Graph = require("../lib/graphlib").Graph;
-var components = require("../lib/graphlib").alg.components;
-var nestingGraph = require("../lib/nesting-graph");
+import { beforeEach, describe, it } from 'vitest'
+import chai from "../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from '../graphlib/index.js';
+import { components } from '../graphlib/alg/components.js';
+import * as nestingGraph from './nesting-graph.js';
 
 describe("rank/nestingGraph", function() {
   var g;

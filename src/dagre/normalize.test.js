@@ -1,7 +1,9 @@
-var _ = require("lodash");
-var expect = require("./chai").expect;
-var normalize = require("../lib/normalize");
-var Graph = require("../lib/graphlib").Graph;
+import { beforeEach, describe, it } from 'vitest'
+import * as _ from "lodash-es";
+import chai from "../../test/chai.js";
+const expect = chai.expect;
+import * as  normalize from './normalize.js';
+import { Graph } from '../graphlib/index.js';
 
 describe("normalize", function() {
   var g;
