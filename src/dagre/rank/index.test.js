@@ -1,4 +1,3 @@
-import { beforeEach, describe, it } from 'vitest';
 import * as _ from 'lodash-es';
 import chai from '../../../test/chai.js';
 const expect = chai.expect;
@@ -37,7 +36,8 @@ describe('rank', function () {
 
       it('can rank a single node graph', function () {
         var g = new Graph().setGraph({}).setNode('a', {});
-        rank(g, ranker);
+        g.graph().ranker = ranker;
+        rank(g);
         expect(g.node('a').rank).to.equal(0);
       });
     });

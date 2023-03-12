@@ -1,4 +1,3 @@
-import { describe, it } from 'vitest';
 import chai from '../../../test/chai.js';
 const expect = chai.expect;
 import { sort } from './sort.js';

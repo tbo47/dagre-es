@@ -1,5 +1,4 @@
 /* eslint "no-console": off */
-import { afterEach, beforeEach, describe, it } from 'vitest';
 
 import * as _ from 'lodash-es';
 import chai from '../../test/chai.js';

@@ -1,4 +1,3 @@
-import { beforeEach, describe, it } from 'vitest';
 import { Graph } from '../graphlib/index.js';
 import * as coordinateSystem from './coordinate-system.js';
 import chai from '../../test/chai.js';

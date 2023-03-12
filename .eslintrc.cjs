@@ -5,7 +5,21 @@ module.exports = {
     node: true,
   },
   extends: ['eslint:recommended', 'plugin:import/recommended'],
-  overrides: [],
+  overrides: [
+    {
+      files: ['**/*.test.js'],
+      env: {
+        // technically, we are using vitest, but that's pretty similar to jest
+        jest: true,
+      },
+      settings: {
+        'import/ignore': [
+          // for some reason, `import {it} from "vitest";` throws an error
+          /node_modules\/vitest\/dist\/index\.js$/.source,
+        ],
+      },
+    },
+  ],
   parserOptions: {
     sourceType: 'module',
   },
@@ -20,12 +34,6 @@ module.exports = {
         jsx: 'never',
         mjs: 'always',
       },
-    ],
-  },
-  settings: {
-    'import/ignore': [
-      // for some reason, `import {it} from "vitest";` throws an error
-      /node_modules\/vitest\/dist\/index\.js$/.source,
     ],
   },
 };
