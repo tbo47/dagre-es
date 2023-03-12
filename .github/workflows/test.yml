@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -23,6 +23,8 @@ jobs:
         run: npm run lint
       - name: Check for prettier errors (run `npm run format` to fix)
         run: npx prettier --check .
+      - name: Run unit tests
+        run: npm test
       - name: Build the npm package to publish
         run: npm pack
       - uses: actions/upload-artifact@v3
