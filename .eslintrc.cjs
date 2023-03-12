@@ -22,4 +22,10 @@ module.exports = {
       },
     ],
   },
+  settings: {
+    'import/ignore': [
+      // for some reason, `import {it} from "vitest";` throws an error
+      /node_modules\/vitest\/dist\/index\.js$/.source,
+    ],
+  },
 };

@@ -1,27 +1,27 @@
-import { beforeEach, describe, it } from 'vitest'
-import chai from "../../../test/chai.js";
+import { beforeEach, describe, it } from 'vitest';
+import chai from '../../../test/chai.js';
 const expect = chai.expect;
-import { List } from "./list.js";
+import { List } from './list.js';
 
-describe("data.List", function() {
+describe('data.List', function () {
   var list;
 
-  beforeEach(function() {
+  beforeEach(function () {
     list = new List();
   });
 
-  describe("dequeue", function() {
-    it("returns undefined with an empty list", function() {
+  describe('dequeue', function () {
+    it('returns undefined with an empty list', function () {
       expect(list.dequeue()).to.be.undefined;
     });
 
-    it("unlinks and returns the first entry", function() {
+    it('unlinks and returns the first entry', function () {
       var obj = {};
       list.enqueue(obj);
       expect(list.dequeue()).to.equal(obj);
     });
 
-    it("unlinks and returns multiple entries in FIFO order", function() {
+    it('unlinks and returns multiple entries in FIFO order', function () {
       var obj1 = {};
       var obj2 = {};
       list.enqueue(obj1);
@@ -31,7 +31,7 @@ describe("data.List", function() {
       expect(list.dequeue()).to.equal(obj2);
     });
 
-    it("unlinks and relinks an entry if it is re-enqueued", function() {
+    it('unlinks and relinks an entry if it is re-enqueued', function () {
       var obj1 = {};
       var obj2 = {};
       list.enqueue(obj1);
@@ -42,7 +42,7 @@ describe("data.List", function() {
       expect(list.dequeue()).to.equal(obj1);
     });
 
-    it("unlinks and relinks an entry if it is enqueued on another list", function() {
+    it('unlinks and relinks an entry if it is enqueued on another list', function () {
       var obj = {};
       var list2 = new List();
       list.enqueue(obj);
@@ -52,11 +52,11 @@ describe("data.List", function() {
       expect(list2.dequeue()).to.equal(obj);
     });
 
-    it("can return a string representation", function() {
+    it('can return a string representation', function () {
       list.enqueue({ entry: 1 });
       list.enqueue({ entry: 2 });
 
-      expect(list.toString()).to.equal("[{\"entry\":1}, {\"entry\":2}]");
+      expect(list.toString()).to.equal('[{"entry":1}, {"entry":2}]');
     });
   });
 });
