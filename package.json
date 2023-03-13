@@ -12,6 +12,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
+    "test": "vitest run",
     "my_1_npm_login": "npm login",
     "my_2_publish": "echo update_package_version ; git clean -xdf ; npm ci ; npm publish",
     "compile_js_as_ts": "tsc src/index.js --AllowJs --checkJs --outDir dist/"
@@ -29,14 +30,17 @@
   },
   "devDependencies": {
     "@types/d3": "^7.4.0",
+    "@types/jest": "^29.4.0",
     "@types/lodash-es": "^4.17.6",
     "eslint": "^8.36.0",
     "eslint-plugin-import": "^2.27.5",
     "prettier": "^2.8.4",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "vitest": "^0.29.2"
   },
   "files": [
-    "src/**/*"
+    "src/**/*",
+    "!src/**/*.test.js"
   ],
   "types": "./src/index.d.ts"
 }
