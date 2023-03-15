@@ -1,6 +1,7 @@
-var expect = require("../chai").expect;
-var Graph = require("../..").Graph;
-var findCycles = require("../..").alg.findCycles;
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from "../graph.js";
+import { findCycles } from "./find-cycles.js";
 
 describe("alg.findCycles", function() {
   it("returns an empty array for an empty graph", function() {

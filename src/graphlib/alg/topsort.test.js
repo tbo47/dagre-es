@@ -1,6 +1,7 @@
-var expect = require("../chai").expect;
-var Graph = require("../..").Graph;
-var topsort = require("../..").alg.topsort;
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from "../graph.js";
+import { topsort } from "./topsort.js";
 
 describe("alg.topsort", function() {
   it("returns an empty array for an empty graph", function() {

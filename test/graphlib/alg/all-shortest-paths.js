@@ -1,9 +1,8 @@
-var expect = require("../chai").expect;
-var Graph = require("../..").Graph;
+import chai from "../../chai.js";
+const expect = chai.expect;
+import { Graph } from "../../../src/graphlib/graph.js";
 
-exports.tests = tests;
-
-function tests(sp) {
+export function allShortestPathsTests(sp) {
   describe("allShortestPaths", function() {
     it("returns 0 for the node itself", function() {
       var g = new Graph();

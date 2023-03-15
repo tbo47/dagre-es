@@ -1,10 +1,11 @@
-var expect = require("../chai").expect;
-var Graph = require("../..").Graph;
-var dijkstraAll = require("../..").alg.dijkstraAll;
-var allShortestPathsTest = require("./all-shortest-paths-test");
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from "../graph.js";
+import { dijkstraAll } from "./dijkstra-all.js";
+import { allShortestPathsTests } from "../../../test/graphlib/alg/all-shortest-paths.js";
 
 describe("alg.dijkstraAll", function() {
-  allShortestPathsTest.tests(dijkstraAll);
+  allShortestPathsTests(dijkstraAll);
 
   it("throws an Error if it encounters a negative edge weight", function() {
     var g = new Graph();

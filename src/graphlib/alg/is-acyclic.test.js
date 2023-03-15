@@ -1,6 +1,7 @@
-var expect = require("../chai").expect;
-var Graph = require("../..").Graph;
-var isAcyclic = require("../..").alg.isAcyclic;
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from "../graph.js";
+import { isAcyclic } from "./is-acyclic.js";
 
 describe("alg.isAcyclic", function() {
   it("returns true if the graph has no cycles", function() {

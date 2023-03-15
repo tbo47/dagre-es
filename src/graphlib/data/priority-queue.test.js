@@ -1,5 +1,6 @@
-var expect = require("../chai").expect;
-var PriorityQueue = require("../../lib/data/priority-queue");
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { PriorityQueue } from "./priority-queue.js";
 
 describe("data.PriorityQueue", function() {
   var pq;

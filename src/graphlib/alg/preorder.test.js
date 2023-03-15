@@ -1,6 +1,7 @@
-var expect = require("../chai").expect;
-var Graph = require("../..").Graph;
-var preorder = require("../..").alg.preorder;
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from "../graph.js";
+import { preorder } from "./preorder.js";
 
 describe("alg.preorder", function() {
   it("returns the root for a singleton graph", function() {

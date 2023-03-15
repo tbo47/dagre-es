@@ -1,5 +1,6 @@
-var expect = require("./chai").expect;
-var Graph = require("..").Graph;
+import chai from '../../test/chai.js';
+const expect = chai.expect;
+import { Graph } from './graph.js';
 
 describe("Graph", function() {
   var g;

@@ -1,10 +1,11 @@
-var expect = require("../chai").expect;
-var Graph = require("../..").Graph;
-var floydWarshall = require("../..").alg.floydWarshall;
-var allShortestPathsTest = require("./all-shortest-paths-test");
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from "../graph.js";
+import { floydWarshall } from "./floyd-warshall.js";
+import { allShortestPathsTests } from "../../../test/graphlib/alg/all-shortest-paths.js";
 
 describe("alg.floydWarshall", function() {
-  allShortestPathsTest.tests(floydWarshall);
+  allShortestPathsTests(floydWarshall);
 
   it("handles negative weights", function() {
     var g = new Graph();

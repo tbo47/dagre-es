@@ -1,6 +1,7 @@
-var expect = require("../chai").expect;
-var Graph = require("../..").Graph;
-var components = require("../..").alg.components;
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from "../graph.js";
+import { components } from "./components.js";
 
 describe("alg.components", function() {
   it("returns an empty list for an empty graph", function() {

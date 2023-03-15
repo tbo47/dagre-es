@@ -1,6 +1,7 @@
-var expect = require("../chai").expect;
-var Graph = require("../..").Graph;
-var tarjan = require("../..").alg.tarjan;
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from "../graph.js";
+import { tarjan } from "./tarjan.js";
 
 describe("alg.tarjan", function() {
   it("returns an empty array for an empty graph", function() {

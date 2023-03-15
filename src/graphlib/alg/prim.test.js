@@ -1,6 +1,7 @@
-var expect = require("../chai").expect;
-var Graph = require("../..").Graph;
-var prim = require("../..").alg.prim;
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from "../graph.js";
+import { prim } from "./prim.js";
 
 describe("alg.prim", function() {
   it("returns an empty graph for an empty input", function() {

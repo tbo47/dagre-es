@@ -1,6 +1,7 @@
-var expect = require("../chai").expect;
-var Graph = require("../..").Graph;
-var postorder = require("../..").alg.postorder;
+import chai from "../../../test/chai.js";
+const expect = chai.expect;
+import { Graph } from "../graph.js";
+import { postorder } from "./postorder.js";
 
 describe("alg.postorder", function() {
   it("returns the root for a singleton graph", function() {
