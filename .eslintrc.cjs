@@ -7,7 +7,7 @@ module.exports = {
   extends: ['eslint:recommended', 'plugin:import/recommended'],
   overrides: [
     {
-      files: ['**/*.test.js'],
+      files: ['**/*.test.js', 'test/**/*.js'],
       env: {
         // technically, we are using vitest, but that's pretty similar to jest
         jest: true,
