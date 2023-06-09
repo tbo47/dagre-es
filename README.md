@@ -16,6 +16,10 @@ It uses [ES](https://262.ecma-international.org/6.0/) modules, thus the name [da
 
 [dagre-d3-es](https://www.npmjs.com/package/dagre-d3-es) follows [d3](https://www.npmjs.com/package/d3) versions. Ex: dagre-d3-es version 7 depends on [d3](https://www.npmjs.com/package/d3) version 7.
 
+## Sponsors
+
+You can sponsor this library at [GitHub Sponsors](https://github.com/sponsors/tbo47).
+
 ## Demos
 
 [Simple graph demo](https://codesandbox.io/s/dagre-d3-es-tree-9ywg9) using react, dagre-d3-es, [d3](https://www.npmjs.com/package/d3) version 7.2.
