@@ -13,7 +13,7 @@ export { greedyFAS };
 
 var DEFAULT_WEIGHT_FN = _.constant(1);
 
-function greedyFAS(g, weightFn) {
+function greedyFAS(g, weightFn?) {
   if (g.nodeCount() <= 1) {
     return [];
   }
@@ -55,7 +55,7 @@ function doGreedyFAS(g, buckets, zeroIdx) {
   return results;
 }
 
-function removeNode(g, buckets, zeroIdx, entry, collectPredecessors) {
+function removeNode(g, buckets, zeroIdx, entry, collectPredecessors?) {
   var results = collectPredecessors ? [] : undefined;
 
   _.forEach(g.inEdges(entry.v), function (edge) {

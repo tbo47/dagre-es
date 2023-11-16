@@ -1,19 +1,19 @@
 import * as _ from 'lodash-es';
 import { Graph } from '../graphlib/index.js';
+import * as acyclic from './acyclic.js';
 import { addBorderSegments } from './add-border-segments.js';
 import * as coordinateSystem from './coordinate-system.js';
-import * as acyclic from './acyclic.js';
-import * as normalize from './normalize.js';
-import { rank } from './rank/index.js';
 import * as nestingGraph from './nesting-graph.js';
+import * as normalize from './normalize.js';
 import { order } from './order/index.js';
 import { parentDummyChains } from './parent-dummy-chains.js';
 import { position } from './position/index.js';
+import { rank } from './rank/index.js';
 import * as util from './util.js';
 
 export { layout };
 
-function layout(g, opts) {
+function layout(g, opts?) {
   var time = opts && opts.debugTiming ? util.time : util.notime;
   time('layout', function () {
     var layoutGraph = time('  buildLayoutGraph', function () {

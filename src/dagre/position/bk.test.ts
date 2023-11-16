@@ -317,7 +317,7 @@ describe('position/bk', function () {
       var align = { a: 'a' };
       g.setNode('a', { rank: 0, order: 0 });
 
-      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align);
+      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align) as any;
       expect(xs.a).to.equal(0);
     });
 
@@ -328,7 +328,7 @@ describe('position/bk', function () {
       g.setNode('a', { rank: 0, order: 0, width: 100 });
       g.setNode('b', { rank: 0, order: 1, width: 200 });
 
-      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align);
+      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align) as any;
       expect(xs.a).to.equal(0);
       expect(xs.b).to.equal(100 / 2 + 100 + 200 / 2);
     });
@@ -340,7 +340,7 @@ describe('position/bk', function () {
       g.setNode('a', { rank: 0, order: 0, width: 100, dummy: true });
       g.setNode('b', { rank: 0, order: 1, width: 200, dummy: true });
 
-      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align);
+      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align) as any;
       expect(xs.a).to.equal(0);
       expect(xs.b).to.equal(100 / 2 + 20 + 200 / 2);
     });
@@ -351,7 +351,7 @@ describe('position/bk', function () {
       g.setNode('a', { rank: 0, order: 0, width: 100 });
       g.setNode('b', { rank: 1, order: 0, width: 200 });
 
-      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align);
+      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align) as any;
       expect(xs.a).to.equal(0);
       expect(xs.b).to.equal(0);
     });
@@ -364,7 +364,7 @@ describe('position/bk', function () {
       g.setNode('b', { rank: 1, order: 1, width: 200 });
       g.setNode('c', { rank: 1, order: 0, width: 50 });
 
-      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align);
+      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align) as any;
       expect(xs.a).to.equal(50 / 2 + 75 + 200 / 2);
       expect(xs.b).to.equal(50 / 2 + 75 + 200 / 2);
       expect(xs.c).to.equal(0);
@@ -379,7 +379,7 @@ describe('position/bk', function () {
       g.setNode('c', { rank: 1, order: 0, width: 50 });
       g.setNode('d', { rank: 1, order: 1, width: 80 });
 
-      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align);
+      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align) as any;
       expect(xs.a).to.equal(0);
       expect(xs.b).to.equal(100 / 2 + 75 + 200 / 2);
       expect(xs.c).to.equal(100 / 2 + 75 + 200 / 2 - 80 / 2 - 75 - 50 / 2);
@@ -395,7 +395,7 @@ describe('position/bk', function () {
       g.setNode('c', { rank: 1, order: 0, width: 60 });
       g.setNode('d', { rank: 1, order: 1, width: 70 });
 
-      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align);
+      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align) as any;
       expect(xs.a).to.equal(0);
       expect(xs.b).to.equal(50 / 2 + 75 + 150 / 2);
       expect(xs.c).to.equal(0);
@@ -411,7 +411,7 @@ describe('position/bk', function () {
       g.setNode('c', { rank: 1, order: 0, width: 60 });
       g.setNode('d', { rank: 1, order: 1, width: 150 });
 
-      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align);
+      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align) as any;
       expect(xs.a).to.equal(0);
       expect(xs.b).to.equal(60 / 2 + 75 + 150 / 2);
       expect(xs.c).to.equal(0);
@@ -430,7 +430,7 @@ describe('position/bk', function () {
       g.setNode('f', { rank: 2, order: 0, width: 50 });
       g.setNode('g', { rank: 2, order: 1, width: 50 });
 
-      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align);
+      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align) as any;
 
       // Use f as 0, everything is relative to it
       expect(xs.a).to.equal(xs.b - 50 / 2 - 75 - 50 / 2);
@@ -455,7 +455,7 @@ describe('position/bk', function () {
       });
       g.setNode('c', { rank: 0, order: 2, width: 300, dummy: 'edge' });
 
-      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align);
+      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align) as any;
       expect(xs.a).to.equal(0);
       expect(xs.b).to.equal(xs.a + 100 / 2 + 50 + 200);
       expect(xs.c).to.equal(xs.b + 0 + 50 + 300 / 2);
@@ -475,7 +475,7 @@ describe('position/bk', function () {
       });
       g.setNode('c', { rank: 0, order: 2, width: 300, dummy: 'edge' });
 
-      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align);
+      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align) as any;
       expect(xs.a).to.equal(0);
       expect(xs.b).to.equal(xs.a + 100 / 2 + 50 + 200 / 2);
       expect(xs.c).to.equal(xs.b + 200 / 2 + 50 + 300 / 2);
@@ -495,7 +495,7 @@ describe('position/bk', function () {
       });
       g.setNode('c', { rank: 0, order: 2, width: 300, dummy: 'edge' });
 
-      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align);
+      var xs = horizontalCompaction(g, buildLayerMatrix(g), root, align) as any;
       expect(xs.a).to.equal(0);
       expect(xs.b).to.equal(xs.a + 100 / 2 + 50 + 0);
       expect(xs.c).to.equal(xs.b + 200 + 50 + 300 / 2);

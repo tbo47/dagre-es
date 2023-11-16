@@ -3,7 +3,7 @@ import { dijkstra } from './dijkstra.js';
 
 export { dijkstraAll };
 
-function dijkstraAll(g, weightFunc, edgeFunc) {
+function dijkstraAll(g, weightFunc, edgeFunc?) {
   return _.transform(
     g.nodes(),
     function (acc, v) {

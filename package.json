@@ -1,18 +1,20 @@
 {
   "name": "dagre-d3-es",
-  "version": "7.0.11",
+  "version": "7.1.11",
   "description": "",
   "author": "Thibaut Lassalle",
   "license": "MIT",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "generate_types": "tsc --build --clean && tsc --build && prettier --write .",
-    "prepack": "npm run generate_types",
+    "dev": "tsc --watch",
+    "prepublishOnly": "rm -rf dist dist_tmp; mkdir dist; tsc --build tsconfig.json --declaration && mv dist_tmp/src/* dist && rm -rf dist_tmp",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
     "test": "vitest run",
+    "move_to_typescript": "rename \"s/js$/ts/\" **/*.js",
+    "move_to_javascript": "rename \"s/ts$/js/\" **/*.ts",
     "my_1_npm_login": "npm login",
     "my_2_publish": "echo update_package_version ; git clean -xdf ; npm ci ; npm publish",
     "compile_js_as_ts": "tsc src/index.js --AllowJs --checkJs --outDir dist/"
@@ -22,25 +24,24 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/tbo47/dagre-es"
+    "url": "git+https://github.com/tbo47/dagre-es.git"
   },
   "dependencies": {
-    "d3": "^7.8.2",
+    "d3": "^7.8.5",
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {
-    "@types/d3": "^7.4.0",
-    "@types/jest": "^29.4.0",
-    "@types/lodash-es": "^4.17.6",
-    "eslint": "^8.36.0",
-    "eslint-plugin-import": "^2.27.5",
-    "prettier": "^2.8.4",
-    "typescript": "^4.9.5",
-    "vitest": "^0.29.2"
+    "@types/d3": "^7.4.3",
+    "@types/jest": "^29.5.8",
+    "@types/lodash-es": "^4.17.11",
+    "eslint": "^8.53.0",
+    "eslint-plugin-import": "^2.29.0",
+    "prettier": "^3.1.0",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
   },
   "files": [
-    "src/**/*",
-    "!src/**/*.test.js"
+    "dist/**/*"
   ],
-  "types": "./src/index.d.ts"
+  "types": "dist/index.d.ts"
 }

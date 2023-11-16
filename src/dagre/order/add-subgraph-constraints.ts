@@ -1,8 +1,6 @@
 import * as _ from 'lodash-es';
 
-export { addSubgraphConstraints };
-
-function addSubgraphConstraints(g, cg, vs) {
+export const addSubgraphConstraints = (g, cg, vs) => {
   var prev = {},
     rootPrev;
 

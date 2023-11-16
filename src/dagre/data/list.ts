@@ -1,13 +1,15 @@
+export interface Sentinel {
+  _next?: any;
+  _prev?: any;
+}
 /*
  * Simple doubly linked list implementation derived from Cormen, et al.,
  * "Introduction to Algorithms".
  */
-
-export { List };
-
-class List {
+export class List {
+  _sentinel: Sentinel;
   constructor() {
-    var sentinel = {};
+    var sentinel = {} as Sentinel;
     sentinel._next = sentinel._prev = sentinel;
     this._sentinel = sentinel;
   }

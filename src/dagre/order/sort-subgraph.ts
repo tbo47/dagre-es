@@ -5,7 +5,7 @@ import { sort } from './sort.js';
 
 export { sortSubgraph };
 
-function sortSubgraph(g, v, cg, biasRight) {
+function sortSubgraph(g, v, cg, biasRight?) {
   var movable = g.children(v);
   var node = g.node(v);
   var bl = node ? node.borderLeft : undefined;
@@ -32,7 +32,7 @@ function sortSubgraph(g, v, cg, biasRight) {
   var entries = resolveConflicts(barycenters, cg);
   expandSubgraphs(entries, subgraphs);
 
-  var result = sort(entries, biasRight);
+  var result = sort(entries, biasRight) as any;
 
   if (bl) {
     result.vs = _.flatten([bl, result.vs, br]);
