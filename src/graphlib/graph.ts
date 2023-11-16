@@ -39,8 +39,8 @@ export class Graph {
   _sucs: {};
   _edgeObjs: {};
   _edgeLabels: {};
-  _nodeCount: any;
-  _edgeCount: any;
+  _nodeCount = 0;
+  _edgeCount = 0;
   constructor(opts = {} as { directed?: boolean, multigraph?: boolean, compound?: boolean }) {
     this._isDirected = _.has(opts, 'directed') ? opts.directed : true;
     this._isMultigraph = _.has(opts, 'multigraph') ? opts.multigraph : false;

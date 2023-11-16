@@ -1,6 +1,6 @@
 export interface Sentinel {
-  _next?: any;
-  _prev?: any;
+  _next?: Sentinel;
+  _prev?: Sentinel;
 }
 /*
  * Simple doubly linked list implementation derived from Cormen, et al.,
