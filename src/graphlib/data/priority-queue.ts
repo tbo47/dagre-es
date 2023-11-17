@@ -101,12 +101,12 @@ class PriorityQueue {
     if (priority > this._arr[index].priority) {
       throw new Error(
         'New priority is greater than current priority. ' +
-        'Key: ' +
-        key +
-        ' Old: ' +
-        this._arr[index].priority +
-        ' New: ' +
-        priority
+          'Key: ' +
+          key +
+          ' Old: ' +
+          this._arr[index].priority +
+          ' New: ' +
+          priority,
       );
     }
     this._arr[index].priority = priority;

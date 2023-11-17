@@ -139,7 +139,7 @@ describe('Graph', function () {
           .filterNodes(function () {
             return true;
           })
-          .isDirected()
+          .isDirected(),
       ).to.be.true;
 
       g = new Graph({ directed: false });
@@ -148,7 +148,7 @@ describe('Graph', function () {
           .filterNodes(function () {
             return true;
           })
-          .isDirected()
+          .isDirected(),
       ).to.be.false;
     });
 
@@ -159,7 +159,7 @@ describe('Graph', function () {
           .filterNodes(function () {
             return true;
           })
-          .isMultigraph()
+          .isMultigraph(),
       ).to.be.true;
 
       g = new Graph({ multigraph: false });
@@ -168,7 +168,7 @@ describe('Graph', function () {
           .filterNodes(function () {
             return true;
           })
-          .isMultigraph()
+          .isMultigraph(),
       ).to.be.false;
     });
 
@@ -179,7 +179,7 @@ describe('Graph', function () {
           .filterNodes(function () {
             return true;
           })
-          .isCompound()
+          .isCompound(),
       ).to.be.true;
 
       g = new Graph({ compound: false });
@@ -188,7 +188,7 @@ describe('Graph', function () {
           .filterNodes(function () {
             return true;
           })
-          .isCompound()
+          .isCompound(),
       ).to.be.false;
     });
 

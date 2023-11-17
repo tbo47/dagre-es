@@ -152,7 +152,7 @@ function normalizeRanks(g) {
   const min = _.min(
     _.map(g.nodes(), function (v) {
       return g.node(v).rank;
-    })
+    }),
   );
   _.forEach(g.nodes(), function (v) {
     const node = g.node(v);
@@ -167,7 +167,7 @@ function removeEmptyRanks(g) {
   const offset = _.min(
     _.map(g.nodes(), function (v) {
       return g.node(v).rank;
-    })
+    }),
   );
 
   const layers = [];
@@ -211,7 +211,7 @@ function maxRank(g) {
       if (!_.isUndefined(rank)) {
         return rank;
       }
-    })
+    }),
   );
 }
 

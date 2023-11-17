@@ -207,8 +207,8 @@ function updateRanks(t, g) {
   let vs = alg.preorder(t, root);
   vs = vs.slice(1);
   _.forEach(vs, function (v) {
-    let parent = t.node(v).parent,
-      edge = g.edge(v, parent),
+    const parent = t.node(v).parent;
+    let edge = g.edge(v, parent),
       flipped = false;
 
     if (!edge) {

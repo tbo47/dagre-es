@@ -21,7 +21,7 @@ function initOrder(g) {
   const maxRank = _.max(
     _.map(simpleNodes, function (v) {
       return g.node(v).rank;
-    })
+    }),
   );
   const layers = _.map(_.range(maxRank + 1), function () {
     return [];

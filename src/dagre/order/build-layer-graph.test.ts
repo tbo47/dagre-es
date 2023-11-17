@@ -17,8 +17,7 @@ describe('order/buildLayerGraph', function () {
     g.setNode('c', { rank: 2 });
     g.setNode('d', { rank: 3 });
 
-    let lg;
-    lg = buildLayerGraph(g, 1, 'inEdges');
+    const lg = buildLayerGraph(g, 1, 'inEdges');
     expect(lg.hasNode(lg.graph().root));
     expect(lg.children()).eqls([lg.graph().root]);
     expect(lg.children(lg.graph().root)).eqls(['a', 'b']);

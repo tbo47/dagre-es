@@ -242,8 +242,8 @@ describe('network simplex', function () {
         _.sortBy(
           _.map(g.nodes(), function (v) {
             return g.node(v).lim;
-          })
-        )
+          }),
+        ),
       ).to.eql(_.range(1, 6));
 
       expect(a).to.eql({ low: 1, lim: 5 });
@@ -286,7 +286,7 @@ describe('network simplex', function () {
       const lims = _.sortBy(
         _.map(t.nodes(), function (v) {
           return t.node(v).lim;
-        })
+        }),
       );
       expect(lims).to.eql(_.range(1, 9));
     });

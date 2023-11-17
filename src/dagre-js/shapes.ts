@@ -5,7 +5,7 @@ import { intersectRect } from './intersect/intersect-rect.js';
 
 export { shapes, setShapes };
 
-var shapes = {
+let shapes = {
   rect,
   ellipse,
   circle,
@@ -83,7 +83,7 @@ function diamond(parent, bbox, node) {
       .map(function (p) {
         return p.x + ',' + p.y;
       })
-      .join(' ')
+      .join(' '),
   );
 
   node.intersect = function (p) {

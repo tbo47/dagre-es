@@ -36,7 +36,7 @@ function longestPath(g) {
     let rank = _.min(
       _.map(g.outEdges(v), function (e) {
         return dfs(e.w) - g.edge(e).minlen;
-      })
+      }),
     );
 
     if (

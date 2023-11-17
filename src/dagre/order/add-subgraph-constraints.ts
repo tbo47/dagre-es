@@ -48,4 +48,4 @@ export const addSubgraphConstraints = (g, cg, vs) => {
   }
   dfs(undefined);
   */
-}
+};

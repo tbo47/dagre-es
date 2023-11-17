@@ -2,7 +2,7 @@ import * as util from './util.js';
 
 export { arrows, setArrows };
 
-var arrows = {
+let arrows = {
   normal,
   vee,
   undirected,

@@ -299,6 +299,6 @@ function extractCoordinates(g) {
     nodes,
     _.map(nodes, function (v) {
       return _.pick(g.node(v), ['x', 'y']);
-    })
+    }),
   );
 }

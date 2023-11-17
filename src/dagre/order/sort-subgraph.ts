@@ -60,7 +60,7 @@ function expandSubgraphs(entries, subgraphs) {
           return subgraphs[v].vs;
         }
         return v;
-      })
+      }),
     );
   });
 }

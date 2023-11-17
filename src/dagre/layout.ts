@@ -176,7 +176,7 @@ function buildLayoutGraph(inputGraph) {
   const graph = canonicalize(inputGraph.graph());
 
   g.setGraph(
-    _.merge({}, graphDefaults, selectNumberAttrs(graph, graphNumAttrs), _.pick(graph, graphAttrs))
+    _.merge({}, graphDefaults, selectNumberAttrs(graph, graphNumAttrs), _.pick(graph, graphAttrs)),
   );
 
   _.forEach(inputGraph.nodes(), function (v) {
@@ -189,7 +189,7 @@ function buildLayoutGraph(inputGraph) {
     const edge = canonicalize(inputGraph.edge(e));
     g.setEdge(
       e,
-      _.merge({}, edgeDefaults, selectNumberAttrs(edge, edgeNumAttrs), _.pick(edge, edgeAttrs))
+      _.merge({}, edgeDefaults, selectNumberAttrs(edge, edgeNumAttrs), _.pick(edge, edgeAttrs)),
     );
   });
 
@@ -421,7 +421,7 @@ function insertSelfEdges(g) {
             e: selfEdge.e,
             label: selfEdge.label,
           },
-          '_se'
+          '_se',
         );
       });
       delete node.selfEdges;

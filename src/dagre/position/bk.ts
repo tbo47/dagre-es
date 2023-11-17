@@ -310,13 +310,12 @@ function alignCoordinates(xss, alignTo) {
 
   _.forEach(['u', 'd'], function (vert) {
     _.forEach(['l', 'r'], function (horiz) {
-      let alignment = vert + horiz,
-        xs = xss[alignment],
-        delta;
+      const alignment = vert + horiz,
+        xs = xss[alignment];
       if (xs === alignTo) return;
 
       const xsVals = _.values(xs);
-      delta = horiz === 'l' ? alignToMin - _.min(xsVals) : alignToMax - _.max(xsVals);
+      const delta = horiz === 'l' ? alignToMin - _.min(xsVals) : alignToMax - _.max(xsVals);
 
       if (delta) {
         xss[alignment] = _.mapValues(xs, function (x) {

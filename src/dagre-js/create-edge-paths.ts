@@ -16,7 +16,8 @@ var createEdgePaths = function (selection, g, arrows) {
   const newPaths = enter(previousPaths, g);
   exit(previousPaths, g);
 
-  const svgPaths = previousPaths.merge !== undefined ? previousPaths.merge(newPaths) : previousPaths;
+  const svgPaths =
+    previousPaths.merge !== undefined ? previousPaths.merge(newPaths) : previousPaths;
   util.applyTransition(svgPaths, g).style('opacity', 1);
 
   // Save DOM element in the path group, and set ID and class
@@ -32,7 +33,7 @@ var createEdgePaths = function (selection, g, arrows) {
     util.applyClass(
       domEdge,
       edge['class'],
-      (domEdge.classed('update') ? 'update ' : '') + 'edgePath'
+      (domEdge.classed('update') ? 'update ' : '') + 'edgePath',
     );
   });
 

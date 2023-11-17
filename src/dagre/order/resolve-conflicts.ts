@@ -102,7 +102,7 @@ function doResolveConflicts(sourceSet) {
     }),
     function (entry) {
       return _.pick(entry, ['vs', 'i', 'barycenter', 'weight']);
-    }
+    },
   );
 }
 

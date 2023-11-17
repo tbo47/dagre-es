@@ -29,7 +29,7 @@ function intersectPolygon(node, polyPoints, point) {
       node,
       point,
       { x: left + p1.x, y: top + p1.y },
-      { x: left + p2.x, y: top + p2.y }
+      { x: left + p2.x, y: top + p2.y },
     );
     if (intersect) {
       intersections.push(intersect);

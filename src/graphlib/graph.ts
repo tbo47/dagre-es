@@ -296,7 +296,7 @@ export class Graph {
       }
     });
 
-    _.each(this._edgeObjs, function (e: { v: string, w: string }) {
+    _.each(this._edgeObjs, function (e: { v: string; w: string }) {
       if (copy.hasNode(e.v) && copy.hasNode(e.w)) {
         copy.setEdge(e, self.edge(e));
       }
@@ -515,7 +515,7 @@ function edgeArgsToObj(isDirected, v_, w_, name) {
     v = w;
     w = tmp;
   }
-  const edgeObj = { v, w } as { v: string, w: string, name?: string };
+  const edgeObj = { v, w } as { v: string; w: string; name?: string };
   if (name) {
     edgeObj.name = name;
   }

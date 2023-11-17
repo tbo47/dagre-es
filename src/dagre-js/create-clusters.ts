@@ -4,7 +4,7 @@ import * as util from './util.js';
 
 export { createClusters, setCreateClusters };
 
-var createClusters = function (selection, g) {
+let createClusters = function (selection, g) {
   const clusters = g.nodes().filter(function (v) {
     return util.isSubgraph(g, v);
   });

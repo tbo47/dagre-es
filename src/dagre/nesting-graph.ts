@@ -120,7 +120,7 @@ function sumWeights(g) {
     function (acc, e) {
       return acc + g.edge(e).weight;
     },
-    0
+    0,
   );
 }
 
