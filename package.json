@@ -13,6 +13,7 @@
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
     "test": "vitest run",
+    "my_1_npm_login": "npm login",
     "my_2_publish": "echo update_package_version ; git clean -xdf ; npm ci ; npm publish",
     "compile_js_as_ts": "tsc src/index.js --AllowJs --checkJs --outDir dist/"
   },
