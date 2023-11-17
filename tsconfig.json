@@ -3,6 +3,7 @@
     "target": "ES6",
     "outDir": "dist_tmp/",
     "types": [],
+    "module": "node16",
   },
   "exclude": [
     "src/**/*.test.ts",
