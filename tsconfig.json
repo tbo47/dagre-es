@@ -3,11 +3,17 @@
     "target": "ES6",
     "rootDir": "./",
     "outDir": "dist_tmp/",
-    "lib": ["dom", "dom.iterable", "es2020"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es2020"
+    ],
     "types": [
       "@types/jest"
     ],
-    "module": "node16",
-    "skipLibCheck": true
-  }
+    "module": "node16"
+  },
+  "exclude": [
+    "src/**/*.test.ts"
+  ]
 }
