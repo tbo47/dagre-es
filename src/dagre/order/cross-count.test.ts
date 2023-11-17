@@ -4,7 +4,7 @@ import { Graph } from '../../graphlib/graph.js';
 import { crossCount } from './cross-count.js';
 
 describe('crossCount', function () {
-  var g;
+  let g;
 
   beforeEach(function () {
     g = new Graph().setDefaultEdgeLabel(function () {

@@ -22,7 +22,7 @@ export {
  * Adds a dummy node to the graph and return v.
  */
 function addDummyNode(g, type, attrs, name) {
-  var v;
+  let v;
   do {
     v = _.uniqueId(name);
   } while (g.hasNode(v));
@@ -37,13 +37,13 @@ function addDummyNode(g, type, attrs, name) {
  * associated with multi-edges.
  */
 function simplify(g) {
-  var simplified = new Graph().setGraph(g.graph());
+  const simplified = new Graph().setGraph(g.graph());
   _.forEach(g.nodes(), function (v) {
     simplified.setNode(v, g.node(v));
   });
   _.forEach(g.edges(), function (e) {
-    var simpleLabel = simplified.edge(e.v, e.w) || { weight: 0, minlen: 1 };
-    var label = g.edge(e);
+    const simpleLabel = simplified.edge(e.v, e.w) || { weight: 0, minlen: 1 };
+    const label = g.edge(e);
     simplified.setEdge(e.v, e.w, {
       weight: simpleLabel.weight + label.weight,
       minlen: Math.max(simpleLabel.minlen, label.minlen),
@@ -53,7 +53,7 @@ function simplify(g) {
 }
 
 function asNonCompoundGraph(g) {
-  var simplified = new Graph({ multigraph: g.isMultigraph() }).setGraph(g.graph());
+  const simplified = new Graph({ multigraph: g.isMultigraph() }).setGraph(g.graph());
   _.forEach(g.nodes(), function (v) {
     if (!g.children(v).length) {
       simplified.setNode(v, g.node(v));
@@ -66,8 +66,8 @@ function asNonCompoundGraph(g) {
 }
 
 function successorWeights(g) {
-  var weightMap = _.map(g.nodes(), function (v) {
-    var sucs = {};
+  const weightMap = _.map(g.nodes(), function (v) {
+    const sucs = {};
     _.forEach(g.outEdges(v), function (e) {
       sucs[e.w] = (sucs[e.w] || 0) + g.edge(e).weight;
     });
@@ -77,8 +77,8 @@ function successorWeights(g) {
 }
 
 function predecessorWeights(g) {
-  var weightMap = _.map(g.nodes(), function (v) {
-    var preds = {};
+  const weightMap = _.map(g.nodes(), function (v) {
+    const preds = {};
     _.forEach(g.inEdges(v), function (e) {
       preds[e.v] = (preds[e.v] || 0) + g.edge(e).weight;
     });
@@ -92,21 +92,21 @@ function predecessorWeights(g) {
  * ({x, y, width, height}) if it were pointing at the rectangle's center.
  */
 function intersectRect(rect, point) {
-  var x = rect.x;
-  var y = rect.y;
+  const x = rect.x;
+  const y = rect.y;
 
   // Rectangle intersection algorithm from:
   // http://math.stackexchange.com/questions/108113/find-edge-between-two-boxes
-  var dx = point.x - x;
-  var dy = point.y - y;
-  var w = rect.width / 2;
-  var h = rect.height / 2;
+  const dx = point.x - x;
+  const dy = point.y - y;
+  let w = rect.width / 2;
+  let h = rect.height / 2;
 
   if (!dx && !dy) {
     throw new Error('Not possible to find intersection inside of the rectangle');
   }
 
-  var sx, sy;
+  let sx, sy;
   if (Math.abs(dy) * w > Math.abs(dx) * h) {
     // Intersection is top or bottom of rect.
     if (dy < 0) {
@@ -131,12 +131,12 @@ function intersectRect(rect, point) {
  * function will produce a matrix with the ids of each node.
  */
 function buildLayerMatrix(g) {
-  var layering = _.map(_.range(maxRank(g) + 1), function () {
+  const layering = _.map(_.range(maxRank(g) + 1), function () {
     return [];
   });
   _.forEach(g.nodes(), function (v) {
-    var node = g.node(v);
-    var rank = node.rank;
+    const node = g.node(v);
+    const rank = node.rank;
     if (!_.isUndefined(rank)) {
       layering[rank][node.order] = v;
     }
@@ -149,13 +149,13 @@ function buildLayerMatrix(g) {
  * rank(v) >= 0 and at least one node w has rank(w) = 0.
  */
 function normalizeRanks(g) {
-  var min = _.min(
+  const min = _.min(
     _.map(g.nodes(), function (v) {
       return g.node(v).rank;
     })
   );
   _.forEach(g.nodes(), function (v) {
-    var node = g.node(v);
+    const node = g.node(v);
     if (_.has(node, 'rank')) {
       node.rank -= min;
     }
@@ -164,23 +164,23 @@ function normalizeRanks(g) {
 
 function removeEmptyRanks(g) {
   // Ranks may not start at 0, so we need to offset them
-  var offset = _.min(
+  const offset = _.min(
     _.map(g.nodes(), function (v) {
       return g.node(v).rank;
     })
   );
 
-  var layers = [];
+  const layers = [];
   _.forEach(g.nodes(), function (v) {
-    var rank = g.node(v).rank - offset;
+    const rank = g.node(v).rank - offset;
     if (!layers[rank]) {
       layers[rank] = [];
     }
     layers[rank].push(v);
   });
 
-  var delta = 0;
-  var nodeRankFactor = g.graph().nodeRankFactor;
+  let delta = 0;
+  const nodeRankFactor = g.graph().nodeRankFactor;
   _.forEach(layers, function (vs, i) {
     if (_.isUndefined(vs) && i % nodeRankFactor !== 0) {
       --delta;
@@ -193,7 +193,7 @@ function removeEmptyRanks(g) {
 }
 
 function addBorderNode(g, prefix, rank?, order?) {
-  var node = {
+  const node = {
     width: 0,
     height: 0,
   } as { width: number; height: number; rank?: number; order?: number };
@@ -207,7 +207,7 @@ function addBorderNode(g, prefix, rank?, order?) {
 function maxRank(g) {
   return _.max(
     _.map(g.nodes(), function (v) {
-      var rank = g.node(v).rank;
+      const rank = g.node(v).rank;
       if (!_.isUndefined(rank)) {
         return rank;
       }
@@ -221,7 +221,7 @@ function maxRank(g) {
  * into `rhs.
  */
 function partition(collection, fn) {
-  var result = { lhs: [], rhs: [] };
+  const result = { lhs: [], rhs: [] };
   _.forEach(collection, function (value) {
     if (fn(value)) {
       result.lhs.push(value);
@@ -237,7 +237,7 @@ function partition(collection, fn) {
  * time it takes to execute the function.
  */
 function time(name, fn) {
-  var start = _.now();
+  const start = _.now();
   try {
     return fn();
   } finally {

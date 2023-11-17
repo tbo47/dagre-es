@@ -5,16 +5,16 @@ import { Graph } from '../graph.js';
 export { prim };
 
 function prim(g, weightFunc) {
-  var result = new Graph();
-  var parents = {};
-  var pq = new PriorityQueue();
-  var v;
+  const result = new Graph();
+  const parents = {};
+  const pq = new PriorityQueue();
+  let v;
 
   function updateNeighbors(edge) {
-    var w = edge.v === v ? edge.w : edge.v;
-    var pri = pq.priority(w);
+    const w = edge.v === v ? edge.w : edge.v;
+    const pri = pq.priority(w);
     if (pri !== undefined) {
-      var edgeWeight = weightFunc(edge);
+      const edgeWeight = weightFunc(edge);
       if (edgeWeight < pri) {
         parents[w] = v;
         pq.decrease(w, edgeWeight);
@@ -34,7 +34,7 @@ function prim(g, weightFunc) {
   // Start from an arbitrary node
   pq.decrease(g.nodes()[0], 0);
 
-  var init = false;
+  let init = false;
   while (pq.size() > 0) {
     v = pq.removeMin();
     if (_.has(parents, v)) {

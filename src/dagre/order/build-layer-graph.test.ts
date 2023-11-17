@@ -5,7 +5,7 @@ import { Graph } from '../../graphlib/graph.js';
 import { buildLayerGraph } from './build-layer-graph.js';
 
 describe('order/buildLayerGraph', function () {
-  var g;
+  let g;
 
   beforeEach(function () {
     g = new Graph({ compound: true, multigraph: true });
@@ -17,7 +17,7 @@ describe('order/buildLayerGraph', function () {
     g.setNode('c', { rank: 2 });
     g.setNode('d', { rank: 3 });
 
-    var lg;
+    let lg;
     lg = buildLayerGraph(g, 1, 'inEdges');
     expect(lg.hasNode(lg.graph().root));
     expect(lg.children()).eqls([lg.graph().root]);
@@ -43,7 +43,7 @@ describe('order/buildLayerGraph', function () {
     g.setNode('b', { foo: 2, rank: 2 });
     g.setEdge('a', 'b', { weight: 1 });
 
-    var lg = buildLayerGraph(g, 2, 'inEdges');
+    const lg = buildLayerGraph(g, 2, 'inEdges');
 
     expect(lg.node('a').foo).equals(1);
     g.node('a').foo = 'updated';
@@ -111,8 +111,8 @@ describe('order/buildLayerGraph', function () {
       g.setParent(v, 'sg');
     });
 
-    var lg = buildLayerGraph(g, 0, 'inEdges');
-    var root = lg.graph().root;
+    const lg = buildLayerGraph(g, 0, 'inEdges');
+    const root = lg.graph().root;
     expect(_.sortBy(lg.children(root))).eqls(['c', 'sg']);
     expect(lg.parent('a')).equals('sg');
     expect(lg.parent('b')).equals('sg');

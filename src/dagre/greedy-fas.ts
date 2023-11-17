@@ -11,14 +11,14 @@ import { List } from './data/list.js';
  */
 export { greedyFAS };
 
-var DEFAULT_WEIGHT_FN = _.constant(1);
+const DEFAULT_WEIGHT_FN = _.constant(1);
 
 function greedyFAS(g, weightFn?) {
   if (g.nodeCount() <= 1) {
     return [];
   }
-  var state = buildState(g, weightFn || DEFAULT_WEIGHT_FN);
-  var results = doGreedyFAS(state.graph, state.buckets, state.zeroIdx);
+  const state = buildState(g, weightFn || DEFAULT_WEIGHT_FN);
+  const results = doGreedyFAS(state.graph, state.buckets, state.zeroIdx);
 
   // Expand multi-edges
   return _.flatten(
@@ -29,11 +29,11 @@ function greedyFAS(g, weightFn?) {
 }
 
 function doGreedyFAS(g, buckets, zeroIdx) {
-  var results = [];
-  var sources = buckets[buckets.length - 1];
-  var sinks = buckets[0];
+  let results = [];
+  const sources = buckets[buckets.length - 1];
+  const sinks = buckets[0];
 
-  var entry;
+  let entry;
   while (g.nodeCount()) {
     while ((entry = sinks.dequeue())) {
       removeNode(g, buckets, zeroIdx, entry);
@@ -42,7 +42,7 @@ function doGreedyFAS(g, buckets, zeroIdx) {
       removeNode(g, buckets, zeroIdx, entry);
     }
     if (g.nodeCount()) {
-      for (var i = buckets.length - 2; i > 0; --i) {
+      for (let i = buckets.length - 2; i > 0; --i) {
         entry = buckets[i].dequeue();
         if (entry) {
           results = results.concat(removeNode(g, buckets, zeroIdx, entry, true));
@@ -56,11 +56,11 @@ function doGreedyFAS(g, buckets, zeroIdx) {
 }
 
 function removeNode(g, buckets, zeroIdx, entry, collectPredecessors?) {
-  var results = collectPredecessors ? [] : undefined;
+  const results = collectPredecessors ? [] : undefined;
 
   _.forEach(g.inEdges(entry.v), function (edge) {
-    var weight = g.edge(edge);
-    var uEntry = g.node(edge.v);
+    const weight = g.edge(edge);
+    const uEntry = g.node(edge.v);
 
     if (collectPredecessors) {
       results.push({ v: edge.v, w: edge.w });
@@ -71,9 +71,9 @@ function removeNode(g, buckets, zeroIdx, entry, collectPredecessors?) {
   });
 
   _.forEach(g.outEdges(entry.v), function (edge) {
-    var weight = g.edge(edge);
-    var w = edge.w;
-    var wEntry = g.node(w);
+    const weight = g.edge(edge);
+    const w = edge.w;
+    const wEntry = g.node(w);
     wEntry['in'] -= weight;
     assignBucket(buckets, zeroIdx, wEntry);
   });
@@ -84,9 +84,9 @@ function removeNode(g, buckets, zeroIdx, entry, collectPredecessors?) {
 }
 
 function buildState(g, weightFn) {
-  var fasGraph = new Graph();
-  var maxIn = 0;
-  var maxOut = 0;
+  const fasGraph = new Graph();
+  let maxIn = 0;
+  let maxOut = 0;
 
   _.forEach(g.nodes(), function (v) {
     fasGraph.setNode(v, { v: v, in: 0, out: 0 });
@@ -95,18 +95,18 @@ function buildState(g, weightFn) {
   // Aggregate weights on nodes, but also sum the weights across multi-edges
   // into a single edge for the fasGraph.
   _.forEach(g.edges(), function (e) {
-    var prevWeight = fasGraph.edge(e.v, e.w) || 0;
-    var weight = weightFn(e);
-    var edgeWeight = prevWeight + weight;
+    const prevWeight = fasGraph.edge(e.v, e.w) || 0;
+    const weight = weightFn(e);
+    const edgeWeight = prevWeight + weight;
     fasGraph.setEdge(e.v, e.w, edgeWeight);
     maxOut = Math.max(maxOut, (fasGraph.node(e.v).out += weight));
     maxIn = Math.max(maxIn, (fasGraph.node(e.w)['in'] += weight));
   });
 
-  var buckets = _.range(maxOut + maxIn + 3).map(function () {
+  const buckets = _.range(maxOut + maxIn + 3).map(function () {
     return new List();
   });
-  var zeroIdx = maxIn + 1;
+  const zeroIdx = maxIn + 1;
 
   _.forEach(fasGraph.nodes(), function (v) {
     assignBucket(buckets, zeroIdx, fasGraph.node(v));

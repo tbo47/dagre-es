@@ -6,23 +6,23 @@ import * as util from './util.js';
 export { createEdgePaths, setCreateEdgePaths };
 
 var createEdgePaths = function (selection, g, arrows) {
-  var previousPaths = selection
+  const previousPaths = selection
     .selectAll('g.edgePath')
     .data(g.edges(), function (e) {
       return util.edgeToId(e);
     })
     .classed('update', true);
 
-  var newPaths = enter(previousPaths, g);
+  const newPaths = enter(previousPaths, g);
   exit(previousPaths, g);
 
-  var svgPaths = previousPaths.merge !== undefined ? previousPaths.merge(newPaths) : previousPaths;
+  const svgPaths = previousPaths.merge !== undefined ? previousPaths.merge(newPaths) : previousPaths;
   util.applyTransition(svgPaths, g).style('opacity', 1);
 
   // Save DOM element in the path group, and set ID and class
   svgPaths.each(function (e) {
-    var domEdge = d3.select(this);
-    var edge = g.edge(e);
+    const domEdge = d3.select(this);
+    const edge = g.edge(e);
     edge.elem = this;
 
     if (edge.id) {
@@ -37,10 +37,10 @@ var createEdgePaths = function (selection, g, arrows) {
   });
 
   svgPaths.selectAll('path.path').each(function (e) {
-    var edge = g.edge(e);
+    const edge = g.edge(e);
     edge.arrowheadId = _.uniqueId('arrowhead');
 
-    var domEdge = d3
+    const domEdge = d3
       .select(this)
       .attr('marker-end', function () {
         return 'url(' + makeFragmentRef(location.href, edge.arrowheadId) + ')';
@@ -56,8 +56,8 @@ var createEdgePaths = function (selection, g, arrows) {
 
   svgPaths.selectAll('defs *').remove();
   svgPaths.selectAll('defs').each(function (e) {
-    var edge = g.edge(e);
-    var arrowhead = arrows[edge.arrowhead];
+    const edge = g.edge(e);
+    const arrowhead = arrows[edge.arrowhead];
     arrowhead(d3.select(this), edge.arrowheadId, edge, 'arrowhead');
   });
 
@@ -69,15 +69,15 @@ function setCreateEdgePaths(value) {
 }
 
 function makeFragmentRef(url, fragmentId) {
-  var baseUrl = url.split('#')[0];
+  const baseUrl = url.split('#')[0];
   return baseUrl + '#' + fragmentId;
 }
 
 function calcPoints(g, e) {
-  var edge = g.edge(e);
-  var tail = g.node(e.v);
-  var head = g.node(e.w);
-  var points = edge.points.slice(1, edge.points.length - 1);
+  const edge = g.edge(e);
+  const tail = g.node(e.v);
+  const head = g.node(e.w);
+  const points = edge.points.slice(1, edge.points.length - 1);
   points.unshift(intersectNode(tail, points[0]));
   points.push(intersectNode(head, points[points.length - 1]));
 
@@ -86,7 +86,7 @@ function calcPoints(g, e) {
 
 function createLine(edge, points) {
   // @ts-expect-error
-  var line = (d3.line || d3.svg.line)()
+  const line = (d3.line || d3.svg.line)()
     .x(function (d) {
       return d.x;
     })
@@ -100,8 +100,8 @@ function createLine(edge, points) {
 }
 
 function getCoords(elem) {
-  var bbox = elem.getBBox();
-  var matrix = elem.ownerSVGElement
+  const bbox = elem.getBBox();
+  const matrix = elem.ownerSVGElement
     .getScreenCTM()
     .inverse()
     .multiply(elem.getScreenCTM())
@@ -110,14 +110,14 @@ function getCoords(elem) {
 }
 
 function enter(svgPaths, g) {
-  var svgPathsEnter = svgPaths.enter().append('g').attr('class', 'edgePath').style('opacity', 0);
+  const svgPathsEnter = svgPaths.enter().append('g').attr('class', 'edgePath').style('opacity', 0);
   svgPathsEnter
     .append('path')
     .attr('class', 'path')
     .attr('d', function (e) {
-      var edge = g.edge(e);
-      var sourceElem = g.node(e.v).elem;
-      var points = _.range(edge.points.length).map(function () {
+      const edge = g.edge(e);
+      const sourceElem = g.node(e.v).elem;
+      const points = _.range(edge.points.length).map(function () {
         return getCoords(sourceElem);
       });
       return createLine(edge, points);
@@ -127,6 +127,6 @@ function enter(svgPaths, g) {
 }
 
 function exit(svgPaths, g) {
-  var svgPathExit = svgPaths.exit();
+  const svgPathExit = svgPaths.exit();
   util.applyTransition(svgPathExit, g).style('opacity', 0).remove();
 }

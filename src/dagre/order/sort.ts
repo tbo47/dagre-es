@@ -4,10 +4,10 @@ import * as util from '../util.js';
 export { sort };
 
 function sort(entries, biasRight?) {
-  var parts = util.partition(entries, function (entry) {
+  const parts = util.partition(entries, function (entry) {
     return _.has(entry, 'barycenter');
   });
-  var sortable = parts.lhs,
+  let sortable = parts.lhs,
     unsortable = _.sortBy(parts.rhs, function (entry) {
       return -entry.i;
     }),
@@ -28,7 +28,7 @@ function sort(entries, biasRight?) {
     vsIndex = consumeUnsortable(vs, unsortable, vsIndex);
   });
 
-  var result = { vs: _.flatten(vs) } as { vs: string[]; barycenter?: number; weight?: number };
+  const result = { vs: _.flatten(vs) } as { vs: string[]; barycenter?: number; weight?: number };
   if (weight) {
     result.barycenter = sum / weight;
     result.weight = weight;
@@ -37,7 +37,7 @@ function sort(entries, biasRight?) {
 }
 
 function consumeUnsortable(vs, unsortable, index) {
-  var last;
+  let last;
   while (unsortable.length && (last = _.last(unsortable)).i <= index) {
     unsortable.pop();
     vs.push(last.vs);

@@ -15,14 +15,14 @@ export { render };
 
 // This design is based on http://bost.ocks.org/mike/chart/.
 function render() {
-  var fn = function (svg, g) {
+  const fn = function (svg, g) {
     preProcessGraph(g);
 
-    var outputGroup = createOrSelectGroup(svg, 'output');
-    var clustersGroup = createOrSelectGroup(outputGroup, 'clusters');
-    var edgePathsGroup = createOrSelectGroup(outputGroup, 'edgePaths');
-    var edgeLabels = createEdgeLabels(createOrSelectGroup(outputGroup, 'edgeLabels'), g);
-    var nodes = createNodes(createOrSelectGroup(outputGroup, 'nodes'), g, shapes);
+    const outputGroup = createOrSelectGroup(svg, 'output');
+    const clustersGroup = createOrSelectGroup(outputGroup, 'clusters');
+    const edgePathsGroup = createOrSelectGroup(outputGroup, 'edgePaths');
+    const edgeLabels = createEdgeLabels(createOrSelectGroup(outputGroup, 'edgeLabels'), g);
+    const nodes = createNodes(createOrSelectGroup(outputGroup, 'nodes'), g, shapes);
 
     layout(g);
 
@@ -30,7 +30,7 @@ function render() {
     positionEdgeLabels(edgeLabels, g);
     createEdgePaths(edgePathsGroup, g, arrows);
 
-    var clusters = createClusters(clustersGroup, g);
+    const clusters = createClusters(clustersGroup, g);
     positionClusters(clusters, g);
 
     postProcessGraph(g);
@@ -75,7 +75,7 @@ function render() {
   return fn;
 }
 
-var NODE_DEFAULT_ATTRS = {
+const NODE_DEFAULT_ATTRS = {
   paddingLeft: 10,
   paddingRight: 10,
   paddingTop: 10,
@@ -85,14 +85,14 @@ var NODE_DEFAULT_ATTRS = {
   shape: 'rect',
 };
 
-var EDGE_DEFAULT_ATTRS = {
+const EDGE_DEFAULT_ATTRS = {
   arrowhead: 'normal',
   curve: d3.curveLinear,
 };
 
 function preProcessGraph(g) {
   g.nodes().forEach(function (v) {
-    var node = g.node(v);
+    const node = g.node(v);
     if (!_.has(node, 'label') && !g.children(v).length) {
       node.label = v;
     }
@@ -136,7 +136,7 @@ function preProcessGraph(g) {
   });
 
   g.edges().forEach(function (e) {
-    var edge = g.edge(e);
+    const edge = g.edge(e);
     if (!_.has(edge, 'label')) {
       edge.label = '';
     }
@@ -146,7 +146,7 @@ function preProcessGraph(g) {
 
 function postProcessGraph(g) {
   _.each(g.nodes(), function (v) {
-    var node = g.node(v);
+    const node = g.node(v);
 
     // Restore original dimensions
     if (_.has(node, '_prevWidth')) {
@@ -167,7 +167,7 @@ function postProcessGraph(g) {
 }
 
 function createOrSelectGroup(root, name) {
-  var selection = root.select('g.' + name);
+  let selection = root.select('g.' + name);
   if (selection.empty()) {
     selection = root.append('g').attr('class', name);
   }

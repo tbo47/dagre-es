@@ -5,7 +5,7 @@ import { sortSubgraph } from './sort-subgraph.js';
 import { Graph } from '../../graphlib/graph.js';
 
 describe('order/sortSubgraph', function () {
-  var g, cg;
+  let g, cg;
 
   beforeEach(function () {
     g = new Graph({ compound: true })
@@ -72,7 +72,7 @@ describe('order/sortSubgraph', function () {
       g.setParent(v, 'movable');
     });
 
-    var results = sortSubgraph(g, 'movable', cg);
+    const results = sortSubgraph(g, 'movable', cg);
     expect(results.barycenter).to.equal(2.25);
     expect(results.weight).to.equal(4);
   });

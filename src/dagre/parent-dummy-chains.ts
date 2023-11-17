@@ -3,17 +3,17 @@ import * as _ from 'lodash-es';
 export { parentDummyChains };
 
 function parentDummyChains(g) {
-  var postorderNums = postorder(g);
+  const postorderNums = postorder(g);
 
   _.forEach(g.graph().dummyChains, function (v) {
-    var node = g.node(v);
-    var edgeObj = node.edgeObj;
-    var pathData = findPath(g, postorderNums, edgeObj.v, edgeObj.w);
-    var path = pathData.path;
-    var lca = pathData.lca;
-    var pathIdx = 0;
-    var pathV = path[pathIdx];
-    var ascending = true;
+    let node = g.node(v);
+    const edgeObj = node.edgeObj;
+    const pathData = findPath(g, postorderNums, edgeObj.v, edgeObj.w);
+    const path = pathData.path;
+    const lca = pathData.lca;
+    let pathIdx = 0;
+    let pathV = path[pathIdx];
+    let ascending = true;
 
     while (v !== edgeObj.w) {
       node = g.node(v);
@@ -47,12 +47,11 @@ function parentDummyChains(g) {
 // Find a path from v to w through the lowest common ancestor (LCA). Return the
 // full path and the LCA.
 function findPath(g, postorderNums, v, w) {
-  var vPath = [];
-  var wPath = [];
-  var low = Math.min(postorderNums[v].low, postorderNums[w].low);
-  var lim = Math.max(postorderNums[v].lim, postorderNums[w].lim);
-  var parent;
-  var lca;
+  const vPath = [];
+  const wPath = [];
+  const low = Math.min(postorderNums[v].low, postorderNums[w].low);
+  const lim = Math.max(postorderNums[v].lim, postorderNums[w].lim);
+  let parent;
 
   // Traverse up from v to find the LCA
   parent = v;
@@ -60,7 +59,7 @@ function findPath(g, postorderNums, v, w) {
     parent = g.parent(parent);
     vPath.push(parent);
   } while (parent && (postorderNums[parent].low > low || lim > postorderNums[parent].lim));
-  lca = parent;
+  const lca = parent;
 
   // Traverse from w to LCA
   parent = w;
@@ -72,11 +71,11 @@ function findPath(g, postorderNums, v, w) {
 }
 
 function postorder(g) {
-  var result = {};
-  var lim = 0;
+  const result = {};
+  let lim = 0;
 
   function dfs(v) {
-    var low = lim;
+    const low = lim;
     _.forEach(g.children(v), dfs);
     result[v] = { low: low, lim: lim++ };
   }

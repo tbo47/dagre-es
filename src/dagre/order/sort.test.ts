@@ -4,7 +4,7 @@ import { sort } from './sort.js';
 
 describe('sort', function () {
   it('sorts nodes by barycenter', function () {
-    var input = [
+    const input = [
       { vs: ['a'], i: 0, barycenter: 2, weight: 3 },
       { vs: ['b'], i: 1, barycenter: 1, weight: 2 },
     ];
@@ -16,7 +16,7 @@ describe('sort', function () {
   });
 
   it('can sort super-nodes', function () {
-    var input = [
+    const input = [
       { vs: ['a', 'c', 'd'], i: 0, barycenter: 2, weight: 3 },
       { vs: ['b'], i: 1, barycenter: 1, weight: 2 },
     ];
@@ -28,7 +28,7 @@ describe('sort', function () {
   });
 
   it('biases to the left by default', function () {
-    var input = [
+    const input = [
       { vs: ['a'], i: 0, barycenter: 1, weight: 1 },
       { vs: ['b'], i: 1, barycenter: 1, weight: 1 },
     ];
@@ -40,7 +40,7 @@ describe('sort', function () {
   });
 
   it('biases to the right if biasRight = true', function () {
-    var input = [
+    const input = [
       { vs: ['a'], i: 0, barycenter: 1, weight: 1 },
       { vs: ['b'], i: 1, barycenter: 1, weight: 1 },
     ];
@@ -52,7 +52,7 @@ describe('sort', function () {
   });
 
   it('can sort nodes without a barycenter', function () {
-    var input = [
+    const input = [
       { vs: ['a'], i: 0, barycenter: 2, weight: 1 },
       { vs: ['b'], i: 1, barycenter: 6, weight: 1 },
       { vs: ['c'], i: 2 },
@@ -66,7 +66,7 @@ describe('sort', function () {
   });
 
   it('can handle no barycenters for any nodes', function () {
-    var input = [
+    const input = [
       { vs: ['a'], i: 0 },
       { vs: ['b'], i: 3 },
       { vs: ['c'], i: 2 },
@@ -76,7 +76,7 @@ describe('sort', function () {
   });
 
   it('can handle a barycenter of 0', function () {
-    var input = [
+    const input = [
       { vs: ['a'], i: 0, barycenter: 0, weight: 1 },
       { vs: ['b'], i: 3 },
       { vs: ['c'], i: 2 },

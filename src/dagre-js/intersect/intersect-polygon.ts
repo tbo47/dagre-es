@@ -7,25 +7,25 @@ export { intersectPolygon };
  * node argument assuming that it has the shape specified by polygon.
  */
 function intersectPolygon(node, polyPoints, point) {
-  var x1 = node.x;
-  var y1 = node.y;
+  const x1 = node.x;
+  const y1 = node.y;
 
-  var intersections = [];
+  const intersections = [];
 
-  var minX = Number.POSITIVE_INFINITY;
-  var minY = Number.POSITIVE_INFINITY;
+  let minX = Number.POSITIVE_INFINITY;
+  let minY = Number.POSITIVE_INFINITY;
   polyPoints.forEach(function (entry) {
     minX = Math.min(minX, entry.x);
     minY = Math.min(minY, entry.y);
   });
 
-  var left = x1 - node.width / 2 - minX;
-  var top = y1 - node.height / 2 - minY;
+  const left = x1 - node.width / 2 - minX;
+  const top = y1 - node.height / 2 - minY;
 
-  for (var i = 0; i < polyPoints.length; i++) {
-    var p1 = polyPoints[i];
-    var p2 = polyPoints[i < polyPoints.length - 1 ? i + 1 : 0];
-    var intersect = intersectLine(
+  for (let i = 0; i < polyPoints.length; i++) {
+    const p1 = polyPoints[i];
+    const p2 = polyPoints[i < polyPoints.length - 1 ? i + 1 : 0];
+    const intersect = intersectLine(
       node,
       point,
       { x: left + p1.x, y: top + p1.y },
@@ -44,13 +44,13 @@ function intersectPolygon(node, polyPoints, point) {
   if (intersections.length > 1) {
     // More intersections, find the one nearest to edge end point
     intersections.sort(function (p, q) {
-      var pdx = p.x - point.x;
-      var pdy = p.y - point.y;
-      var distp = Math.sqrt(pdx * pdx + pdy * pdy);
+      const pdx = p.x - point.x;
+      const pdy = p.y - point.y;
+      const distp = Math.sqrt(pdx * pdx + pdy * pdy);
 
-      var qdx = q.x - point.x;
-      var qdy = q.y - point.y;
-      var distq = Math.sqrt(qdx * qdx + qdy * qdy);
+      const qdx = q.x - point.x;
+      const qdy = q.y - point.y;
+      const distq = Math.sqrt(qdx * qdx + qdy * qdy);
 
       return distp < distq ? -1 : distp === distq ? 0 : 1;
     });

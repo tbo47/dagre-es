@@ -8,7 +8,7 @@ describe('alg.floydWarshall', function () {
   allShortestPathsTests(floydWarshall);
 
   it('handles negative weights', function () {
-    var g = new Graph();
+    const g = new Graph();
     g.setEdge('a', 'b', 1);
     g.setEdge('a', 'c', -2);
     g.setEdge('b', 'd', 3);
@@ -43,7 +43,7 @@ describe('alg.floydWarshall', function () {
   });
 
   it('does include negative weight self edges', function () {
-    var g = new Graph();
+    const g = new Graph();
     g.setEdge('a', 'a', -1);
 
     // In the case of a negative cycle the distance is not well-defined beyond

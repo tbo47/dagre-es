@@ -13,7 +13,7 @@ function setArrows(value) {
 }
 
 function normal(parent, id, edge, type) {
-  var marker = parent
+  const marker = parent
     .append('marker')
     .attr('id', id)
     .attr('viewBox', '0 0 10 10')
@@ -24,7 +24,7 @@ function normal(parent, id, edge, type) {
     .attr('markerHeight', 6)
     .attr('orient', 'auto');
 
-  var path = marker
+  const path = marker
     .append('path')
     .attr('d', 'M 0 0 L 10 5 L 0 10 z')
     .style('stroke-width', 1)
@@ -36,7 +36,7 @@ function normal(parent, id, edge, type) {
 }
 
 function vee(parent, id, edge, type) {
-  var marker = parent
+  const marker = parent
     .append('marker')
     .attr('id', id)
     .attr('viewBox', '0 0 10 10')
@@ -47,7 +47,7 @@ function vee(parent, id, edge, type) {
     .attr('markerHeight', 6)
     .attr('orient', 'auto');
 
-  var path = marker
+  const path = marker
     .append('path')
     .attr('d', 'M 0 0 L 10 5 L 0 10 L 4 5 z')
     .style('stroke-width', 1)
@@ -59,7 +59,7 @@ function vee(parent, id, edge, type) {
 }
 
 function undirected(parent, id, edge, type) {
-  var marker = parent
+  const marker = parent
     .append('marker')
     .attr('id', id)
     .attr('viewBox', '0 0 10 10')
@@ -70,7 +70,7 @@ function undirected(parent, id, edge, type) {
     .attr('markerHeight', 6)
     .attr('orient', 'auto');
 
-  var path = marker
+  const path = marker
     .append('path')
     .attr('d', 'M 0 5 L 10 5')
     .style('stroke-width', 1)

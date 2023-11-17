@@ -37,8 +37,8 @@ function writeNodes(g) {
 
 function writeEdges(g) {
   return _.map(g.edges(), function (e) {
-    var edgeValue = g.edge(e);
-    var edge = { v: e.v, w: e.w } as { v: string; w: string; name?: string; value?: any }
+    const edgeValue = g.edge(e);
+    const edge = { v: e.v, w: e.w } as { v: string; w: string; name?: string; value?: any }
     if (!_.isUndefined(e.name)) {
       edge.name = e.name;
     }
@@ -50,7 +50,7 @@ function writeEdges(g) {
 }
 
 function read(json) {
-  var g = new Graph(json.options).setGraph(json.value);
+  const g = new Graph(json.options).setGraph(json.value);
   _.each(json.nodes, function (entry) {
     g.setNode(entry.v, entry.value);
     if (entry.parent) {

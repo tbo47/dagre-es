@@ -6,10 +6,10 @@ export { addTextLabel };
  * Attaches a text label to the specified root. Handles escape sequences.
  */
 function addTextLabel(root, node) {
-  var domNode = root.append('text');
+  const domNode = root.append('text');
 
-  var lines = processEscapeSequences(node.label).split('\n');
-  for (var i = 0; i < lines.length; i++) {
+  const lines = processEscapeSequences(node.label).split('\n');
+  for (let i = 0; i < lines.length; i++) {
     domNode
       .append('tspan')
       .attr('xml:space', 'preserve')
@@ -24,10 +24,10 @@ function addTextLabel(root, node) {
 }
 
 function processEscapeSequences(text) {
-  var newText = '';
-  var escaped = false;
-  var ch;
-  for (var i = 0; i < text.length; ++i) {
+  let newText = '';
+  let escaped = false;
+  let ch;
+  for (let i = 0; i < text.length; ++i) {
     ch = text[i];
     if (escaped) {
       switch (ch) {

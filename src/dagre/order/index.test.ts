@@ -7,7 +7,7 @@ import { crossCount } from './cross-count.js';
 import { buildLayerMatrix } from '../util.js';
 
 describe('order', function () {
-  var g;
+  let g;
 
   beforeEach(function () {
     g = new Graph().setDefaultEdgeLabel({ weight: 1 });
@@ -25,7 +25,7 @@ describe('order', function () {
     g.setEdge('b', 'd');
     g.setPath(['a', 'e', 'f']);
     order(g);
-    var layering = buildLayerMatrix(g);
+    const layering = buildLayerMatrix(g);
     expect(crossCount(g, layering)).to.equal(0);
   });
 
@@ -41,7 +41,7 @@ describe('order', function () {
       g.setNode(v, { rank: 3 });
     });
     order(g);
-    var layering = buildLayerMatrix(g);
+    const layering = buildLayerMatrix(g);
     expect(crossCount(g, layering)).to.equal(0);
   });
 
@@ -55,7 +55,7 @@ describe('order', function () {
     });
     g.setNode('d', { rank: 4 });
     order(g);
-    var layering = buildLayerMatrix(g);
+    const layering = buildLayerMatrix(g);
     expect(crossCount(g, layering)).to.be.lte(1);
   });
 });

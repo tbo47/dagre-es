@@ -15,7 +15,7 @@ function edgeToId(e) {
   return escapeId(e.v) + ':' + escapeId(e.w) + ':' + escapeId(e.name);
 }
 
-var ID_DELIM = /:/g;
+const ID_DELIM = /:/g;
 function escapeId(str) {
   return str ? String(str).replace(ID_DELIM, '\\:') : '';
 }
@@ -33,10 +33,10 @@ function applyClass(dom, classFn, otherClasses) {
 }
 
 function applyTransition(selection, g) {
-  var graph = g.graph();
+  const graph = g.graph();
 
   if (_.isPlainObject(graph)) {
-    var transition = graph.transition;
+    const transition = graph.transition;
     if (_.isFunction(transition)) {
       return transition(selection);
     }

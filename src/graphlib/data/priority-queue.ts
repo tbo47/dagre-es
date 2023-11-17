@@ -43,7 +43,7 @@ class PriorityQueue {
    * @param {Object} key
    */
   priority(key) {
-    var index = this._keyIndices[key];
+    const index = this._keyIndices[key];
     if (index !== undefined) {
       return this._arr[index].priority;
     }
@@ -67,11 +67,11 @@ class PriorityQueue {
    * @param {Number} priority the initial priority for the key
    */
   add(key, priority) {
-    var keyIndices = this._keyIndices;
+    const keyIndices = this._keyIndices;
     key = String(key);
     if (!_.has(keyIndices, key)) {
-      var arr = this._arr;
-      var index = arr.length;
+      const arr = this._arr;
+      const index = arr.length;
       keyIndices[key] = index;
       arr.push({ key: key, priority: priority });
       this._decrease(index);
@@ -84,7 +84,7 @@ class PriorityQueue {
    */
   removeMin() {
     this._swap(0, this._arr.length - 1);
-    var min = this._arr.pop();
+    const min = this._arr.pop();
     delete this._keyIndices[min.key];
     this._heapify(0);
     return min.key;
@@ -97,7 +97,7 @@ class PriorityQueue {
    * @param {Number} priority the new priority for the key
    */
   decrease(key, priority) {
-    var index = this._keyIndices[key];
+    const index = this._keyIndices[key];
     if (priority > this._arr[index].priority) {
       throw new Error(
         'New priority is greater than current priority. ' +
@@ -113,10 +113,10 @@ class PriorityQueue {
     this._decrease(index);
   }
   _heapify(i) {
-    var arr = this._arr;
-    var l = 2 * i;
-    var r = l + 1;
-    var largest = i;
+    const arr = this._arr;
+    const l = 2 * i;
+    const r = l + 1;
+    let largest = i;
     if (l < arr.length) {
       largest = arr[l].priority < arr[largest].priority ? l : largest;
       if (r < arr.length) {
@@ -129,9 +129,9 @@ class PriorityQueue {
     }
   }
   _decrease(index) {
-    var arr = this._arr;
-    var priority = arr[index].priority;
-    var parent;
+    const arr = this._arr;
+    const priority = arr[index].priority;
+    let parent;
     while (index !== 0) {
       parent = index >> 1;
       if (arr[parent].priority < priority) {
@@ -142,10 +142,10 @@ class PriorityQueue {
     }
   }
   _swap(i, j) {
-    var arr = this._arr;
-    var keyIndices = this._keyIndices;
-    var origArrI = arr[i];
-    var origArrJ = arr[j];
+    const arr = this._arr;
+    const keyIndices = this._keyIndices;
+    const origArrI = arr[i];
+    const origArrJ = arr[j];
     arr[i] = origArrJ;
     arr[j] = origArrI;
     keyIndices[origArrJ.key] = i;

@@ -34,7 +34,7 @@ describe('json', function () {
   });
 
   it('preserves multi-edges', function () {
-    var g = new Graph({ multigraph: true });
+    const g = new Graph({ multigraph: true });
 
     g.setEdge({ v: 'a', w: 'b', name: 'foo' });
     expect(rw(g).hasEdge('a', 'b', 'foo')).to.be.true;

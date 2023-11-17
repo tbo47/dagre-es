@@ -32,7 +32,7 @@ import { Graph } from '../../graphlib/index.js';
  *       graph is not a multi-graph.
  */
 export function buildLayerGraph(g, rank, relationship) {
-  var root = createRootNode(g),
+  const root = createRootNode(g),
     result = new Graph({ compound: true })
       .setGraph({ root: root })
       .setDefaultNodeLabel(function (v) {
@@ -40,7 +40,7 @@ export function buildLayerGraph(g, rank, relationship) {
       });
 
   _.forEach(g.nodes(), function (v) {
-    var node = g.node(v),
+    const node = g.node(v),
       parent = g.parent(v);
 
     if (node.rank === rank || (node.minRank <= rank && rank <= node.maxRank)) {
@@ -49,7 +49,7 @@ export function buildLayerGraph(g, rank, relationship) {
 
       // This assumes we have only short edges!
       _.forEach(g[relationship](v), function (e) {
-        var u = e.v === v ? e.w : e.v,
+        const u = e.v === v ? e.w : e.v,
           edge = result.edge(u, v),
           weight = !_.isUndefined(edge) ? edge.weight : 0;
         result.setEdge(u, v, { weight: g.edge(e).weight + weight });
@@ -68,7 +68,7 @@ export function buildLayerGraph(g, rank, relationship) {
 }
 
 function createRootNode(g) {
-  var v;
+  let v;
   while (g.hasNode((v = _.uniqueId('_root'))));
   return v;
 }

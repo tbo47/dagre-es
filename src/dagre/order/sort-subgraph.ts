@@ -6,11 +6,11 @@ import { sort } from './sort.js';
 export { sortSubgraph };
 
 function sortSubgraph(g, v, cg, biasRight?) {
-  var movable = g.children(v);
-  var node = g.node(v);
-  var bl = node ? node.borderLeft : undefined;
-  var br = node ? node.borderRight : undefined;
-  var subgraphs = {};
+  let movable = g.children(v);
+  const node = g.node(v);
+  const bl = node ? node.borderLeft : undefined;
+  const br = node ? node.borderRight : undefined;
+  const subgraphs = {};
 
   if (bl) {
     movable = _.filter(movable, function (w) {
@@ -18,10 +18,10 @@ function sortSubgraph(g, v, cg, biasRight?) {
     });
   }
 
-  var barycenters = barycenter(g, movable);
+  const barycenters = barycenter(g, movable);
   _.forEach(barycenters, function (entry) {
     if (g.children(entry.v).length) {
-      var subgraphResult = sortSubgraph(g, entry.v, cg, biasRight);
+      const subgraphResult = sortSubgraph(g, entry.v, cg, biasRight);
       subgraphs[entry.v] = subgraphResult;
       if (_.has(subgraphResult, 'barycenter')) {
         mergeBarycenters(entry, subgraphResult);
@@ -29,15 +29,15 @@ function sortSubgraph(g, v, cg, biasRight?) {
     }
   });
 
-  var entries = resolveConflicts(barycenters, cg);
+  const entries = resolveConflicts(barycenters, cg);
   expandSubgraphs(entries, subgraphs);
 
-  var result = sort(entries, biasRight) as any;
+  const result = sort(entries, biasRight) as any;
 
   if (bl) {
     result.vs = _.flatten([bl, result.vs, br]);
     if (g.predecessors(bl).length) {
-      var blPred = g.node(g.predecessors(bl)[0]),
+      const blPred = g.node(g.predecessors(bl)[0]),
         brPred = g.node(g.predecessors(br)[0]);
       if (!_.has(result, 'barycenter')) {
         result.barycenter = 0;

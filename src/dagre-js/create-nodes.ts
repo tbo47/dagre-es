@@ -6,10 +6,10 @@ import * as util from './util.js';
 export { createNodes, setCreateNodes };
 
 var createNodes = function (selection, g, shapes) {
-  var simpleNodes = g.nodes().filter(function (v) {
+  const simpleNodes = g.nodes().filter(function (v) {
     return !util.isSubgraph(g, v);
   });
-  var svgNodes = selection
+  let svgNodes = selection
     .selectAll('g.node')
     .data(simpleNodes, function (v) {
       return v;
@@ -23,8 +23,8 @@ var createNodes = function (selection, g, shapes) {
   svgNodes = selection.selectAll('g.node');
 
   svgNodes.each(function (v) {
-    var node = g.node(v);
-    var thisGroup = d3.select(this);
+    const node = g.node(v);
+    const thisGroup = d3.select(this);
     util.applyClass(
       thisGroup,
       node['class'],
@@ -32,10 +32,10 @@ var createNodes = function (selection, g, shapes) {
     );
 
     thisGroup.select('g.label').remove();
-    var labelGroup = thisGroup.append('g').attr('class', 'label');
-    var labelDom = addLabel(labelGroup, node);
-    var shape = shapes[node.shape];
-    var bbox = _.pick(labelDom.node().getBBox(), 'width', 'height');
+    const labelGroup = thisGroup.append('g').attr('class', 'label');
+    const labelDom = addLabel(labelGroup, node);
+    const shape = shapes[node.shape];
+    const bbox = _.pick(labelDom.node().getBBox(), 'width', 'height');
 
     node.elem = this;
 
@@ -64,17 +64,17 @@ var createNodes = function (selection, g, shapes) {
         ')'
     );
 
-    var root = d3.select(this);
+    const root = d3.select(this);
     root.select('.label-container').remove();
-    var shapeSvg = shape(root, bbox, node).classed('label-container', true);
+    const shapeSvg = shape(root, bbox, node).classed('label-container', true);
     util.applyStyle(shapeSvg, node.style);
 
-    var shapeBBox = shapeSvg.node().getBBox();
+    const shapeBBox = shapeSvg.node().getBBox();
     node.width = shapeBBox.width;
     node.height = shapeBBox.height;
   });
 
-  var exitSelection;
+  let exitSelection;
 
   if (svgNodes.exit) {
     exitSelection = svgNodes.exit();

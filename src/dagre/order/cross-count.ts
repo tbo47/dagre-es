@@ -19,8 +19,8 @@ export { crossCount };
  * This algorithm is derived from Barth, et al., "Bilayer Cross Counting."
  */
 function crossCount(g, layering) {
-  var cc = 0;
-  for (var i = 1; i < layering.length; ++i) {
+  let cc = 0;
+  for (let i = 1; i < layering.length; ++i) {
     cc += twoLayerCrossCount(g, layering[i - 1], layering[i]);
   }
   return cc;
@@ -30,13 +30,13 @@ function twoLayerCrossCount(g, northLayer, southLayer) {
   // Sort all of the edges between the north and south layers by their position
   // in the north layer and then the south. Map these edges to the position of
   // their head in the south layer.
-  var southPos = _.zipObject(
+  const southPos = _.zipObject(
     southLayer,
     _.map(southLayer, function (v, i) {
       return i;
     })
   );
-  var southEntries = _.flatten(
+  const southEntries = _.flatten(
     _.map(northLayer, function (v) {
       return _.sortBy(
         _.map(g.outEdges(v), function (e) {
@@ -48,22 +48,22 @@ function twoLayerCrossCount(g, northLayer, southLayer) {
   );
 
   // Build the accumulator tree
-  var firstIndex = 1;
+  let firstIndex = 1;
   while (firstIndex < southLayer.length) firstIndex <<= 1;
-  var treeSize = 2 * firstIndex - 1;
+  const treeSize = 2 * firstIndex - 1;
   firstIndex -= 1;
-  var tree = _.map(new Array(treeSize), function () {
+  const tree = _.map(new Array(treeSize), function () {
     return 0;
   });
 
   // Calculate the weighted crossings
-  var cc = 0;
+  let cc = 0;
   _.forEach(
     // @ts-expect-error
     southEntries.forEach(function (entry) {
-      var index = entry.pos + firstIndex;
+      let index = entry.pos + firstIndex;
       tree[index] += entry.weight;
-      var weightSum = 0;
+      let weightSum = 0;
       // @ts-expect-error
       while (index > 0) {
         // @ts-expect-error

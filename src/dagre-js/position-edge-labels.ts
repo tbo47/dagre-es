@@ -5,12 +5,12 @@ import * as util from './util.js';
 export { positionEdgeLabels };
 
 function positionEdgeLabels(selection, g) {
-  var created = selection.filter(function () {
+  const created = selection.filter(function () {
     return !d3.select(this).classed('update');
   });
 
   function translate(e) {
-    var edge = g.edge(e);
+    const edge = g.edge(e);
     return _.has(edge, 'x') ? 'translate(' + edge.x + ',' + edge.y + ')' : '';
   }
 
