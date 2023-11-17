@@ -8,13 +8,11 @@
   "type": "module",
   "scripts": {
     "dev": "tsc --watch",
-    "prepublishOnly": "rm -rf dist dist_tmp; mkdir dist; tsc --build tsconfig.json --declaration && mv dist_tmp/src/* dist && rm -rf dist_tmp",
+    "prepare": "rm -rf dist dist_tmp; mkdir dist; tsc --build tsconfig.json --declaration && mv dist_tmp/src/* dist && rm -rf dist_tmp",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
     "test": "vitest run",
-    "move_to_typescript": "rename \"s/js$/ts/\" **/*.js",
-    "move_to_javascript": "rename \"s/ts$/js/\" **/*.ts",
     "my_1_npm_login": "npm login",
     "my_2_publish": "echo update_package_version ; git clean -xdf ; npm ci ; npm publish",
     "compile_js_as_ts": "tsc src/index.js --AllowJs --checkJs --outDir dist/"
