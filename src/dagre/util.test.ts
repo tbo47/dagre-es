@@ -243,4 +243,24 @@ describe('util', function () {
       expect(g.node('b').rank).equals(2);
     });
   });
+
+  describe("range", () => {
+    it("Builds an array to the limit", () => {
+      const range = util.range(4);
+      expect(range.length).equals(4);
+      expect(range.reduce((acc, v) => acc + v)).equals(6);
+    });
+
+    it("Builds an array with a start", () => {
+      const range = util.range(2, 4);
+      expect(range.length).equals(2);
+      expect(range.reduce((acc, v) => acc + v)).equals(5);
+    });
+
+    it("Builds an array with a negative step", () => {
+      const range = util.range(5, -1, -1);
+      expect(range[0]).equals(5);
+      expect(range[5]).equals(0);
+    });
+  });
 });

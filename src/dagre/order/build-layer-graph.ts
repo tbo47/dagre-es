@@ -1,4 +1,4 @@
-import * as _ from 'lodash-es';
+import { uniqueId } from "../util.js";
 import { Graph } from '../../graphlib/index.js';
 
 /*
@@ -39,7 +39,7 @@ export function buildLayerGraph(g, rank, relationship) {
         return g.node(v);
       });
 
-  _.forEach(g.nodes(), function (v) {
+  g.nodes().forEach(v => {
     var node = g.node(v),
       parent = g.parent(v);
 
@@ -48,14 +48,14 @@ export function buildLayerGraph(g, rank, relationship) {
       result.setParent(v, parent || root);
 
       // This assumes we have only short edges!
-      _.forEach(g[relationship](v), function (e) {
+      g[relationship](v).forEach(e => {
         var u = e.v === v ? e.w : e.v,
           edge = result.edge(u, v),
-          weight = !_.isUndefined(edge) ? edge.weight : 0;
+          weight = edge !== undefined ? edge.weight : 0;
         result.setEdge(u, v, { weight: g.edge(e).weight + weight });
       });
 
-      if (_.has(node, 'minRank')) {
+      if (node.hasOwnProperty("minRank")) {
         result.setNode(v, {
           borderLeft: node.borderLeft[rank],
           borderRight: node.borderRight[rank],
@@ -69,6 +69,6 @@ export function buildLayerGraph(g, rank, relationship) {
 
 function createRootNode(g) {
   var v;
-  while (g.hasNode((v = _.uniqueId('_root'))));
+  while (g.hasNode((v = uniqueId('_root'))));
   return v;
 }

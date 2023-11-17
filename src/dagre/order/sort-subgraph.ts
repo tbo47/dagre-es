@@ -1,4 +1,3 @@
-import * as _ from 'lodash-es';
 import { barycenter } from './barycenter.js';
 import { resolveConflicts } from './resolve-conflicts.js';
 import { sort } from './sort.js';
@@ -13,17 +12,15 @@ function sortSubgraph(g, v, cg, biasRight?) {
   var subgraphs = {};
 
   if (bl) {
-    movable = _.filter(movable, function (w) {
-      return w !== bl && w !== br;
-    });
+    movable = movable.filter(w => w !== bl && w !== br);
   }
 
   var barycenters = barycenter(g, movable);
-  _.forEach(barycenters, function (entry) {
+  barycenters.forEach(entry => {
     if (g.children(entry.v).length) {
       var subgraphResult = sortSubgraph(g, entry.v, cg, biasRight);
       subgraphs[entry.v] = subgraphResult;
-      if (_.has(subgraphResult, 'barycenter')) {
+      if (subgraphResult.hasOwnProperty("barycenter")) {
         mergeBarycenters(entry, subgraphResult);
       }
     }
@@ -35,11 +32,11 @@ function sortSubgraph(g, v, cg, biasRight?) {
   var result = sort(entries, biasRight) as any;
 
   if (bl) {
-    result.vs = _.flatten([bl, result.vs, br]);
+    result.vs = [bl, result.vs, br].flat(true);
     if (g.predecessors(bl).length) {
       var blPred = g.node(g.predecessors(bl)[0]),
         brPred = g.node(g.predecessors(br)[0]);
-      if (!_.has(result, 'barycenter')) {
+      if (!result.hasOwnProperty("barycenter")) {
         result.barycenter = 0;
         result.weight = 0;
       }
@@ -53,20 +50,18 @@ function sortSubgraph(g, v, cg, biasRight?) {
 }
 
 function expandSubgraphs(entries, subgraphs) {
-  _.forEach(entries, function (entry) {
-    entry.vs = _.flatten(
-      entry.vs.map(function (v) {
-        if (subgraphs[v]) {
-          return subgraphs[v].vs;
-        }
-        return v;
-      })
-    );
+  entries.forEach(entry => {
+    entry.vs = entry.vs.flatMap(v => {
+      if (subgraphs[v]) {
+        return subgraphs[v].vs;
+      }
+      return v;
+    });
   });
 }
 
 function mergeBarycenters(target, other) {
-  if (!_.isUndefined(target.barycenter)) {
+  if (target.barycenter !== undefined) {
     target.barycenter =
       (target.barycenter * target.weight + other.barycenter * other.weight) /
       (target.weight + other.weight);

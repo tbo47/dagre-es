@@ -16,6 +16,10 @@ export {
   partition,
   time,
   notime,
+  uniqueId,
+  range,
+  pick,
+  zipObject,
 };
 
 /*
@@ -247,4 +251,47 @@ function time(name, fn) {
 
 function notime(name, fn) {
   return fn();
+}
+
+let idCounter = 0;
+function uniqueId(prefix) {
+  var id = ++idCounter;
+  return toString(prefix) + id;
+}
+
+function range(start, limit?, step = 1) {
+  if (limit == null) {
+    limit = start;
+    start = 0;
+  }
+
+  let endCon = (i) => i < limit;
+  if (step < 0) {
+    endCon = (i) => limit < i;
+  }
+
+  const range = [];
+  for (let i = start; endCon(i); i += step) {
+    range.push(i);
+  }
+
+  return range;
+}
+
+function pick(source, keys) {
+  const dest = {};
+  for (const key of keys) {
+    if (source[key] !== undefined) {
+      dest[key] = source[key];
+    }
+  }
+
+  return dest;
+}
+
+function zipObject(props, values) {
+  return props.reduce((acc, key, i) => {
+    acc[key] = values[i];
+    return acc;
+  }, {});
 }
