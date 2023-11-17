@@ -1,19 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "rootDir": "./",
     "outDir": "dist_tmp/",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es2020"
-    ],
-    "types": [
-      "@types/jest"
-    ],
-    "module": "node16"
+    "types": [],
   },
   "exclude": [
-    "src/**/*.test.ts"
+    "src/**/*.test.ts",
+    "test/**/*.ts",
   ]
 }
