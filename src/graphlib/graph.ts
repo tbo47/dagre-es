@@ -24,23 +24,30 @@ var EDGE_KEY_DELIM = '\x01';
 //    edges up and, object properties, which have string keys, are the closest
 //    we're going to get to a performant hashtable in JavaScript.
 export class Graph {
-  _isDirected: boolean;
-  _isMultigraph: boolean;
-  _isCompound: boolean;
-  _label: any;
-  _defaultNodeLabelFn: () => any;
-  _defaultEdgeLabelFn: () => any;
-  _nodes: {};
-  _parent: {};
-  _children: {};
-  _in: {};
-  _preds: {};
-  _out: {};
-  _sucs: {};
-  _edgeObjs: {};
-  _edgeLabels: {};
-  _nodeCount = 0;
-  _edgeCount = 0;
+  protected _isDirected: boolean;
+  protected _isMultigraph: boolean;
+  protected _isCompound: boolean;
+  protected _label: any;
+  protected _defaultNodeLabelFn: () => any;
+  protected _defaultEdgeLabelFn: () => any;
+  protected _nodes: {};
+  protected _parent: {};
+  protected _children: {};
+  protected _in: {};
+  protected _preds: {};
+  protected _out: {};
+  protected _sucs: {};
+  protected _edgeObjs: {};
+  protected _edgeLabels: {};
+  /**
+   * Number of nodes in the graph. Should only be changed by the implementation. 
+   */
+  protected _nodeCount = 0;
+  /**
+   * Number of edges in the graph. Should only be changed by the implementation. 
+   */
+  protected _edgeCount = 0;
+
   constructor(opts = {} as { directed?: boolean, multigraph?: boolean, compound?: boolean }) {
     this._isDirected = _.has(opts, 'directed') ? opts.directed : true;
     this._isMultigraph = _.has(opts, 'multigraph') ? opts.multigraph : false;
@@ -474,12 +481,6 @@ export class Graph {
     }
   }
 }
-
-/* Number of nodes in the graph. Should only be changed by the implementation. */
-Graph.prototype._nodeCount = 0;
-
-/* Number of edges in the graph. Should only be changed by the implementation. */
-Graph.prototype._edgeCount = 0;
 
 function incrementOrInitEntry(map, k) {
   if (map[k]) {

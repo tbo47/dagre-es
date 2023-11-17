@@ -46,7 +46,7 @@ function findType1Conflicts(g, layering) {
       k0 = 0,
       // Tracks the last node in this layer scanned for crossings with a type-1
       // segment.
-      scanPos = 0 as number | string,
+      scanPos: number | string = 0,
       prevLayerLength = prevLayer.length,
       lastNode = _.last(layer);
 
