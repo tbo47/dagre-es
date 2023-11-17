@@ -1,4 +1,3 @@
-import * as _ from 'lodash-es';
 import * as alg from '../../graphlib/alg/index.js';
 import { simplify } from '../util.js';
 import { feasibleTree } from './feasible-tree.js';
@@ -67,9 +66,7 @@ function networkSimplex(g) {
 function initCutValues(t, g) {
   var vs = alg.postorder(t, t.nodes());
   vs = vs.slice(0, vs.length - 1);
-  _.forEach(vs, function (v) {
-    assignCutValue(t, g, v);
-  });
+  vs.forEach(v => assignCutValue(t, g, v));
 }
 
 function assignCutValue(t, g, child) {
@@ -99,7 +96,7 @@ function calcCutValue(t, g, child) {
 
   cutValue = graphEdge.weight;
 
-  _.forEach(g.nodeEdges(child), function (e) {
+  g.nodeEdges(child).forEach(e => {
     var isOutEdge = e.v === child,
       other = isOutEdge ? e.w : e.v;
 
@@ -130,8 +127,8 @@ function dfsAssignLowLim(tree, visited, nextLim, v, parent?) {
   var label = tree.node(v);
 
   visited[v] = true;
-  _.forEach(tree.neighbors(v), function (w) {
-    if (!_.has(visited, w)) {
+  tree.neighbors(v).forEach(w => {
+    if (!visited.hasOwnProperty(w)) {
       nextLim = dfsAssignLowLim(tree, visited, nextLim, w, v);
     }
   });
@@ -149,9 +146,7 @@ function dfsAssignLowLim(tree, visited, nextLim, v, parent?) {
 }
 
 function leaveEdge(tree) {
-  return _.find(tree.edges(), function (e) {
-    return tree.edge(e).cutvalue < 0;
-  });
+  return tree.edges().find(e => tree.edge(e).cutvalue < 0);
 }
 
 function enterEdge(t, g, edge) {
@@ -178,15 +173,19 @@ function enterEdge(t, g, edge) {
     flip = true;
   }
 
-  var candidates = _.filter(g.edges(), function (edge) {
+  var candidates = g.edges().filter(edge => {
     return (
       flip === isDescendant(t, t.node(edge.v), tailLabel) &&
       flip !== isDescendant(t, t.node(edge.w), tailLabel)
     );
   });
 
-  return _.minBy(candidates, function (edge) {
-    return slack(g, edge);
+  return candidates.reduce((acc, edge) => {
+    if (slack(g, edge) < slack(g, acc)) {
+      return edge;
+    }
+
+    return acc;
   });
 }
 
@@ -201,12 +200,10 @@ function exchangeEdges(t, g, e, f) {
 }
 
 function updateRanks(t, g) {
-  var root = _.find(t.nodes(), function (v) {
-    return !g.node(v).parent;
-  });
+  var root = t.nodes().find(v => !g.node(v).parent);
   var vs = alg.preorder(t, root);
   vs = vs.slice(1);
-  _.forEach(vs, function (v) {
+  vs.forEach(v => {
     var parent = t.node(v).parent,
       edge = g.edge(v, parent),
       flipped = false;
