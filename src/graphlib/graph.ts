@@ -24,7 +24,24 @@ var EDGE_KEY_DELIM = '\x01';
 //    edges up and, object properties, which have string keys, are the closest
 //    we're going to get to a performant hashtable in JavaScript.
 export class Graph {
-  constructor(opts = {}) {
+  _isDirected: boolean;
+  _isMultigraph: boolean;
+  _isCompound: boolean;
+  _label: any;
+  _defaultNodeLabelFn: () => any;
+  _defaultEdgeLabelFn: () => any;
+  _nodes: {};
+  _parent: {};
+  _children: {};
+  _in: {};
+  _preds: {};
+  _out: {};
+  _sucs: {};
+  _edgeObjs: {};
+  _edgeLabels: {};
+  _nodeCount = 0;
+  _edgeCount = 0;
+  constructor(opts = {} as { directed?: boolean, multigraph?: boolean, compound?: boolean }) {
     this._isDirected = _.has(opts, 'directed') ? opts.directed : true;
     this._isMultigraph = _.has(opts, 'multigraph') ? opts.multigraph : false;
     this._isCompound = _.has(opts, 'compound') ? opts.compound : false;
@@ -111,7 +128,7 @@ export class Graph {
       return _.isEmpty(self._out[v]);
     });
   }
-  setNodes(vs, value) {
+  setNodes(vs, value?) {
     var args = arguments;
     var self = this;
     _.each(vs, function (v) {
@@ -123,7 +140,7 @@ export class Graph {
     });
     return this;
   }
-  setNode(v, value) {
+  setNode(v, value?) {
     if (_.has(this._nodes, v)) {
       if (arguments.length > 1) {
         this._nodes[v] = value;
@@ -176,7 +193,7 @@ export class Graph {
     }
     return this;
   }
-  setParent(v, parent) {
+  setParent(v, parent?) {
     if (!this._isCompound) {
       throw new Error('Cannot set parent in a non-compound graph');
     }
@@ -212,7 +229,7 @@ export class Graph {
       }
     }
   }
-  children(v) {
+  children(v?) {
     if (_.isUndefined(v)) {
       v = GRAPH_NODE;
     }
@@ -272,8 +289,7 @@ export class Graph {
       }
     });
 
-    _.each(this._edgeObjs, function (e) {
-      // @ts-expect-error
+    _.each(this._edgeObjs, function (e: { v: string, w: string }) {
       if (copy.hasNode(e.v) && copy.hasNode(e.w)) {
         copy.setEdge(e, self.edge(e));
       }
@@ -314,10 +330,10 @@ export class Graph {
   edges() {
     return _.values(this._edgeObjs);
   }
-  setPath(vs, value) {
+  setPath(vs, value?) {
     var self = this;
     var args = arguments;
-    _.reduce(vs, function (v, w) {
+    _.reduce(vs, (v, w) => {
       if (args.length > 1) {
         self.setEdge(v, w, value);
       } else {
@@ -331,7 +347,7 @@ export class Graph {
    * setEdge(v, w, [value, [name]])
    * setEdge({ v, w, [name] }, [value])
    */
-  setEdge() {
+  setEdge(u1?, u2?, u3?, u4?) {
     var v, w, name, value;
     var valueSpecified = false;
     var arg0 = arguments[0];
@@ -394,21 +410,21 @@ export class Graph {
     this._edgeCount++;
     return this;
   }
-  edge(v, w, name) {
-    var e =
+  edge(v, w?, name?) {
+    const e =
       arguments.length === 1
         ? edgeObjToId(this._isDirected, arguments[0])
         : edgeArgsToId(this._isDirected, v, w, name);
     return this._edgeLabels[e];
   }
-  hasEdge(v, w, name) {
+  hasEdge(v, w, name?) {
     var e =
       arguments.length === 1
         ? edgeObjToId(this._isDirected, arguments[0])
         : edgeArgsToId(this._isDirected, v, w, name);
     return _.has(this._edgeLabels, e);
   }
-  removeEdge(v, w, name) {
+  removeEdge(v, w?, name?) {
     var e =
       arguments.length === 1
         ? edgeObjToId(this._isDirected, arguments[0])
@@ -427,7 +443,7 @@ export class Graph {
     }
     return this;
   }
-  inEdges(v, u) {
+  inEdges(v, u?) {
     var inV = this._in[v];
     if (inV) {
       var edges = _.values(inV);
@@ -439,7 +455,7 @@ export class Graph {
       });
     }
   }
-  outEdges(v, w) {
+  outEdges(v, w?) {
     var outV = this._out[v];
     if (outV) {
       var edges = _.values(outV);
@@ -451,7 +467,7 @@ export class Graph {
       });
     }
   }
-  nodeEdges(v, w) {
+  nodeEdges(v, w?) {
     var inEdges = this.inEdges(v, w);
     if (inEdges) {
       return inEdges.concat(this.outEdges(v, w));
@@ -491,14 +507,14 @@ function edgeArgsToId(isDirected, v_, w_, name) {
 }
 
 function edgeArgsToObj(isDirected, v_, w_, name) {
-  var v = '' + v_;
-  var w = '' + w_;
+  let v = '' + v_;
+  let w = '' + w_;
   if (!isDirected && v > w) {
     var tmp = v;
     v = w;
     w = tmp;
   }
-  var edgeObj = { v: v, w: w };
+  var edgeObj = { v, w } as { v: string, w: string, name?: string };
   if (name) {
     edgeObj.name = name;
   }

@@ -1,14 +1,11 @@
 {
   "compilerOptions": {
-    "checkJs": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "lib": ["dom", "dom.iterable", "es2020"],
-    "types": [
-      // vitest types don't work with module "node16", see
-      // https://github.com/vitejs/vite/issues/11552
-      "@types/jest"
-    ],
-    "module": "node16"
-  }
+    "target": "ES6",
+    "outDir": "dist_tmp/",
+    "types": [],
+  },
+  "exclude": [
+    "src/**/*.test.ts",
+    "test/**/*.ts",
+  ]
 }

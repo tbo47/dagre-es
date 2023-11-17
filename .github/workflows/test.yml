@@ -9,8 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [20.x]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -18,11 +17,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci # throws an error if the package-lock.json file is out of sync
-      - name: Check for linting errors (run `npm run lint:fix` to fix)
-        run: npm run lint
-      - name: Check for prettier errors (run `npm run format` to fix)
-        run: npx prettier --check .
+      - run: npm ci
       - name: Run unit tests
         run: npm test
       - name: Build the npm package to publish

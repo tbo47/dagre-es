@@ -4,7 +4,7 @@ import { addTextLabel } from './add-text-label.js';
 
 export { addLabel };
 
-function addLabel(root, node, location) {
+function addLabel(root, node, location?) {
   var label = node.label;
   var labelSvg = root.append('g');
 

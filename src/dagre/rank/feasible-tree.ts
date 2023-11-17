@@ -73,7 +73,7 @@ function tightTree(t, g) {
  * it.
  */
 function findMinSlackEdge(t, g) {
-  return _.minBy(g.edges(), function (e) {
+  return _.minBy(g.edges(), (e: { v: string; w: string }) => {
     if (t.hasNode(e.v) !== t.hasNode(e.w)) {
       return slack(g, e);
     }

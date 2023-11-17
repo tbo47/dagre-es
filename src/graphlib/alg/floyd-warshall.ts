@@ -4,7 +4,7 @@ export { floydWarshall };
 
 var DEFAULT_WEIGHT_FUNC = _.constant(1);
 
-function floydWarshall(g, weightFn, edgeFn) {
+function floydWarshall(g, weightFn, edgeFn?) {
   return runFloydWarshall(
     g,
     weightFn || DEFAULT_WEIGHT_FUNC,

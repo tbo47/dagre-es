@@ -3,7 +3,7 @@ import * as util from '../util.js';
 
 export { sort };
 
-function sort(entries, biasRight) {
+function sort(entries, biasRight?) {
   var parts = util.partition(entries, function (entry) {
     return _.has(entry, 'barycenter');
   });
@@ -28,7 +28,7 @@ function sort(entries, biasRight) {
     vsIndex = consumeUnsortable(vs, unsortable, vsIndex);
   });
 
-  var result = { vs: _.flatten(vs) };
+  var result = { vs: _.flatten(vs) } as { vs: string[]; barycenter?: number; weight?: number };
   if (weight) {
     result.barycenter = sum / weight;
     result.weight = weight;

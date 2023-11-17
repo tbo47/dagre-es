@@ -1,8 +1,6 @@
 import * as _ from 'lodash-es';
 
-export { barycenter };
-
-function barycenter(g, movable) {
+export const barycenter = (g, movable) => {
   return _.map(movable, function (v) {
     var inV = g.inEdges(v);
     if (!inV.length) {

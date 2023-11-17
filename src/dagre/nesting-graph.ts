@@ -28,7 +28,7 @@ export { run, cleanup };
  */
 function run(g) {
   var root = util.addDummyNode(g, 'root', {}, '_root');
-  var depths = treeDepths(g);
+  var depths = treeDepths(g) as any;
   var height = _.max(_.values(depths)) - 1; // Note: depths is an Object not an array
   var nodeSep = 2 * height + 1;
 

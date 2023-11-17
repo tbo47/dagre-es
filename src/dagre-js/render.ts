@@ -34,7 +34,7 @@ function render() {
     positionClusters(clusters, g);
 
     postProcessGraph(g);
-  };
+  } as any;
 
   fn.createNodes = function (value) {
     if (!arguments.length) return createNodes;

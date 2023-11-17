@@ -10,6 +10,8 @@ export { PriorityQueue };
  * have its priority decreased in O(log n) time.
  */
 class PriorityQueue {
+  _arr: { priority: any; key: any }[];
+  _keyIndices: {};
   constructor() {
     this._arr = [];
     this._keyIndices = {};
@@ -99,12 +101,12 @@ class PriorityQueue {
     if (priority > this._arr[index].priority) {
       throw new Error(
         'New priority is greater than current priority. ' +
-          'Key: ' +
-          key +
-          ' Old: ' +
-          this._arr[index].priority +
-          ' New: ' +
-          priority
+        'Key: ' +
+        key +
+        ' Old: ' +
+        this._arr[index].priority +
+        ' New: ' +
+        priority
       );
     }
     this._arr[index].priority = priority;

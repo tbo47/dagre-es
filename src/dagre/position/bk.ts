@@ -41,12 +41,12 @@ function findType1Conflicts(g, layering) {
   var conflicts = {};
 
   function visitLayer(prevLayer, layer) {
-    var // last visited node in the previous layer that is incident on an inner
+    let // last visited node in the previous layer that is incident on an inner
       // segment.
       k0 = 0,
       // Tracks the last node in this layer scanned for crossings with a type-1
       // segment.
-      scanPos = 0,
+      scanPos = 0 as number | string,
       prevLayerLength = prevLayer.length,
       lastNode = _.last(layer);
 
@@ -64,7 +64,6 @@ function findType1Conflicts(g, layering) {
             }
           });
         });
-        // @ts-expect-error
         scanPos = i + 1;
         k0 = k1;
       }
@@ -98,7 +97,7 @@ function findType2Conflicts(g, layering) {
   function visitLayer(north, south) {
     var prevNorthPos = -1,
       nextNorthPos,
-      southPos = 0;
+      southPos = 0 as number | string;
 
     _.forEach(south, function (v, southLookahead) {
       if (g.node(v).dummy === 'border') {
@@ -106,7 +105,6 @@ function findType2Conflicts(g, layering) {
         if (predecessors.length) {
           nextNorthPos = g.node(predecessors[0]).order;
           scan(south, southPos, southLookahead, prevNorthPos, nextNorthPos);
-          // @ts-expect-error
           southPos = southLookahead;
           prevNorthPos = nextNorthPos;
         }
@@ -200,7 +198,7 @@ function verticalAlignment(g, layering, conflicts, neighborFn) {
   return { root: root, align: align };
 }
 
-function horizontalCompaction(g, layering, root, align, reverseSep) {
+function horizontalCompaction(g, layering, root, align, reverseSep?) {
   // This portion of the algorithm differs from BK due to a number of problems.
   // Instead of their algorithm we construct a new block graph and do two
   // sweeps. The first sweep places blocks with the smallest possible
@@ -329,7 +327,7 @@ function alignCoordinates(xss, alignTo) {
   });
 }
 
-function balance(xss, align) {
+function balance(xss, align?) {
   return _.mapValues(xss.ul, function (ignore, v) {
     if (align) {
       return xss[align.toLowerCase()][v];

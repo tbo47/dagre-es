@@ -192,11 +192,11 @@ function removeEmptyRanks(g) {
   });
 }
 
-function addBorderNode(g, prefix, rank, order) {
+function addBorderNode(g, prefix, rank?, order?) {
   var node = {
     width: 0,
     height: 0,
-  };
+  } as { width: number; height: number; rank?: number; order?: number };
   if (arguments.length >= 4) {
     node.rank = rank;
     node.order = order;
