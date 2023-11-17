@@ -4,9 +4,9 @@ import { greedyFAS } from './greedy-fas.js';
 export { run, undo };
 
 function run(g) {
-  var fas = g.graph().acyclicer === 'greedy' ? greedyFAS(g, weightFn(g)) : dfsFAS(g);
+  const fas = g.graph().acyclicer === 'greedy' ? greedyFAS(g, weightFn(g)) : dfsFAS(g);
   _.forEach(fas, function (e) {
-    var label = g.edge(e);
+    const label = g.edge(e);
     g.removeEdge(e);
     label.forwardName = e.name;
     label.reversed = true;
@@ -21,9 +21,9 @@ function run(g) {
 }
 
 function dfsFAS(g) {
-  var fas = [];
-  var stack = {};
-  var visited = {};
+  const fas = [];
+  const stack = {};
+  const visited = {};
 
   function dfs(v) {
     if (_.has(visited, v)) {
@@ -47,11 +47,11 @@ function dfsFAS(g) {
 
 function undo(g) {
   _.forEach(g.edges(), function (e) {
-    var label = g.edge(e);
+    const label = g.edge(e);
     if (label.reversed) {
       g.removeEdge(e);
 
-      var forwardName = label.forwardName;
+      const forwardName = label.forwardName;
       delete label.reversed;
       delete label.forwardName;
       g.setEdge(e.w, e.v, label, forwardName);

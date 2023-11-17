@@ -4,7 +4,7 @@ import { barycenter } from './barycenter.js';
 import { Graph } from '../../graphlib/graph.js';
 
 describe('order/barycenter', function () {
-  var g;
+  let g;
 
   beforeEach(function () {
     g = new Graph()
@@ -19,7 +19,7 @@ describe('order/barycenter', function () {
   it('assigns an undefined barycenter for a node with no predecessors', function () {
     g.setNode('x', {});
 
-    var results = barycenter(g, ['x']);
+    const results = barycenter(g, ['x']);
     expect(results).to.have.length(1);
     expect(results[0]).to.eql({ v: 'x' });
   });
@@ -28,7 +28,7 @@ describe('order/barycenter', function () {
     g.setNode('a', { order: 2 });
     g.setEdge('a', 'x');
 
-    var results = barycenter(g, ['x']);
+    const results = barycenter(g, ['x']);
     expect(results).to.have.length(1);
     expect(results[0]).eqls({ v: 'x', barycenter: 2, weight: 1 });
   });
@@ -39,7 +39,7 @@ describe('order/barycenter', function () {
     g.setEdge('a', 'x');
     g.setEdge('b', 'x');
 
-    var results = barycenter(g, ['x']);
+    const results = barycenter(g, ['x']);
     expect(results).to.have.length(1);
     expect(results[0]).eqls({ v: 'x', barycenter: 3, weight: 2 });
   });
@@ -50,7 +50,7 @@ describe('order/barycenter', function () {
     g.setEdge('a', 'x', { weight: 3 });
     g.setEdge('b', 'x');
 
-    var results = barycenter(g, ['x']);
+    const results = barycenter(g, ['x']);
     expect(results).to.have.length(1);
     expect(results[0]).eqls({ v: 'x', barycenter: 2.5, weight: 4 });
   });
@@ -65,7 +65,7 @@ describe('order/barycenter', function () {
     g.setEdge('a', 'z', { weight: 2 });
     g.setEdge('c', 'z');
 
-    var results = barycenter(g, ['x', 'y', 'z']);
+    const results = barycenter(g, ['x', 'y', 'z']);
     expect(results).to.have.length(3);
     expect(results[0]).eqls({ v: 'x', barycenter: 1.5, weight: 2 });
     expect(results[1]).eqls({ v: 'y' });

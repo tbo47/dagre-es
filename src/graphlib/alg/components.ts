@@ -3,9 +3,9 @@ import * as _ from 'lodash-es';
 export { components };
 
 function components(g) {
-  var visited = {};
-  var cmpts = [];
-  var cmpt;
+  const visited = {};
+  const cmpts = [];
+  let cmpt;
 
   function dfs(v) {
     if (_.has(visited, v)) return;

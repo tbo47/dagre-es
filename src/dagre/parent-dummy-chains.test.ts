@@ -4,7 +4,7 @@ import { Graph } from '../graphlib/index.js';
 import { parentDummyChains } from './parent-dummy-chains.js';
 
 describe('parentDummyChains', function () {
-  var g;
+  let g;
 
   beforeEach(function () {
     g = new Graph({ compound: true }).setGraph({});
@@ -82,7 +82,7 @@ describe('parentDummyChains', function () {
     g.setParent('sg4', 'sg3');
     g.setNode('sg3', { minRank: 6, maxRank: 10 });
     g.setNode('sg4', { minRank: 7, maxRank: 9 });
-    for (var i = 0; i < 5; ++i) {
+    for (let i = 0; i < 5; ++i) {
       g.setNode('d' + (i + 1), { rank: i + 3 });
     }
     g.node('d1').edgeObj = { v: 'a', w: 'b' };

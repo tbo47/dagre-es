@@ -6,7 +6,7 @@ import * as util from './util.js';
 export { createEdgeLabels, setCreateEdgeLabels };
 
 let createEdgeLabels = function (selection, g) {
-  var svgEdgeLabels = selection
+  let svgEdgeLabels = selection
     .selectAll('g.edgeLabel')
     .data(g.edges(), function (e) {
       return util.edgeToId(e);
@@ -19,11 +19,11 @@ let createEdgeLabels = function (selection, g) {
   svgEdgeLabels = selection.selectAll('g.edgeLabel');
 
   svgEdgeLabels.each(function (e) {
-    var root = d3.select(this);
+    const root = d3.select(this);
     root.select('.label').remove();
-    var edge = g.edge(e);
-    var label = addLabel(root, g.edge(e), 0).classed('label', true);
-    var bbox = label.node().getBBox();
+    const edge = g.edge(e);
+    const label = addLabel(root, g.edge(e), 0).classed('label', true);
+    const bbox = label.node().getBBox();
 
     if (edge.labelId) {
       label.attr('id', edge.labelId);
@@ -36,7 +36,7 @@ let createEdgeLabels = function (selection, g) {
     }
   });
 
-  var exitSelection;
+  let exitSelection;
 
   if (svgEdgeLabels.exit) {
     exitSelection = svgEdgeLabels.exit();

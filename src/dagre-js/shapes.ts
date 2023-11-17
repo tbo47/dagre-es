@@ -5,7 +5,7 @@ import { intersectRect } from './intersect/intersect-rect.js';
 
 export { shapes, setShapes };
 
-var shapes = {
+let shapes = {
   rect,
   ellipse,
   circle,
@@ -17,7 +17,7 @@ function setShapes(value) {
 }
 
 function rect(parent, bbox, node) {
-  var shapeSvg = parent
+  const shapeSvg = parent
     .insert('rect', ':first-child')
     .attr('rx', node.rx)
     .attr('ry', node.ry)
@@ -34,9 +34,9 @@ function rect(parent, bbox, node) {
 }
 
 function ellipse(parent, bbox, node) {
-  var rx = bbox.width / 2;
-  var ry = bbox.height / 2;
-  var shapeSvg = parent
+  const rx = bbox.width / 2;
+  const ry = bbox.height / 2;
+  const shapeSvg = parent
     .insert('ellipse', ':first-child')
     .attr('x', -bbox.width / 2)
     .attr('y', -bbox.height / 2)
@@ -51,8 +51,8 @@ function ellipse(parent, bbox, node) {
 }
 
 function circle(parent, bbox, node) {
-  var r = Math.max(bbox.width, bbox.height) / 2;
-  var shapeSvg = parent
+  const r = Math.max(bbox.width, bbox.height) / 2;
+  const shapeSvg = parent
     .insert('circle', ':first-child')
     .attr('x', -bbox.width / 2)
     .attr('y', -bbox.height / 2)
@@ -69,21 +69,21 @@ function circle(parent, bbox, node) {
 // the function to calculate the diamond shape from:
 // http://mathforum.org/kb/message.jspa?messageID=3750236
 function diamond(parent, bbox, node) {
-  var w = (bbox.width * Math.SQRT2) / 2;
-  var h = (bbox.height * Math.SQRT2) / 2;
-  var points = [
+  const w = (bbox.width * Math.SQRT2) / 2;
+  const h = (bbox.height * Math.SQRT2) / 2;
+  const points = [
     { x: 0, y: -h },
     { x: -w, y: 0 },
     { x: 0, y: h },
     { x: w, y: 0 },
   ];
-  var shapeSvg = parent.insert('polygon', ':first-child').attr(
+  const shapeSvg = parent.insert('polygon', ':first-child').attr(
     'points',
     points
       .map(function (p) {
         return p.x + ',' + p.y;
       })
-      .join(' ')
+      .join(' '),
   );
 
   node.intersect = function (p) {

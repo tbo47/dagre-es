@@ -3,14 +3,14 @@ import * as _ from 'lodash-es';
 export { adjust, undo };
 
 function adjust(g) {
-  var rankDir = g.graph().rankdir.toLowerCase();
+  const rankDir = g.graph().rankdir.toLowerCase();
   if (rankDir === 'lr' || rankDir === 'rl') {
     swapWidthHeight(g);
   }
 }
 
 function undo(g) {
-  var rankDir = g.graph().rankdir.toLowerCase();
+  const rankDir = g.graph().rankdir.toLowerCase();
   if (rankDir === 'bt' || rankDir === 'rl') {
     reverseY(g);
   }
@@ -31,7 +31,7 @@ function swapWidthHeight(g) {
 }
 
 function swapWidthHeightOne(attrs) {
-  var w = attrs.width;
+  const w = attrs.width;
   attrs.width = attrs.height;
   attrs.height = w;
 }
@@ -42,7 +42,7 @@ function reverseY(g) {
   });
 
   _.forEach(g.edges(), function (e) {
-    var edge = g.edge(e);
+    const edge = g.edge(e);
     _.forEach(edge.points, reverseYOne);
     if (_.has(edge, 'y')) {
       reverseYOne(edge);
@@ -60,7 +60,7 @@ function swapXY(g) {
   });
 
   _.forEach(g.edges(), function (e) {
-    var edge = g.edge(e);
+    const edge = g.edge(e);
     _.forEach(edge.points, swapXYOne);
     if (_.has(edge, 'x')) {
       swapXYOne(edge);
@@ -69,7 +69,7 @@ function swapXY(g) {
 }
 
 function swapXYOne(attrs) {
-  var x = attrs.x;
+  const x = attrs.x;
   attrs.x = attrs.y;
   attrs.y = x;
 }

@@ -4,7 +4,7 @@ import { position } from './index.js';
 import { Graph } from '../../graphlib/index.js';
 
 describe('position', function () {
-  var g;
+  let g;
 
   beforeEach(function () {
     g = new Graph({ compound: true }).setGraph({

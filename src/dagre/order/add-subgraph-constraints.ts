@@ -1,11 +1,11 @@
 import * as _ from 'lodash-es';
 
 export const addSubgraphConstraints = (g, cg, vs) => {
-  var prev = {},
-    rootPrev;
+  const prev = {};
+  let rootPrev;
 
   _.forEach(vs, function (v) {
-    var child = g.parent(v),
+    let child = g.parent(v),
       parent,
       prevChild;
     while (child) {
@@ -48,4 +48,4 @@ export const addSubgraphConstraints = (g, cg, vs) => {
   }
   dfs(undefined);
   */
-}
+};

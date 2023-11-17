@@ -28,9 +28,9 @@ export { resolveConflicts };
  *    elements in `vs`.
  */
 function resolveConflicts(entries, cg) {
-  var mappedEntries = {};
+  const mappedEntries = {};
   _.forEach(entries, function (entry, i) {
-    var tmp = (mappedEntries[entry.v] = {
+    const tmp = (mappedEntries[entry.v] = {
       indegree: 0,
       in: [],
       out: [],
@@ -46,15 +46,15 @@ function resolveConflicts(entries, cg) {
   });
 
   _.forEach(cg.edges(), function (e) {
-    var entryV = mappedEntries[e.v];
-    var entryW = mappedEntries[e.w];
+    const entryV = mappedEntries[e.v];
+    const entryW = mappedEntries[e.w];
     if (!_.isUndefined(entryV) && !_.isUndefined(entryW)) {
       entryW.indegree++;
       entryV.out.push(mappedEntries[e.w]);
     }
   });
 
-  var sourceSet = _.filter(mappedEntries, function (entry) {
+  const sourceSet = _.filter(mappedEntries, function (entry) {
     // @ts-expect-error
     return !entry.indegree;
   });
@@ -63,7 +63,7 @@ function resolveConflicts(entries, cg) {
 }
 
 function doResolveConflicts(sourceSet) {
-  var entries = [];
+  const entries = [];
 
   function handleIn(vEntry) {
     return function (uEntry) {
@@ -90,7 +90,7 @@ function doResolveConflicts(sourceSet) {
   }
 
   while (sourceSet.length) {
-    var entry = sourceSet.pop();
+    const entry = sourceSet.pop();
     entries.push(entry);
     _.forEach(entry['in'].reverse(), handleIn(entry));
     _.forEach(entry.out, handleOut(entry));
@@ -102,13 +102,13 @@ function doResolveConflicts(sourceSet) {
     }),
     function (entry) {
       return _.pick(entry, ['vs', 'i', 'barycenter', 'weight']);
-    }
+    },
   );
 }
 
 function mergeEntries(target, source) {
-  var sum = 0;
-  var weight = 0;
+  let sum = 0;
+  let weight = 0;
 
   if (target.weight) {
     sum += target.barycenter * target.weight;

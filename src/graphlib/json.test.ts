@@ -34,7 +34,7 @@ describe('json', function () {
   });
 
   it('preserves multi-edges', function () {
-    var g = new Graph({ multigraph: true });
+    const g = new Graph({ multigraph: true });
 
     g.setEdge({ v: 'a', w: 'b', name: 'foo' });
     expect(rw(g).hasEdge('a', 'b', 'foo')).to.be.true;
@@ -52,7 +52,7 @@ describe('json', function () {
   it('preserves parent / child relationships', function () {
     expect(rw(new Graph({ compound: true }).setNode('a')).parent('a')).to.be.undefined;
     expect(rw(new Graph({ compound: true }).setParent('a', 'parent')).parent('a')).to.equal(
-      'parent'
+      'parent',
     );
   });
 });

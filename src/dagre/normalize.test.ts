@@ -5,7 +5,7 @@ import * as normalize from './normalize.js';
 import { Graph } from '../graphlib/index.js';
 
 describe('normalize', function () {
-  var g;
+  let g;
 
   beforeEach(function () {
     g = new Graph({ multigraph: true, compound: true }).setGraph({});
@@ -32,7 +32,7 @@ describe('normalize', function () {
       normalize.run(g);
 
       expect(g.successors('a')).to.have.length(1);
-      var successor = g.successors('a')[0];
+      const successor = g.successors('a')[0];
       expect(g.node(successor).dummy).to.equal('edge');
       expect(g.node(successor).rank).to.equal(1);
       expect(g.successors(successor)).to.eql(['b']);
@@ -51,7 +51,7 @@ describe('normalize', function () {
       normalize.run(g);
 
       expect(g.successors('a')).to.have.length(1);
-      var successor = g.successors('a')[0];
+      const successor = g.successors('a')[0];
       expect(g.node(successor).width).to.equal(0);
       expect(g.node(successor).height).to.equal(0);
     });
@@ -63,8 +63,8 @@ describe('normalize', function () {
 
       normalize.run(g);
 
-      var labelV = g.successors(g.successors('a')[0])[0];
-      var labelNode = g.node(labelV);
+      const labelV = g.successors(g.successors('a')[0])[0];
+      const labelNode = g.node(labelV);
       expect(labelNode.width).to.equal(20);
       expect(labelNode.height).to.equal(10);
     });
@@ -113,7 +113,7 @@ describe('normalize', function () {
 
       normalize.run(g);
 
-      var dummyLabel = g.node(g.neighbors('a')[0]);
+      const dummyLabel = g.node(g.neighbors('a')[0]);
       dummyLabel.x = 5;
       dummyLabel.y = 10;
 
@@ -129,15 +129,15 @@ describe('normalize', function () {
 
       normalize.run(g);
 
-      var aSucLabel = g.node(g.neighbors('a')[0]);
+      const aSucLabel = g.node(g.neighbors('a')[0]);
       aSucLabel.x = 5;
       aSucLabel.y = 10;
 
-      var midLabel = g.node(g.successors(g.successors('a')[0])[0]);
+      const midLabel = g.node(g.successors(g.successors('a')[0])[0]);
       midLabel.x = 20;
       midLabel.y = 25;
 
-      var bPredLabel = g.node(g.neighbors('b')[0]);
+      const bPredLabel = g.node(g.neighbors('b')[0]);
       bPredLabel.x = 100;
       bPredLabel.y = 200;
 
@@ -157,7 +157,7 @@ describe('normalize', function () {
 
       normalize.run(g);
 
-      var labelNode = g.node(g.successors('a')[0]);
+      const labelNode = g.node(g.successors('a')[0]);
       labelNode.x = 50;
       labelNode.y = 60;
       labelNode.width = 20;
@@ -180,7 +180,7 @@ describe('normalize', function () {
 
       normalize.run(g);
 
-      var labelNode = g.node(g.successors(g.successors('a')[0])[0]);
+      const labelNode = g.node(g.successors(g.successors('a')[0])[0]);
       labelNode.x = 50;
       labelNode.y = 60;
       labelNode.width = 20;
@@ -204,14 +204,14 @@ describe('normalize', function () {
 
       normalize.run(g);
 
-      var outEdges = _.sortBy(g.outEdges('a'), 'name');
+      const outEdges = _.sortBy(g.outEdges('a'), 'name');
       expect(outEdges).to.have.length(2);
 
-      var barDummy = g.node(outEdges[0].w);
+      const barDummy = g.node(outEdges[0].w);
       barDummy.x = 5;
       barDummy.y = 10;
 
-      var fooDummy = g.node(outEdges[1].w);
+      const fooDummy = g.node(outEdges[1].w);
       fooDummy.x = 15;
       fooDummy.y = 20;
 

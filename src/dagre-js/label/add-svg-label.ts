@@ -3,7 +3,7 @@ import * as util from '../util.js';
 export { addSVGLabel };
 
 function addSVGLabel(root, node) {
-  var domNode = root;
+  const domNode = root;
 
   domNode.node().appendChild(node.label);
 

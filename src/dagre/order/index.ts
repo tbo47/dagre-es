@@ -25,21 +25,21 @@ export { order };
  *       algorithm.
  */
 function order(g) {
-  var maxRank = util.maxRank(g),
+  const maxRank = util.maxRank(g),
     downLayerGraphs = buildLayerGraphs(g, _.range(1, maxRank + 1), 'inEdges'),
     upLayerGraphs = buildLayerGraphs(g, _.range(maxRank - 1, -1, -1), 'outEdges');
 
-  var layering = initOrder(g);
+  let layering = initOrder(g);
   assignOrder(g, layering);
 
-  var bestCC = Number.POSITIVE_INFINITY,
+  let bestCC = Number.POSITIVE_INFINITY,
     best;
 
-  for (var i = 0, lastBest = 0; lastBest < 4; ++i, ++lastBest) {
+  for (let i = 0, lastBest = 0; lastBest < 4; ++i, ++lastBest) {
     sweepLayerGraphs(i % 2 ? downLayerGraphs : upLayerGraphs, i % 4 >= 2);
 
     layering = util.buildLayerMatrix(g);
-    var cc = crossCount(g, layering);
+    const cc = crossCount(g, layering);
     if (cc < bestCC) {
       lastBest = 0;
       best = _.cloneDeep(layering);
@@ -57,10 +57,10 @@ function buildLayerGraphs(g, ranks, relationship) {
 }
 
 function sweepLayerGraphs(layerGraphs, biasRight) {
-  var cg = new Graph();
+  const cg = new Graph();
   _.forEach(layerGraphs, function (lg) {
-    var root = lg.graph().root;
-    var sorted = sortSubgraph(lg, root, cg, biasRight);
+    const root = lg.graph().root;
+    const sorted = sortSubgraph(lg, root, cg, biasRight);
     _.forEach(sorted.vs, function (v, i) {
       lg.node(v).order = i;
     });

@@ -5,7 +5,7 @@ import { Graph } from '../../graphlib/graph.js';
 import { initOrder } from './init-order.js';
 
 describe('order/initOrder', function () {
-  var g;
+  let g;
 
   beforeEach(function () {
     g = new Graph({ compound: true }).setDefaultEdgeLabel(function () {
@@ -21,7 +21,7 @@ describe('order/initOrder', function () {
     g.setEdge('b', 'd');
     g.setEdge('a', 'e');
 
-    var layering = initOrder(g);
+    const layering = initOrder(g);
     expect(layering[0]).to.eql(['a']);
     expect(_.sortBy(layering[1])).to.eql(['b', 'e']);
     expect(_.sortBy(layering[2])).to.eql(['c', 'd']);
@@ -34,7 +34,7 @@ describe('order/initOrder', function () {
     g.setPath(['a', 'b', 'd']);
     g.setPath(['a', 'c', 'd']);
 
-    var layering = initOrder(g);
+    const layering = initOrder(g);
     expect(layering[0]).to.eql(['a']);
     expect(_.sortBy(layering[1])).to.eql(['b', 'c']);
     expect(_.sortBy(layering[2])).to.eql(['d']);
@@ -45,7 +45,7 @@ describe('order/initOrder', function () {
     g.setNode('sg1', {});
     g.setParent('a', 'sg1');
 
-    var layering = initOrder(g);
+    const layering = initOrder(g);
     expect(layering).to.eql([['a']]);
   });
 });

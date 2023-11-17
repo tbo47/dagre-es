@@ -4,7 +4,7 @@ import chai from '../../test/chai.js';
 const expect = chai.expect;
 
 describe('coordinateSystem', function () {
-  var g;
+  let g;
 
   beforeEach(function () {
     g = new Graph();

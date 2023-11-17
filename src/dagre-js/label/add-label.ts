@@ -5,8 +5,8 @@ import { addTextLabel } from './add-text-label.js';
 export { addLabel };
 
 function addLabel(root, node, location?) {
-  var label = node.label;
-  var labelSvg = root.append('g');
+  const label = node.label;
+  const labelSvg = root.append('g');
 
   // Allow the label to be a string, a function that returns a DOM element, or
   // a DOM element itself.
@@ -18,8 +18,8 @@ function addLabel(root, node, location?) {
     addTextLabel(labelSvg, node);
   }
 
-  var labelBBox = labelSvg.node().getBBox();
-  var y;
+  const labelBBox = labelSvg.node().getBBox();
+  let y;
   switch (location) {
     case 'top':
       y = -node.height / 2;

@@ -14,14 +14,14 @@ function position(g) {
 }
 
 function positionY(g) {
-  var layering = util.buildLayerMatrix(g);
-  var rankSep = g.graph().ranksep;
-  var prevY = 0;
+  const layering = util.buildLayerMatrix(g);
+  const rankSep = g.graph().ranksep;
+  let prevY = 0;
   _.forEach(layering, function (layer) {
-    var maxHeight = _.max(
+    const maxHeight = _.max(
       _.map(layer, function (v) {
         return g.node(v).height;
-      })
+      }),
     );
     _.forEach(layer, function (v) {
       g.node(v).y = prevY + maxHeight / 2;

@@ -3,7 +3,7 @@ const expect = chai.expect;
 import { PriorityQueue } from './priority-queue.js';
 
 describe('data.PriorityQueue', function () {
-  var pq;
+  let pq;
 
   beforeEach(function () {
     pq = new PriorityQueue();

@@ -4,12 +4,12 @@ import * as util from './util.js';
 export { positionClusters };
 
 function positionClusters(selection, g) {
-  var created = selection.filter(function () {
+  const created = selection.filter(function () {
     return !d3.select(this).classed('update');
   });
 
   function translate(v) {
-    var node = g.node(v);
+    const node = g.node(v);
     return 'translate(' + node.x + ',' + node.y + ')';
   }
 
@@ -26,11 +26,11 @@ function positionClusters(selection, g) {
       return g.node(v).height;
     })
     .attr('x', function (v) {
-      var node = g.node(v);
+      const node = g.node(v);
       return -node.width / 2;
     })
     .attr('y', function (v) {
-      var node = g.node(v);
+      const node = g.node(v);
       return -node.height / 2;
     });
 }

@@ -1,8 +1,8 @@
 import * as _ from 'lodash-es';
 
-var DEFAULT_EDGE_NAME = '\x00';
-var GRAPH_NODE = '\x00';
-var EDGE_KEY_DELIM = '\x01';
+const DEFAULT_EDGE_NAME = '\x00';
+const GRAPH_NODE = '\x00';
+const EDGE_KEY_DELIM = '\x01';
 
 // Implementation notes:
 //
@@ -124,25 +124,18 @@ export class Graph {
     return _.keys(this._nodes);
   }
   sources() {
-    var self = this;
-    return _.filter(this.nodes(), function (v) {
-      return _.isEmpty(self._in[v]);
-    });
+    return _.filter(this.nodes(), (v) => _.isEmpty(this._in[v]));
   }
   sinks() {
-    var self = this;
-    return _.filter(this.nodes(), function (v) {
-      return _.isEmpty(self._out[v]);
-    });
+    return _.filter(this.nodes(), (v) => _.isEmpty(this._out[v]));
   }
   setNodes(vs, value?) {
-    var args = arguments;
-    var self = this;
-    _.each(vs, function (v) {
+    const args = arguments;
+    _.each(vs, (v)=> {
       if (args.length > 1) {
-        self.setNode(v, value);
+        this.setNode(v, value);
       } else {
-        self.setNode(v);
+        this.setNode(v);
       }
     });
     return this;
@@ -176,9 +169,9 @@ export class Graph {
     return _.has(this._nodes, v);
   }
   removeNode(v) {
-    var self = this;
+    const self = this;
     if (_.has(this._nodes, v)) {
-      var removeEdge = function (e) {
+      const removeEdge = function (e) {
         self.removeEdge(self._edgeObjs[e]);
       };
       delete this._nodes[v];
@@ -210,7 +203,7 @@ export class Graph {
     } else {
       // Coerce parent to string
       parent += '';
-      for (var ancestor = parent; !_.isUndefined(ancestor); ancestor = this.parent(ancestor)) {
+      for (let ancestor = parent; !_.isUndefined(ancestor); ancestor = this.parent(ancestor)) {
         if (ancestor === v) {
           throw new Error('Setting ' + parent + ' as parent of ' + v + ' would create a cycle');
         }
@@ -230,7 +223,7 @@ export class Graph {
   }
   parent(v) {
     if (this._isCompound) {
-      var parent = this._parent[v];
+      const parent = this._parent[v];
       if (parent !== GRAPH_NODE) {
         return parent;
       }
@@ -242,7 +235,7 @@ export class Graph {
     }
 
     if (this._isCompound) {
-      var children = this._children[v];
+      const children = this._children[v];
       if (children) {
         return _.keys(children);
       }
@@ -253,25 +246,25 @@ export class Graph {
     }
   }
   predecessors(v) {
-    var predsV = this._preds[v];
+    const predsV = this._preds[v];
     if (predsV) {
       return _.keys(predsV);
     }
   }
   successors(v) {
-    var sucsV = this._sucs[v];
+    const sucsV = this._sucs[v];
     if (sucsV) {
       return _.keys(sucsV);
     }
   }
   neighbors(v) {
-    var preds = this.predecessors(v);
+    const preds = this.predecessors(v);
     if (preds) {
       return _.union(preds, this.successors(v));
     }
   }
   isLeaf(v) {
-    var neighbors;
+    let neighbors;
     if (this.isDirected()) {
       neighbors = this.successors(v);
     } else {
@@ -281,7 +274,7 @@ export class Graph {
   }
   filterNodes(filter) {
     // @ts-expect-error
-    var copy = new this.constructor({
+    const copy = new this.constructor({
       directed: this._isDirected,
       multigraph: this._isMultigraph,
       compound: this._isCompound,
@@ -289,22 +282,22 @@ export class Graph {
 
     copy.setGraph(this.graph());
 
-    var self = this;
+    const self = this;
     _.each(this._nodes, function (value, v) {
       if (filter(v)) {
         copy.setNode(v, value);
       }
     });
 
-    _.each(this._edgeObjs, function (e: { v: string, w: string }) {
+    _.each(this._edgeObjs, function (e: { v: string; w: string }) {
       if (copy.hasNode(e.v) && copy.hasNode(e.w)) {
         copy.setEdge(e, self.edge(e));
       }
     });
 
-    var parents = {};
+    const parents = {};
     function findParent(v) {
-      var parent = self.parent(v);
+      const parent = self.parent(v);
       if (parent === undefined || copy.hasNode(parent)) {
         parents[v] = parent;
         return parent;
@@ -338,8 +331,8 @@ export class Graph {
     return _.values(this._edgeObjs);
   }
   setPath(vs, value?) {
-    var self = this;
-    var args = arguments;
+    const self = this;
+    const args = arguments;
     _.reduce(vs, (v, w) => {
       if (args.length > 1) {
         self.setEdge(v, w, value);
@@ -355,9 +348,9 @@ export class Graph {
    * setEdge({ v, w, [name] }, [value])
    */
   setEdge(u1?, u2?, u3?, u4?) {
-    var v, w, name, value;
-    var valueSpecified = false;
-    var arg0 = arguments[0];
+    let v, w, name, value;
+    let valueSpecified = false;
+    const arg0 = arguments[0];
 
     if (typeof arg0 === 'object' && arg0 !== null && 'v' in arg0) {
       v = arg0.v;
@@ -383,7 +376,7 @@ export class Graph {
       name = '' + name;
     }
 
-    var e = edgeArgsToId(this._isDirected, v, w, name);
+    const e = edgeArgsToId(this._isDirected, v, w, name);
     if (_.has(this._edgeLabels, e)) {
       if (valueSpecified) {
         this._edgeLabels[e] = value;
@@ -403,7 +396,7 @@ export class Graph {
     // @ts-expect-error
     this._edgeLabels[e] = valueSpecified ? value : this._defaultEdgeLabelFn(v, w, name);
 
-    var edgeObj = edgeArgsToObj(this._isDirected, v, w, name);
+    const edgeObj = edgeArgsToObj(this._isDirected, v, w, name);
     // Ensure we add undirected edges in a consistent way.
     v = edgeObj.v;
     w = edgeObj.w;
@@ -425,18 +418,18 @@ export class Graph {
     return this._edgeLabels[e];
   }
   hasEdge(v, w, name?) {
-    var e =
+    const e =
       arguments.length === 1
         ? edgeObjToId(this._isDirected, arguments[0])
         : edgeArgsToId(this._isDirected, v, w, name);
     return _.has(this._edgeLabels, e);
   }
   removeEdge(v, w?, name?) {
-    var e =
+    const e =
       arguments.length === 1
         ? edgeObjToId(this._isDirected, arguments[0])
         : edgeArgsToId(this._isDirected, v, w, name);
-    var edge = this._edgeObjs[e];
+    const edge = this._edgeObjs[e];
     if (edge) {
       v = edge.v;
       w = edge.w;
@@ -451,9 +444,9 @@ export class Graph {
     return this;
   }
   inEdges(v, u?) {
-    var inV = this._in[v];
+    const inV = this._in[v];
     if (inV) {
-      var edges = _.values(inV);
+      const edges = _.values(inV);
       if (!u) {
         return edges;
       }
@@ -463,9 +456,9 @@ export class Graph {
     }
   }
   outEdges(v, w?) {
-    var outV = this._out[v];
+    const outV = this._out[v];
     if (outV) {
-      var edges = _.values(outV);
+      const edges = _.values(outV);
       if (!w) {
         return edges;
       }
@@ -475,7 +468,7 @@ export class Graph {
     }
   }
   nodeEdges(v, w?) {
-    var inEdges = this.inEdges(v, w);
+    const inEdges = this.inEdges(v, w);
     if (inEdges) {
       return inEdges.concat(this.outEdges(v, w));
     }
@@ -497,10 +490,10 @@ function decrementOrRemoveEntry(map, k) {
 }
 
 function edgeArgsToId(isDirected, v_, w_, name) {
-  var v = '' + v_;
-  var w = '' + w_;
+  let v = '' + v_;
+  let w = '' + w_;
   if (!isDirected && v > w) {
-    var tmp = v;
+    const tmp = v;
     v = w;
     w = tmp;
   }
@@ -511,11 +504,11 @@ function edgeArgsToObj(isDirected, v_, w_, name) {
   let v = '' + v_;
   let w = '' + w_;
   if (!isDirected && v > w) {
-    var tmp = v;
+    const tmp = v;
     v = w;
     w = tmp;
   }
-  var edgeObj = { v, w } as { v: string, w: string, name?: string };
+  const edgeObj = { v, w } as { v: string; w: string; name?: string };
   if (name) {
     edgeObj.name = name;
   }

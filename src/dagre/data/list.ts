@@ -9,20 +9,20 @@ export interface Sentinel {
 export class List {
   _sentinel: Sentinel;
   constructor() {
-    var sentinel = {} as Sentinel;
+    const sentinel = {} as Sentinel;
     sentinel._next = sentinel._prev = sentinel;
     this._sentinel = sentinel;
   }
   dequeue() {
-    var sentinel = this._sentinel;
-    var entry = sentinel._prev;
+    const sentinel = this._sentinel;
+    const entry = sentinel._prev;
     if (entry !== sentinel) {
       unlink(entry);
       return entry;
     }
   }
   enqueue(entry) {
-    var sentinel = this._sentinel;
+    const sentinel = this._sentinel;
     if (entry._prev && entry._next) {
       unlink(entry);
     }
@@ -32,9 +32,9 @@ export class List {
     entry._prev = sentinel;
   }
   toString() {
-    var strs = [];
-    var sentinel = this._sentinel;
-    var curr = sentinel._prev;
+    const strs = [];
+    const sentinel = this._sentinel;
+    let curr = sentinel._prev;
     while (curr !== sentinel) {
       strs.push(JSON.stringify(curr, filterOutLinks));
       curr = curr._prev;

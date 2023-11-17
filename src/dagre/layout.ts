@@ -14,9 +14,9 @@ import * as util from './util.js';
 export { layout };
 
 function layout(g, opts?) {
-  var time = opts && opts.debugTiming ? util.time : util.notime;
+  const time = opts && opts.debugTiming ? util.time : util.notime;
   time('layout', function () {
-    var layoutGraph = time('  buildLayoutGraph', function () {
+    const layoutGraph = time('  buildLayoutGraph', function () {
       return buildLayoutGraph(g);
     });
     time('  runLayout', function () {
@@ -120,8 +120,8 @@ function runLayout(g, time) {
  */
 function updateInputGraph(inputGraph, layoutGraph) {
   _.forEach(inputGraph.nodes(), function (v) {
-    var inputLabel = inputGraph.node(v);
-    var layoutLabel = layoutGraph.node(v);
+    const inputLabel = inputGraph.node(v);
+    const layoutLabel = layoutGraph.node(v);
 
     if (inputLabel) {
       inputLabel.x = layoutLabel.x;
@@ -135,8 +135,8 @@ function updateInputGraph(inputGraph, layoutGraph) {
   });
 
   _.forEach(inputGraph.edges(), function (e) {
-    var inputLabel = inputGraph.edge(e);
-    var layoutLabel = layoutGraph.edge(e);
+    const inputLabel = inputGraph.edge(e);
+    const layoutLabel = layoutGraph.edge(e);
 
     inputLabel.points = layoutLabel.points;
     if (_.has(layoutLabel, 'x')) {
@@ -149,13 +149,13 @@ function updateInputGraph(inputGraph, layoutGraph) {
   inputGraph.graph().height = layoutGraph.graph().height;
 }
 
-var graphNumAttrs = ['nodesep', 'edgesep', 'ranksep', 'marginx', 'marginy'];
-var graphDefaults = { ranksep: 50, edgesep: 20, nodesep: 50, rankdir: 'tb' };
-var graphAttrs = ['acyclicer', 'ranker', 'rankdir', 'align'];
-var nodeNumAttrs = ['width', 'height'];
-var nodeDefaults = { width: 0, height: 0 };
-var edgeNumAttrs = ['minlen', 'weight', 'width', 'height', 'labeloffset'];
-var edgeDefaults = {
+const graphNumAttrs = ['nodesep', 'edgesep', 'ranksep', 'marginx', 'marginy'];
+const graphDefaults = { ranksep: 50, edgesep: 20, nodesep: 50, rankdir: 'tb' };
+const graphAttrs = ['acyclicer', 'ranker', 'rankdir', 'align'];
+const nodeNumAttrs = ['width', 'height'];
+const nodeDefaults = { width: 0, height: 0 };
+const edgeNumAttrs = ['minlen', 'weight', 'width', 'height', 'labeloffset'];
+const edgeDefaults = {
   minlen: 1,
   weight: 1,
   width: 0,
@@ -163,7 +163,7 @@ var edgeDefaults = {
   labeloffset: 10,
   labelpos: 'r',
 };
-var edgeAttrs = ['labelpos'];
+const edgeAttrs = ['labelpos'];
 
 /*
  * Constructs a new graph from the input graph, which can be used for layout.
@@ -172,24 +172,24 @@ var edgeAttrs = ['labelpos'];
  * attributes can influence layout.
  */
 function buildLayoutGraph(inputGraph) {
-  var g = new Graph({ multigraph: true, compound: true });
-  var graph = canonicalize(inputGraph.graph());
+  const g = new Graph({ multigraph: true, compound: true });
+  const graph = canonicalize(inputGraph.graph());
 
   g.setGraph(
-    _.merge({}, graphDefaults, selectNumberAttrs(graph, graphNumAttrs), _.pick(graph, graphAttrs))
+    _.merge({}, graphDefaults, selectNumberAttrs(graph, graphNumAttrs), _.pick(graph, graphAttrs)),
   );
 
   _.forEach(inputGraph.nodes(), function (v) {
-    var node = canonicalize(inputGraph.node(v));
+    const node = canonicalize(inputGraph.node(v));
     g.setNode(v, _.defaults(selectNumberAttrs(node, nodeNumAttrs), nodeDefaults));
     g.setParent(v, inputGraph.parent(v));
   });
 
   _.forEach(inputGraph.edges(), function (e) {
-    var edge = canonicalize(inputGraph.edge(e));
+    const edge = canonicalize(inputGraph.edge(e));
     g.setEdge(
       e,
-      _.merge({}, edgeDefaults, selectNumberAttrs(edge, edgeNumAttrs), _.pick(edge, edgeAttrs))
+      _.merge({}, edgeDefaults, selectNumberAttrs(edge, edgeNumAttrs), _.pick(edge, edgeAttrs)),
     );
   });
 
@@ -205,10 +205,10 @@ function buildLayoutGraph(inputGraph) {
  * away from the edge itself a bit.
  */
 function makeSpaceForEdgeLabels(g) {
-  var graph = g.graph();
+  const graph = g.graph();
   graph.ranksep /= 2;
   _.forEach(g.edges(), function (e) {
-    var edge = g.edge(e);
+    const edge = g.edge(e);
     edge.minlen *= 2;
     if (edge.labelpos.toLowerCase() !== 'c') {
       if (graph.rankdir === 'TB' || graph.rankdir === 'BT') {
@@ -228,20 +228,20 @@ function makeSpaceForEdgeLabels(g) {
  */
 function injectEdgeLabelProxies(g) {
   _.forEach(g.edges(), function (e) {
-    var edge = g.edge(e);
+    const edge = g.edge(e);
     if (edge.width && edge.height) {
-      var v = g.node(e.v);
-      var w = g.node(e.w);
-      var label = { rank: (w.rank - v.rank) / 2 + v.rank, e: e };
+      const v = g.node(e.v);
+      const w = g.node(e.w);
+      const label = { rank: (w.rank - v.rank) / 2 + v.rank, e: e };
       util.addDummyNode(g, 'edge-proxy', label, '_ep');
     }
   });
 }
 
 function assignRankMinMax(g) {
-  var maxRank = 0;
+  let maxRank = 0;
   _.forEach(g.nodes(), function (v) {
-    var node = g.node(v);
+    const node = g.node(v);
     if (node.borderTop) {
       node.minRank = g.node(node.borderTop).rank;
       node.maxRank = g.node(node.borderBottom).rank;
@@ -254,7 +254,7 @@ function assignRankMinMax(g) {
 
 function removeEdgeLabelProxies(g) {
   _.forEach(g.nodes(), function (v) {
-    var node = g.node(v);
+    const node = g.node(v);
     if (node.dummy === 'edge-proxy') {
       g.edge(node.e).labelRank = node.rank;
       g.removeNode(v);
@@ -263,19 +263,19 @@ function removeEdgeLabelProxies(g) {
 }
 
 function translateGraph(g) {
-  var minX = Number.POSITIVE_INFINITY;
-  var maxX = 0;
-  var minY = Number.POSITIVE_INFINITY;
-  var maxY = 0;
-  var graphLabel = g.graph();
-  var marginX = graphLabel.marginx || 0;
-  var marginY = graphLabel.marginy || 0;
+  let minX = Number.POSITIVE_INFINITY;
+  let maxX = 0;
+  let minY = Number.POSITIVE_INFINITY;
+  let maxY = 0;
+  const graphLabel = g.graph();
+  const marginX = graphLabel.marginx || 0;
+  const marginY = graphLabel.marginy || 0;
 
   function getExtremes(attrs) {
-    var x = attrs.x;
-    var y = attrs.y;
-    var w = attrs.width;
-    var h = attrs.height;
+    const x = attrs.x;
+    const y = attrs.y;
+    const w = attrs.width;
+    const h = attrs.height;
     minX = Math.min(minX, x - w / 2);
     maxX = Math.max(maxX, x + w / 2);
     minY = Math.min(minY, y - h / 2);
@@ -286,7 +286,7 @@ function translateGraph(g) {
     getExtremes(g.node(v));
   });
   _.forEach(g.edges(), function (e) {
-    var edge = g.edge(e);
+    const edge = g.edge(e);
     if (_.has(edge, 'x')) {
       getExtremes(edge);
     }
@@ -296,13 +296,13 @@ function translateGraph(g) {
   minY -= marginY;
 
   _.forEach(g.nodes(), function (v) {
-    var node = g.node(v);
+    const node = g.node(v);
     node.x -= minX;
     node.y -= minY;
   });
 
   _.forEach(g.edges(), function (e) {
-    var edge = g.edge(e);
+    const edge = g.edge(e);
     _.forEach(edge.points, function (p) {
       p.x -= minX;
       p.y -= minY;
@@ -321,10 +321,10 @@ function translateGraph(g) {
 
 function assignNodeIntersects(g) {
   _.forEach(g.edges(), function (e) {
-    var edge = g.edge(e);
-    var nodeV = g.node(e.v);
-    var nodeW = g.node(e.w);
-    var p1, p2;
+    const edge = g.edge(e);
+    const nodeV = g.node(e.v);
+    const nodeW = g.node(e.w);
+    let p1, p2;
     if (!edge.points) {
       edge.points = [];
       p1 = nodeW;
@@ -340,7 +340,7 @@ function assignNodeIntersects(g) {
 
 function fixupEdgeLabelCoords(g) {
   _.forEach(g.edges(), function (e) {
-    var edge = g.edge(e);
+    const edge = g.edge(e);
     if (_.has(edge, 'x')) {
       if (edge.labelpos === 'l' || edge.labelpos === 'r') {
         edge.width -= edge.labeloffset;
@@ -359,7 +359,7 @@ function fixupEdgeLabelCoords(g) {
 
 function reversePointsForReversedEdges(g) {
   _.forEach(g.edges(), function (e) {
-    var edge = g.edge(e);
+    const edge = g.edge(e);
     if (edge.reversed) {
       edge.points.reverse();
     }
@@ -369,11 +369,11 @@ function reversePointsForReversedEdges(g) {
 function removeBorderNodes(g) {
   _.forEach(g.nodes(), function (v) {
     if (g.children(v).length) {
-      var node = g.node(v);
-      var t = g.node(node.borderTop);
-      var b = g.node(node.borderBottom);
-      var l = g.node(_.last(node.borderLeft));
-      var r = g.node(_.last(node.borderRight));
+      const node = g.node(v);
+      const t = g.node(node.borderTop);
+      const b = g.node(node.borderBottom);
+      const l = g.node(_.last(node.borderLeft));
+      const r = g.node(_.last(node.borderRight));
 
       node.width = Math.abs(r.x - l.x);
       node.height = Math.abs(b.y - t.y);
@@ -392,7 +392,7 @@ function removeBorderNodes(g) {
 function removeSelfEdges(g) {
   _.forEach(g.edges(), function (e) {
     if (e.v === e.w) {
-      var node = g.node(e.v);
+      const node = g.node(e.v);
       if (!node.selfEdges) {
         node.selfEdges = [];
       }
@@ -403,11 +403,11 @@ function removeSelfEdges(g) {
 }
 
 function insertSelfEdges(g) {
-  var layers = util.buildLayerMatrix(g);
+  const layers = util.buildLayerMatrix(g);
   _.forEach(layers, function (layer) {
-    var orderShift = 0;
+    let orderShift = 0;
     _.forEach(layer, function (v, i) {
-      var node = g.node(v);
+      const node = g.node(v);
       node.order = i + orderShift;
       _.forEach(node.selfEdges, function (selfEdge) {
         util.addDummyNode(
@@ -421,7 +421,7 @@ function insertSelfEdges(g) {
             e: selfEdge.e,
             label: selfEdge.label,
           },
-          '_se'
+          '_se',
         );
       });
       delete node.selfEdges;
@@ -431,13 +431,13 @@ function insertSelfEdges(g) {
 
 function positionSelfEdges(g) {
   _.forEach(g.nodes(), function (v) {
-    var node = g.node(v);
+    const node = g.node(v);
     if (node.dummy === 'selfedge') {
-      var selfNode = g.node(node.e.v);
-      var x = selfNode.x + selfNode.width / 2;
-      var y = selfNode.y;
-      var dx = node.x - x;
-      var dy = selfNode.height / 2;
+      const selfNode = g.node(node.e.v);
+      const x = selfNode.x + selfNode.width / 2;
+      const y = selfNode.y;
+      const dx = node.x - x;
+      const dy = selfNode.height / 2;
       g.setEdge(node.e, node.label);
       g.removeNode(v);
       node.label.points = [
@@ -458,7 +458,7 @@ function selectNumberAttrs(obj, attrs) {
 }
 
 function canonicalize(attrs) {
-  var newAttrs = {};
+  const newAttrs = {};
   _.forEach(attrs, function (v, k) {
     newAttrs[k.toLowerCase()] = v;
   });

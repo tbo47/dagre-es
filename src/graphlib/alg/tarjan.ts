@@ -3,13 +3,13 @@ import * as _ from 'lodash-es';
 export { tarjan };
 
 function tarjan(g) {
-  var index = 0;
-  var stack = [];
-  var visited = {}; // node id -> { onStack, lowlink, index }
-  var results = [];
+  let index = 0;
+  const stack = [];
+  const visited = {}; // node id -> { onStack, lowlink, index }
+  const results = [];
 
   function dfs(v) {
-    var entry = (visited[v] = {
+    const entry = (visited[v] = {
       onStack: true,
       lowlink: index,
       index: index++,
@@ -26,8 +26,8 @@ function tarjan(g) {
     });
 
     if (entry.lowlink === entry.index) {
-      var cmpt = [];
-      var w;
+      const cmpt = [];
+      let w;
       do {
         w = stack.pop();
         visited[w].onStack = false;

@@ -24,19 +24,19 @@ export { longestPath, slack };
  *    1. Each node will be assign an (unnormalized) "rank" property.
  */
 function longestPath(g) {
-  var visited = {};
+  const visited = {};
 
   function dfs(v) {
-    var label = g.node(v);
+    const label = g.node(v);
     if (_.has(visited, v)) {
       return label.rank;
     }
     visited[v] = true;
 
-    var rank = _.min(
+    let rank = _.min(
       _.map(g.outEdges(v), function (e) {
         return dfs(e.w) - g.edge(e).minlen;
-      })
+      }),
     );
 
     if (

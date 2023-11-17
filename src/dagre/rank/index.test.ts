@@ -5,8 +5,8 @@ import { rank } from './index.js';
 import { Graph } from '../../graphlib/graph.js';
 
 describe('rank', function () {
-  var RANKERS = ['longest-path', 'tight-tree', 'network-simplex', 'unknown-should-still-work'];
-  var g;
+  const RANKERS = ['longest-path', 'tight-tree', 'network-simplex', 'unknown-should-still-work'];
+  let g;
 
   beforeEach(function () {
     g = new Graph()
@@ -28,14 +28,14 @@ describe('rank', function () {
         g.graph().ranker = ranker;
         rank(g);
         _.forEach(g.edges(), function (e) {
-          var vRank = g.node(e.v).rank;
-          var wRank = g.node(e.w).rank;
+          const vRank = g.node(e.v).rank;
+          const wRank = g.node(e.w).rank;
           expect(wRank - vRank).to.be.gte(g.edge(e).minlen);
         });
       });
 
       it('can rank a single node graph', function () {
-        var g = new Graph().setGraph({}).setNode('a', {});
+        const g = new Graph().setGraph({}).setNode('a', {});
         g.graph().ranker = ranker;
         rank(g);
         expect(g.node('a').rank).to.equal(0);

@@ -4,7 +4,7 @@ import { Graph } from '../../graphlib/graph.js';
 import { crossCount } from './cross-count.js';
 
 describe('crossCount', function () {
-  var g;
+  let g;
 
   beforeEach(function () {
     g = new Graph().setDefaultEdgeLabel(function () {
@@ -23,7 +23,7 @@ describe('crossCount', function () {
       crossCount(g, [
         ['a1', 'a2'],
         ['b1', 'b2'],
-      ])
+      ]),
     ).equals(0);
   });
 
@@ -34,7 +34,7 @@ describe('crossCount', function () {
       crossCount(g, [
         ['a1', 'a2'],
         ['b2', 'b1'],
-      ])
+      ]),
     ).equals(1);
   });
 
@@ -45,7 +45,7 @@ describe('crossCount', function () {
       crossCount(g, [
         ['a1', 'a2'],
         ['b2', 'b1'],
-      ])
+      ]),
     ).equals(6);
   });
 
@@ -57,7 +57,7 @@ describe('crossCount', function () {
         ['a1', 'a2'],
         ['b2', 'b1'],
         ['c1', 'c2'],
-      ])
+      ]),
     ).equals(2);
   });
 
@@ -71,14 +71,14 @@ describe('crossCount', function () {
         ['a', 'd'],
         ['b', 'e', 'f'],
         ['c', 'i'],
-      ])
+      ]),
     ).equals(1);
     expect(
       crossCount(g, [
         ['d', 'a'],
         ['e', 'b', 'f'],
         ['c', 'i'],
-      ])
+      ]),
     ).equals(0);
   });
 });

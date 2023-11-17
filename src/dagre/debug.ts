@@ -6,9 +6,9 @@ export { debugOrdering };
 
 /* istanbul ignore next */
 function debugOrdering(g) {
-  var layerMatrix = util.buildLayerMatrix(g);
+  const layerMatrix = util.buildLayerMatrix(g);
 
-  var h = new Graph({ compound: true, multigraph: true }).setGraph({});
+  const h = new Graph({ compound: true, multigraph: true }).setGraph({});
 
   _.forEach(g.nodes(), function (v) {
     h.setNode(v, { label: v });
@@ -20,7 +20,7 @@ function debugOrdering(g) {
   });
 
   _.forEach(layerMatrix, function (layer, i) {
-    var layerV = 'layer' + i;
+    const layerV = 'layer' + i;
     h.setNode(layerV, { rank: 'same' });
     _.reduce(layer, function (u, v) {
       h.setEdge(u, v, { style: 'invis' });

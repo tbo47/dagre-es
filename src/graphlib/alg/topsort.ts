@@ -5,9 +5,9 @@ export { topsort, CycleException };
 topsort.CycleException = CycleException;
 
 function topsort(g) {
-  var visited = {};
-  var stack = {};
-  var results = [];
+  const visited = {};
+  const stack = {};
+  const results = [];
 
   function visit(node) {
     if (_.has(stack, node)) {
