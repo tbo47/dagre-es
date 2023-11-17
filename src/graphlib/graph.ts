@@ -124,25 +124,18 @@ export class Graph {
     return _.keys(this._nodes);
   }
   sources() {
-    const self = this;
-    return _.filter(this.nodes(), function (v) {
-      return _.isEmpty(self._in[v]);
-    });
+    return _.filter(this.nodes(), (v) => _.isEmpty(this._in[v]));
   }
   sinks() {
-    const self = this;
-    return _.filter(this.nodes(), function (v) {
-      return _.isEmpty(self._out[v]);
-    });
+    return _.filter(this.nodes(), (v) => _.isEmpty(this._out[v]));
   }
   setNodes(vs, value?) {
     const args = arguments;
-    const self = this;
-    _.each(vs, function (v) {
+    _.each(vs, (v)=> {
       if (args.length > 1) {
-        self.setNode(v, value);
+        this.setNode(v, value);
       } else {
-        self.setNode(v);
+        this.setNode(v);
       }
     });
     return this;
