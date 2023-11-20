@@ -1,4 +1,3 @@
-import * as _ from 'lodash-es';
 import * as util from './util.js';
 
 export { addBorderSegments };
