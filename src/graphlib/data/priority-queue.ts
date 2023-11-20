@@ -1,5 +1,3 @@
-import * as _ from 'lodash-es';
-
 export { PriorityQueue };
 
 /**
@@ -34,7 +32,7 @@ class PriorityQueue {
    * Returns `true` if **key** is in the queue and `false` if not.
    */
   has(key) {
-    return _.has(this._keyIndices, key);
+    return this._keyIndices.hasOwnProperty(key);
   }
   /**
    * Returns the priority for **key**. If **key** is not present in the queue
@@ -69,7 +67,7 @@ class PriorityQueue {
   add(key, priority) {
     var keyIndices = this._keyIndices;
     key = String(key);
-    if (!_.has(keyIndices, key)) {
+    if (!keyIndices.hasOwnProperty(key)) {
       var arr = this._arr;
       var index = arr.length;
       keyIndices[key] = index;

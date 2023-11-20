@@ -1,5 +1,3 @@
-import * as _ from 'lodash-es';
-
 export { dfs };
 
 /*
@@ -11,36 +9,59 @@ export { dfs };
  * Order must be one of "pre" or "post".
  */
 function dfs(g, vs, order) {
-  if (!_.isArray(vs)) {
+  if (!Array.isArray(vs)) {
     vs = [vs];
   }
 
   var navigation = (g.isDirected() ? g.successors : g.neighbors).bind(g);
+  var orderFunc = order === "post" ? postOrderDfs : preOrderDfs;
 
   var acc = [];
   var visited = {};
-  _.each(vs, function (v) {
+  vs.forEach(v => {
     if (!g.hasNode(v)) {
       throw new Error('Graph does not have node: ' + v);
     }
 
-    doDfs(g, v, order === 'post', visited, navigation, acc);
+    orderFunc(v, navigation, visited, acc);
   });
   return acc;
 }
 
-function doDfs(g, v, postorder, visited, navigation, acc) {
-  if (!_.has(visited, v)) {
-    visited[v] = true;
-
-    if (!postorder) {
-      acc.push(v);
-    }
-    _.each(navigation(v), function (w) {
-      doDfs(g, w, postorder, visited, navigation, acc);
-    });
-    if (postorder) {
-      acc.push(v);
+function postOrderDfs(v, navigation, visited, acc) {
+  var stack = [[v, false]];
+  while (stack.length > 0) {
+    var curr = stack.pop();
+    if (curr[1]) {
+      acc.push(curr[0]);
+    } else {
+      if (!visited.hasOwnProperty(curr[0])) {
+        visited[curr[0]] = true;
+        stack.push([curr[0], true]);
+        forEachRight(navigation(curr[0]), w => stack.push([w, false]));
+      }
     }
   }
 }
+
+function preOrderDfs(v, navigation, visited, acc) {
+  var stack = [v];
+  while (stack.length > 0) {
+    var curr = stack.pop();
+    if (!visited.hasOwnProperty(curr)) {
+      visited[curr] = true;
+      acc.push(curr);
+      forEachRight(navigation(curr), w => stack.push(w));
+    }
+  }
+}
+
+function forEachRight(array, iteratee) {
+  var length = array.length;
+  while (length--) {
+    iteratee(array[length], length, array);
+  }
+
+  return array;
+}
+
