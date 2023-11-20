@@ -19,6 +19,7 @@ export {
   uniqueId,
   range,
   pick,
+  mapValues,
   zipObject,
 };
 
@@ -287,6 +288,18 @@ function pick(source, keys) {
   }
 
   return dest;
+}
+
+function mapValues(obj, funcOrProp) {
+  let func = funcOrProp;
+  if (typeof funcOrProp === 'string') {
+    func = (val) => val[funcOrProp];
+  }
+
+  return Object.entries(obj).reduce((acc, [k, v]) => {
+    acc[k] = func(v, k);
+    return acc;
+  }, {});
 }
 
 function zipObject(props, values) {

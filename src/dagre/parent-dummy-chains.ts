@@ -1,11 +1,9 @@
-import * as _ from 'lodash-es';
-
 export { parentDummyChains };
 
 function parentDummyChains(g) {
   var postorderNums = postorder(g);
 
-  _.forEach(g.graph().dummyChains, function (v) {
+  g.graph().dummyChains.forEach(v => {
     var node = g.node(v);
     var edgeObj = node.edgeObj;
     var pathData = findPath(g, postorderNums, edgeObj.v, edgeObj.w);
@@ -77,10 +75,10 @@ function postorder(g) {
 
   function dfs(v) {
     var low = lim;
-    _.forEach(g.children(v), dfs);
+    g.children(v).forEach(dfs);
     result[v] = { low: low, lim: lim++ };
   }
-  _.forEach(g.children(), dfs);
+  g.children().forEach(dfs);
 
   return result;
 }

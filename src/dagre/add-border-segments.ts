@@ -8,10 +8,10 @@ function addBorderSegments(g) {
     var children = g.children(v);
     var node = g.node(v);
     if (children.length) {
-      _.forEach(children, dfs);
+      children.forEach(dfs);
     }
 
-    if (_.has(node, 'minRank')) {
+    if (node.hasOwnProperty("minRank")) {
       node.borderLeft = [];
       node.borderRight = [];
       for (var rank = node.minRank, maxRank = node.maxRank + 1; rank < maxRank; ++rank) {
@@ -21,7 +21,7 @@ function addBorderSegments(g) {
     }
   }
 
-  _.forEach(g.children(), dfs);
+  g.children().forEach(dfs);
 }
 
 function addBorderNode(g, prop, prefix, sg, sgNode, rank) {

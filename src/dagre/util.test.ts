@@ -263,4 +263,28 @@ describe('util', function () {
       expect(range[5]).equals(0);
     });
   });
+
+  describe("mapValues", () => {
+    it("Creates an object with the same keys", () => {
+      const users = {
+        'fred':    { 'user': 'fred',    'age': 40 },
+        'pebbles': { 'user': 'pebbles', 'age': 1 }
+      };
+
+      const ages = util.mapValues(users, user => user.age) as { fred: number, pebbles: number };
+      expect(ages.fred).equals(40);
+      expect(ages.pebbles).equals(1);
+    });
+
+    it("Can take a property name", () => {
+      const users = {
+        'fred':    { 'user': 'fred',    'age': 40 },
+        'pebbles': { 'user': 'pebbles', 'age': 1 }
+      };
+
+      const ages = util.mapValues(users, 'age') as { fred: number, pebbles: number };
+      expect(ages.fred).equals(40);
+      expect(ages.pebbles).equals(1);
+    });
+  });
 });
