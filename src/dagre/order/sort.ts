@@ -25,7 +25,7 @@ function sort(entries, biasRight?) {
     vsIndex = consumeUnsortable(vs, unsortable, vsIndex);
   });
 
-  var result = { vs: vs.flat(true) } as { vs: string[]; barycenter?: number; weight?: number };
+  var result = { vs: vs.flat(1) } as { vs: string[]; barycenter?: number; weight?: number };
   if (weight) {
     result.barycenter = sum / weight;
     result.weight = weight;

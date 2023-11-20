@@ -249,7 +249,7 @@ function notime(name, fn) {
 let idCounter = 0;
 function uniqueId(prefix) {
   var id = ++idCounter;
-  return toString(prefix) + id;
+  return prefix + id;
 }
 
 function range(start, limit?, step = 1): number[] {

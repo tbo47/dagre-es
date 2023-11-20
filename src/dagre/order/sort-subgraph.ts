@@ -32,7 +32,7 @@ function sortSubgraph(g, v, cg, biasRight?) {
   var result = sort(entries, biasRight) as any;
 
   if (bl) {
-    result.vs = [bl, result.vs, br].flat(true);
+    result.vs = [bl, result.vs, br].flat(1);
     if (g.predecessors(bl).length) {
       var blPred = g.node(g.predecessors(bl)[0]),
         brPred = g.node(g.predecessors(br)[0]);
