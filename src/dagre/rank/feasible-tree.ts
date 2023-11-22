@@ -1,4 +1,3 @@
-import * as _ from 'lodash-es';
 import { Graph } from '../../graphlib/index.js';
 import { slack } from './util.js';
 
@@ -53,7 +52,7 @@ function feasibleTree(g) {
  */
 function tightTree(t, g) {
   function dfs(v) {
-    _.forEach(g.nodeEdges(v), function (e) {
+    g.nodeEdges(v).forEach(e => {
       var edgeV = e.v,
         w = v === edgeV ? e.w : edgeV;
       if (!t.hasNode(w) && !slack(g, e)) {
@@ -64,7 +63,7 @@ function tightTree(t, g) {
     });
   }
 
-  _.forEach(t.nodes(), dfs);
+  t.nodes().forEach(dfs);
   return t.nodeCount();
 }
 
@@ -73,15 +72,22 @@ function tightTree(t, g) {
  * it.
  */
 function findMinSlackEdge(t, g) {
-  return _.minBy(g.edges(), (e: { v: string; w: string }) => {
-    if (t.hasNode(e.v) !== t.hasNode(e.w)) {
-      return slack(g, e);
+  const edges = g.edges();
+
+  return edges.reduce((acc, edge) => {
+    let edgeSlack = Number.POSITIVE_INFINITY;
+    if (t.hasNode(edge.v) !== t.hasNode(edge.w)) {
+      edgeSlack = slack(g, edge);
     }
-  });
+
+    if (edgeSlack < acc[0]) {
+      return [edgeSlack, edge];
+    }
+
+    return acc;
+  }, [Number.POSITIVE_INFINITY, null])[1];
 }
 
 function shiftRanks(t, g, delta) {
-  _.forEach(t.nodes(), function (v) {
-    g.node(v).rank += delta;
-  });
+  t.nodes().forEach(v => g.node(v).rank += delta);
 }

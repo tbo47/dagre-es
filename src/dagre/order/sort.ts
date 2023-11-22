@@ -1,16 +1,13 @@
-import * as _ from 'lodash-es';
 import * as util from '../util.js';
 
 export { sort };
 
 function sort(entries, biasRight?) {
   var parts = util.partition(entries, function (entry) {
-    return _.has(entry, 'barycenter');
+    return entry.hasOwnProperty("barycenter");
   });
   var sortable = parts.lhs,
-    unsortable = _.sortBy(parts.rhs, function (entry) {
-      return -entry.i;
-    }),
+    unsortable = parts.rhs.sort((a, b) => b.i - a.i),
     vs = [],
     sum = 0,
     weight = 0,
@@ -20,7 +17,7 @@ function sort(entries, biasRight?) {
 
   vsIndex = consumeUnsortable(vs, unsortable, vsIndex);
 
-  _.forEach(sortable, function (entry) {
+  sortable.forEach(entry => {
     vsIndex += entry.vs.length;
     vs.push(entry.vs);
     sum += entry.barycenter * entry.weight;
@@ -28,7 +25,7 @@ function sort(entries, biasRight?) {
     vsIndex = consumeUnsortable(vs, unsortable, vsIndex);
   });
 
-  var result = { vs: _.flatten(vs) } as { vs: string[]; barycenter?: number; weight?: number };
+  var result = { vs: vs.flat(1) } as { vs: string[]; barycenter?: number; weight?: number };
   if (weight) {
     result.barycenter = sum / weight;
     result.weight = weight;
@@ -38,7 +35,7 @@ function sort(entries, biasRight?) {
 
 function consumeUnsortable(vs, unsortable, index) {
   var last;
-  while (unsortable.length && (last = _.last(unsortable)).i <= index) {
+  while (unsortable.length && (last = unsortable[unsortable.length - 1]).i <= index) {
     unsortable.pop();
     vs.push(last.vs);
     index++;

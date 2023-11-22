@@ -1,4 +1,3 @@
-import * as _ from 'lodash-es';
 import * as util from './util.js';
 
 export { run, undo };
@@ -21,9 +20,7 @@ export { run, undo };
  */
 function run(g) {
   g.graph().dummyChains = [];
-  _.forEach(g.edges(), function (edge) {
-    normalizeEdge(g, edge);
-  });
+  g.edges().forEach(edge => normalizeEdge(g, edge));
 }
 
 function normalizeEdge(g, e) {
@@ -67,7 +64,7 @@ function normalizeEdge(g, e) {
 }
 
 function undo(g) {
-  _.forEach(g.graph().dummyChains, function (v) {
+  g.graph().dummyChains.forEach(v => {
     var node = g.node(v);
     var origLabel = node.edgeLabel;
     var w;
