@@ -9,9 +9,8 @@
 
 # dagre-d3-es
 
-The [dagre-d3](https://github.com/dagrejs) library is not maintained anymore.
+[dagre-d3-es](https://www.npmjs.com/package/dagre-d3-es) is a fork of [dagre-d3](https://github.com/dagrejs) using the more modern ES6 javascript syntax.
 
-[dagre-d3-es](https://www.npmjs.com/package/dagre-d3-es) is a fork using the more modern ES6 javascript syntax.
 It uses [ES](https://262.ecma-international.org/6.0/) modules, thus the name [dagre-d3-es](https://www.npmjs.com/package/dagre-d3-es).
 
 [dagre-d3-es](https://www.npmjs.com/package/dagre-d3-es) follows [d3](https://www.npmjs.com/package/d3) versions. Ex: dagre-d3-es version 7 depends on [d3](https://www.npmjs.com/package/d3) version 7.
