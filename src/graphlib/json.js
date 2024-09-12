@@ -1,10 +1,9 @@
-import * as _ from 'lodash-es';
 import { Graph } from './graph.js';
 
 export { write, read };
 
 function write(g) {
-  var json = {
+  const json = {
     options: {
       directed: g.isDirected(),
       multigraph: g.isMultigraph(),
@@ -12,22 +11,24 @@ function write(g) {
     },
     nodes: writeNodes(g),
     edges: writeEdges(g),
+    value: undefined,
   };
-  if (!_.isUndefined(g.graph())) {
-    json.value = _.clone(g.graph());
+  if (g.graph() !== undefined) {
+    json.value = structuredClone(g.graph());
   }
   return json;
 }
 
 function writeNodes(g) {
-  return _.map(g.nodes(), function (v) {
-    var nodeValue = g.node(v);
-    var parent = g.parent(v);
-    var node = { v: v };
-    if (!_.isUndefined(nodeValue)) {
+  return g.nodes().map(v => {
+    const nodeValue = g.node(v);
+    const parent = g.parent(v);
+    // const node = { v } as { v: string; name?: string; value?: any; parent?: string };
+    const node = { v }
+    if (nodeValue !== undefined) {
       node.value = nodeValue;
     }
-    if (!_.isUndefined(parent)) {
+    if (parent !== undefined) {
       node.parent = parent;
     }
     return node;
@@ -35,13 +36,13 @@ function writeNodes(g) {
 }
 
 function writeEdges(g) {
-  return _.map(g.edges(), function (e) {
+  return g.edges().map(e => {
     var edgeValue = g.edge(e);
-    var edge = { v: e.v, w: e.w };
-    if (!_.isUndefined(e.name)) {
+    var edge = { v: e.v, w: e.w } as { v: string; w: string; name?: string; value?: any }
+    if (e.name !== undefined) {
       edge.name = e.name;
     }
-    if (!_.isUndefined(edgeValue)) {
+    if (edgeValue !== undefined) {
       edge.value = edgeValue;
     }
     return edge;
@@ -50,13 +51,13 @@ function writeEdges(g) {
 
 function read(json) {
   var g = new Graph(json.options).setGraph(json.value);
-  _.each(json.nodes, function (entry) {
+  json.nodes.forEach(entry => {
     g.setNode(entry.v, entry.value);
     if (entry.parent) {
       g.setParent(entry.v, entry.parent);
     }
   });
-  _.each(json.edges, function (entry) {
+  json.edges.forEach(entry => {
     g.setEdge({ v: entry.v, w: entry.w, name: entry.name }, entry.value);
   });
   return g;

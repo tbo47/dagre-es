@@ -1,5 +1,3 @@
-import * as _ from 'lodash-es';
-
 export { adjust, undo };
 
 function adjust(g) {
@@ -22,12 +20,8 @@ function undo(g) {
 }
 
 function swapWidthHeight(g) {
-  _.forEach(g.nodes(), function (v) {
-    swapWidthHeightOne(g.node(v));
-  });
-  _.forEach(g.edges(), function (e) {
-    swapWidthHeightOne(g.edge(e));
-  });
+  g.nodes().forEach(v => swapWidthHeightOne(g.node(v)));
+  g.edges().forEach(e => swapWidthHeightOne(g.edge(e)));
 }
 
 function swapWidthHeightOne(attrs) {
@@ -37,14 +31,12 @@ function swapWidthHeightOne(attrs) {
 }
 
 function reverseY(g) {
-  _.forEach(g.nodes(), function (v) {
-    reverseYOne(g.node(v));
-  });
+  g.nodes().forEach(v => reverseYOne(g.node(v)));
 
-  _.forEach(g.edges(), function (e) {
+  g.edges().forEach(e => {
     var edge = g.edge(e);
-    _.forEach(edge.points, reverseYOne);
-    if (_.has(edge, 'y')) {
+    edge.points.forEach(reverseYOne);
+    if (edge.hasOwnProperty("y")) {
       reverseYOne(edge);
     }
   });
@@ -55,14 +47,12 @@ function reverseYOne(attrs) {
 }
 
 function swapXY(g) {
-  _.forEach(g.nodes(), function (v) {
-    swapXYOne(g.node(v));
-  });
+  g.nodes().forEach(v => swapXYOne(g.node(v)));
 
-  _.forEach(g.edges(), function (e) {
+  g.edges().forEach(e => {
     var edge = g.edge(e);
-    _.forEach(edge.points, swapXYOne);
-    if (_.has(edge, 'x')) {
+    edge.points.forEach(swapXYOne);
+    if (edge.hasOwnProperty("x")) {
       swapXYOne(edge);
     }
   });
