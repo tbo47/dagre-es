@@ -1,4 +1,3 @@
-import * as _ from 'lodash-es';
 import { tarjan } from './tarjan.js';
 
 export { findCycles };
