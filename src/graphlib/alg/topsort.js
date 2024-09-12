@@ -8,11 +8,11 @@ function topsort(g) {
   var results = [];
 
   function visit(node) {
-    if (Object.hasOwn(stack, node)) {
+    if (Object.prototype.hasOwnProperty.call(stack, node)) {
       throw new CycleException();
     }
 
-    if (!Object.hasOwn(visited, node)) {
+    if (!Object.prototype.hasOwnProperty.call(visited, node)) {
       stack[node] = true;
       visited[node] = true;
       g.predecessors(node).forEach(visit);

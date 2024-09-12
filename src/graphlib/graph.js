@@ -24,9 +24,9 @@ var EDGE_KEY_DELIM = '\x01';
 export class Graph {
   // as { directed?: boolean, multigraph?: boolean, compound?: boolean }
   constructor(opts = {}) {
-    this._isDirected = Object.hasOwn(opts, 'directed') ? opts.directed : true;
-    this._isMultigraph = Object.hasOwn(opts, 'multigraph') ? opts.multigraph : false;
-    this._isCompound = Object.hasOwn(opts, 'compound') ? opts.compound : false;
+    this._isDirected = Object.prototype.hasOwnProperty.call(opts, 'directed') ? opts.directed : true;
+    this._isMultigraph = Object.prototype.hasOwnProperty.call(opts, 'multigraph') ? opts.multigraph : false;
+    this._isCompound = Object.prototype.hasOwnProperty.call(opts, 'compound') ? opts.compound : false;
 
     // Label for the graph itself
     this._label = undefined;
@@ -117,7 +117,7 @@ export class Graph {
     return this;
   }
   setNode(v, value) {
-    if (Object.hasOwn(this._nodes, v)) {
+    if (Object.prototype.hasOwnProperty.call(this._nodes, v)) {
       if (arguments.length > 1) {
         this._nodes[v] = value;
       }
@@ -142,10 +142,10 @@ export class Graph {
     return this._nodes[v];
   }
   hasNode(v) {
-    return Object.hasOwn(this._nodes, v);
+    return Object.prototype.hasOwnProperty.call(this._nodes, v);
   }
   removeNode(v) {
-    if (Object.hasOwn(this._nodes, v)) {
+    if (Object.prototype.hasOwnProperty.call(this._nodes, v)) {
       var removeEdge = e => this.removeEdge(this._edgeObjs[e]);
       delete this._nodes[v];
       if (this._isCompound) {
@@ -351,7 +351,7 @@ export class Graph {
     }
 
     var e = edgeArgsToId(this._isDirected, v, w, name);
-    if (Object.hasOwn(this._edgeLabels, e)) {
+    if (Object.prototype.hasOwnProperty.call(this._edgeLabels, e)) {
       if (valueSpecified) {
         this._edgeLabels[e] = value;
       }
@@ -396,7 +396,7 @@ export class Graph {
       arguments.length === 1
         ? edgeObjToId(this._isDirected, arguments[0])
         : edgeArgsToId(this._isDirected, v, w, name);
-    return Object.hasOwn(this._edgeLabels, e);
+    return Object.prototype.hasOwnProperty.call(this._edgeLabels, e);
   }
   removeEdge(v, w, name) {
     var e =

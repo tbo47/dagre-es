@@ -159,7 +159,7 @@ function normalizeRanks(g) {
   }));
   g.nodes().forEach(v => {
     const node = g.node(v);
-    if (Object.hasOwn(node, 'rank')) {
+    if (Object.prototype.hasOwnProperty.call(node, 'rank')) {
       node.rank -= min;
     }
   });

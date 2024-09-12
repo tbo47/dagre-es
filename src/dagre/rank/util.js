@@ -26,7 +26,7 @@ function longestPath(g) {
 
   function dfs(v) {
     var label = g.node(v);
-    if (Object.hasOwn(visited, v)) {
+    if (Object.prototype.hasOwnProperty.call(visited, v)) {
       return label.rank;
     }
     visited[v] = true;

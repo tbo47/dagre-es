@@ -15,7 +15,7 @@ function tarjan(g) {
     stack.push(v);
 
     g.successors(v).forEach(function (w) {
-      if (!Object.hasOwn(visited, w)) {
+      if (!Object.prototype.hasOwnProperty.call(visited, w)) {
         dfs(w);
         entry.lowlink = Math.min(entry.lowlink, visited[w].lowlink);
       } else if (visited[w].onStack) {
@@ -36,7 +36,7 @@ function tarjan(g) {
   }
 
   g.nodes().forEach(function (v) {
-    if (!Object.hasOwn(visited, v)) {
+    if (!Object.prototype.hasOwnProperty.call(visited, v)) {
       dfs(v);
     }
   });

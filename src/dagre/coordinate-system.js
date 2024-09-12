@@ -36,7 +36,7 @@ function reverseY(g) {
   g.edges().forEach(e => {
     var edge = g.edge(e);
     edge.points.forEach(reverseYOne);
-    if (Object.hasOwn(edge, 'y')) {
+    if (Object.prototype.hasOwnProperty.call(edge, 'y')) {
       reverseYOne(edge);
     }
   });
@@ -52,7 +52,7 @@ function swapXY(g) {
   g.edges().forEach(e => {
     var edge = g.edge(e);
     edge.points.forEach(swapXYOne);
-    if (Object.hasOwn(edge, 'x')) {
+    if (Object.prototype.hasOwnProperty.call(edge, 'x')) {
       swapXYOne(edge);
     }
   });

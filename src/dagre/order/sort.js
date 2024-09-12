@@ -4,7 +4,7 @@ export { sort };
 
 function sort(entries, biasRight) {
   var parts = util.partition(entries, function (entry) {
-    return Object.hasOwn(entry, 'barycenter');
+    return Object.prototype.hasOwnProperty.call(entry, 'barycenter');
   });
   var sortable = parts.lhs,
     unsortable = parts.rhs.sort((a, b) => b.i - a.i),

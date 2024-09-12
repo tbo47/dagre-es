@@ -55,7 +55,7 @@ export function buildLayerGraph(g, rank, relationship) {
         result.setEdge(u, v, { weight: g.edge(e).weight + weight });
       });
 
-      if (Object.hasOwn(node, 'minRank')) {
+      if (Object.prototype.hasOwnProperty.call(node, 'minRank')) {
         result.setNode(v, {
           borderLeft: node.borderLeft[rank],
           borderRight: node.borderRight[rank],

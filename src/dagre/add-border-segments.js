@@ -10,7 +10,7 @@ function addBorderSegments(g) {
       children.forEach(dfs);
     }
 
-    if (Object.hasOwn(node, 'minRank')) {
+    if (Object.prototype.hasOwnProperty.call(node, 'minRank')) {
       node.borderLeft = [];
       node.borderRight = [];
       for (var rank = node.minRank, maxRank = node.maxRank + 1; rank < maxRank; ++rank) {

@@ -79,7 +79,7 @@ function updateInputGraph(inputGraph, layoutGraph) {
     var layoutLabel = layoutGraph.edge(e);
 
     inputLabel.points = layoutLabel.points;
-    if (Object.hasOwn(layoutLabel, 'x')) {
+    if (Object.prototype.hasOwnProperty.call(layoutLabel, 'x')) {
       inputLabel.x = layoutLabel.x;
       inputLabel.y = layoutLabel.y;
     }
@@ -232,7 +232,7 @@ function translateGraph(g) {
   g.nodes().forEach(v => getExtremes(g.node(v)));
   g.edges().forEach(e => {
     var edge = g.edge(e);
-    if (Object.hasOwn(edge, 'x')) {
+    if (Object.prototype.hasOwnProperty.call(edge, 'x')) {
       getExtremes(edge);
     }
   });
@@ -252,8 +252,8 @@ function translateGraph(g) {
       p.x -= minX;
       p.y -= minY;
     });
-    if (Object.hasOwn(edge, 'x')) { edge.x -= minX; }
-    if (Object.hasOwn(edge, 'y')) { edge.y -= minY; }
+    if (Object.prototype.hasOwnProperty.call(edge, 'x')) { edge.x -= minX; }
+    if (Object.prototype.hasOwnProperty.call(edge, 'y')) { edge.y -= minY; }
   });
 
   graphLabel.width = maxX - minX + marginX;
@@ -282,7 +282,7 @@ function assignNodeIntersects(g) {
 function fixupEdgeLabelCoords(g) {
   g.edges().forEach(e => {
     var edge = g.edge(e);
-    if (Object.hasOwn(edge, 'x')) {
+    if (Object.prototype.hasOwnProperty.call(edge, 'x')) {
       if (edge.labelpos === 'l' || edge.labelpos === 'r') {
         edge.width -= edge.labeloffset;
       }

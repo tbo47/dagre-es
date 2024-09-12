@@ -144,7 +144,7 @@ function hasConflict(conflicts, v, w) {
     v = w;
     w = tmp;
   }
-  return !!conflicts[v] && Object.hasOwn(conflicts[v], w);
+  return !!conflicts[v] && Object.prototype.hasOwnProperty.call(conflicts[v], w);
 }
 
 /*
@@ -383,7 +383,7 @@ function sep(nodeSep, edgeSep, reverseSep) {
     var delta;
 
     sum += vLabel.width / 2;
-    if (Object.hasOwn(vLabel, 'labelpos')) {
+    if (Object.prototype.hasOwnProperty.call(vLabel, 'labelpos')) {
       switch (vLabel.labelpos.toLowerCase()) {
       case 'l': delta = -vLabel.width / 2; break;
       case 'r': delta = vLabel.width / 2; break;
@@ -398,7 +398,7 @@ function sep(nodeSep, edgeSep, reverseSep) {
     sum += (wLabel.dummy ? edgeSep : nodeSep) / 2;
 
     sum += wLabel.width / 2;
-    if (Object.hasOwn(wLabel, 'labelpos')) {
+    if (Object.prototype.hasOwnProperty.call(wLabel, 'labelpos')) {
       switch (wLabel.labelpos.toLowerCase()) {
       case 'l': delta = wLabel.width / 2; break;
       case 'r': delta = -wLabel.width / 2; break;

@@ -6,7 +6,7 @@ function components(g) {
   var cmpt;
 
   function dfs(v) {
-    if (Object.hasOwn(visited, v)) return;
+    if (Object.prototype.hasOwnProperty.call(visited, v)) return;
     visited[v] = true;
     cmpt.push(v);
     g.successors(v).forEach(dfs);

@@ -36,7 +36,7 @@ function prim(g, weightFunc) {
   var init = false;
   while (pq.size() > 0) {
     v = pq.removeMin();
-    if (Object.hasOwn(parents, v)) {
+    if (Object.prototype.hasOwnProperty.call(parents, v)) {
       result.setEdge(v, parents[v]);
     } else if (init) {
       throw new Error('Input graph is not connected: ' + g);

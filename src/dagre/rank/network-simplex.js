@@ -128,7 +128,7 @@ function dfsAssignLowLim(tree, visited, nextLim, v, parent) {
 
   visited[v] = true;
   tree.neighbors(v).forEach(w => {
-    if (!Object.hasOwn(visited, w)) {
+    if (!Object.prototype.hasOwnProperty.call(visited, w)) {
       nextLim = dfsAssignLowLim(tree, visited, nextLim, w, v);
     }
   });

@@ -35,7 +35,7 @@ function postOrderDfs(v, navigation, visited, acc) {
     if (curr[1]) {
       acc.push(curr[0]);
     } else {
-      if (!Object.hasOwn(visited, curr[0])) {
+      if (!Object.prototype.hasOwnProperty.call(visited, curr[0])) {
         visited[curr[0]] = true;
         stack.push([curr[0], true]);
         forEachRight(navigation(curr[0]), w => stack.push([w, false]));
@@ -48,7 +48,7 @@ function preOrderDfs(v, navigation, visited, acc) {
   var stack = [v];
   while (stack.length > 0) {
     var curr = stack.pop();
-    if (!Object.hasOwn(visited, curr)) {
+    if (!Object.prototype.hasOwnProperty.call(visited, curr)) {
       visited[curr] = true;
       acc.push(curr);
       forEachRight(navigation(curr), w => stack.push(w));

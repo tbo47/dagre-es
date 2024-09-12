@@ -20,7 +20,7 @@ function sortSubgraph(g, v, cg, biasRight) {
     if (g.children(entry.v).length) {
       var subgraphResult = sortSubgraph(g, entry.v, cg, biasRight);
       subgraphs[entry.v] = subgraphResult;
-      if (Object.hasOwn(subgraphResult, 'barycenter')) {
+      if (Object.prototype.hasOwnProperty.call(subgraphResult, 'barycenter')) {
         mergeBarycenters(entry, subgraphResult);
       }
     }
@@ -36,7 +36,7 @@ function sortSubgraph(g, v, cg, biasRight) {
     if (g.predecessors(bl).length) {
       var blPred = g.node(g.predecessors(bl)[0]),
         brPred = g.node(g.predecessors(br)[0]);
-      if (!Object.hasOwn(result, 'barycenter')) {
+      if (!Object.prototype.hasOwnProperty.call(result, 'barycenter')) {
         result.barycenter = 0;
         result.weight = 0;
       }
