@@ -26,13 +26,13 @@ function dfsFAS(g) {
   var visited = {};
 
   function dfs(v) {
-    if (visited.hasOwnProperty(v)) {
+    if (Object.hasOwn(visited, v)) {
       return;
     }
     visited[v] = true;
     stack[v] = true;
     g.outEdges(v).forEach(e => {
-      if (stack.hasOwnProperty(e.w)) {
+      if (Object.hasOwn(stack, e.w)) {
         fas.push(e);
       } else {
         dfs(e.w);
