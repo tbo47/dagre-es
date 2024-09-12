@@ -38,7 +38,7 @@ function writeNodes(g) {
 function writeEdges(g) {
   return g.edges().map(e => {
     var edgeValue = g.edge(e);
-    var edge = { v: e.v, w: e.w } as { v: string; w: string; name?: string; value?: any }
+    var edge = { v: e.v, w: e.w }; // as { v: string; w: string; name?: string; value?: any }
     if (e.name !== undefined) {
       edge.name = e.name;
     }
