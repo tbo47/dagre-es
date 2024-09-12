@@ -24,9 +24,9 @@ var EDGE_KEY_DELIM = '\x01';
 export class Graph {
   // as { directed?: boolean, multigraph?: boolean, compound?: boolean }
   constructor(opts = {}) {
-    this._isDirected = opts.hasOwnProperty("directed") ? opts.directed : true;
-    this._isMultigraph = opts.hasOwnProperty("multigraph") ? opts.multigraph : false;
-    this._isCompound = opts.hasOwnProperty("compound") ? opts.compound : false;
+    this._isDirected = opts.hasOwnProperty('directed') ? opts.directed : true;
+    this._isMultigraph = opts.hasOwnProperty('multigraph') ? opts.multigraph : false;
+    this._isCompound = opts.hasOwnProperty('compound') ? opts.compound : false;
 
     // Label for the graph itself
     this._label = undefined;
@@ -320,7 +320,8 @@ export class Graph {
    * setEdge(v, w, [value, [name]])
    * setEdge({ v, w, [name] }, [value])
    */
-  setEdge(u1, u2, u3, u4) {
+  // setEdge(u1, u2, u3, u4) {
+  setEdge() {
     var v, w, name, value;
     var valueSpecified = false;
     var arg0 = arguments[0];
