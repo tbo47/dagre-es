@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import * as _ from 'lodash-es';
+import { pick } from 'lodash-es';
 import { addLabel } from './label/add-label.js';
 import * as util from './util.js';
 
@@ -35,7 +35,7 @@ var createNodes = function (selection, g, shapes) {
     var labelGroup = thisGroup.append('g').attr('class', 'label');
     var labelDom = addLabel(labelGroup, node);
     var shape = shapes[node.shape];
-    var bbox = _.pick(labelDom.node().getBBox(), 'width', 'height');
+    var bbox = pick(labelDom.node().getBBox(), 'width', 'height');
 
     node.elem = this;
 
@@ -46,10 +46,10 @@ var createNodes = function (selection, g, shapes) {
       labelGroup.attr('id', node.labelId);
     }
 
-    if (_.has(node, 'width')) {
+    if (Object.prototype.hasOwnProperty.call(node, 'width')) {
       bbox.width = node.width;
     }
-    if (_.has(node, 'height')) {
+    if (Object.prototype.hasOwnProperty.call(node, 'height')) {
       bbox.height = node.height;
     }
 

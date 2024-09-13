@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import * as _ from 'lodash-es';
+import { defaults } from 'lodash-es';
 import { layout } from '../dagre/index.js';
 import { arrows, setArrows } from './arrows.js';
 import { createClusters, setCreateClusters } from './create-clusters.js';
@@ -110,26 +110,26 @@ function preProcessGraph(g) {
   g.nodes().forEach((v) => {
     /** @type {Node} */
     const node = g.node(v);
-    if (!_.has(node, 'label') && !g.children(v).length) {
+    if (!Object.prototype.hasOwnProperty.call(node, 'label') && !g.children(v).length) {
       node.label = v;
     }
 
-    if (_.has(node, 'paddingX')) {
-      _.defaults(node, {
+    if (Object.prototype.hasOwnProperty.call(node, 'paddingX')) {
+      defaults(node, {
         paddingLeft: node.paddingX,
         paddingRight: node.paddingX,
       });
     }
 
-    if (_.has(node, 'paddingY')) {
-      _.defaults(node, {
+    if (Object.prototype.hasOwnProperty.call(node, 'paddingY')) {
+      defaults(node, {
         paddingTop: node.paddingY,
         paddingBottom: node.paddingY,
       });
     }
 
-    if (_.has(node, 'padding')) {
-      _.defaults(node, {
+    if (Object.prototype.hasOwnProperty.call(node, 'padding')) {
+      defaults(node, {
         paddingLeft: node.padding,
         paddingRight: node.padding,
         paddingTop: node.padding,
@@ -137,43 +137,43 @@ function preProcessGraph(g) {
       });
     }
 
-    _.defaults(node, NODE_DEFAULT_ATTRS);
+    defaults(node, NODE_DEFAULT_ATTRS);
 
-    _.each(['paddingLeft', 'paddingRight', 'paddingTop', 'paddingBottom'], function (k) {
+    ['paddingLeft', 'paddingRight', 'paddingTop', 'paddingBottom'].forEach((k) => {
       node[k] = Number(node[k]);
     });
 
     // Save dimensions for restore during post-processing
-    if (_.has(node, 'width')) {
+    if (Object.prototype.hasOwnProperty.call(node, 'width')) {
       node._prevWidth = node.width;
     }
-    if (_.has(node, 'height')) {
+    if (Object.prototype.hasOwnProperty.call(node, 'height')) {
       node._prevHeight = node.height;
     }
   });
 
   g.edges().forEach(function (e) {
     var edge = g.edge(e);
-    if (!_.has(edge, 'label')) {
+    if (!Object.prototype.hasOwnProperty.call(edge, 'label')) {
       edge.label = '';
     }
-    _.defaults(edge, EDGE_DEFAULT_ATTRS);
+    defaults(edge, EDGE_DEFAULT_ATTRS);
   });
 }
 
 function postProcessGraph(g) {
-  _.each(g.nodes(), function (v) {
+  g.nodes().forEach((v) => {
     /** @type {Node} */
     var node = g.node(v);
 
     // Restore original dimensions
-    if (_.has(node, '_prevWidth')) {
+    if (Object.prototype.hasOwnProperty.call(node, '_prevWidth')) {
       node.width = node._prevWidth;
     } else {
       delete node.width;
     }
 
-    if (_.has(node, '_prevHeight')) {
+    if (Object.prototype.hasOwnProperty.call(node, '_prevHeight')) {
       node.height = node._prevHeight;
     } else {
       delete node.height;
