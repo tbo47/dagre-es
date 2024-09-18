@@ -42,8 +42,8 @@ function addDummyNode(g, type, attrs, name) {
  */
 function simplify(g) {
   var simplified = new Graph().setGraph(g.graph());
-  g.nodes().forEach(v => simplified.setNode(v, g.node(v)));
-  g.edges().forEach(e => {
+  g.nodes().forEach((v) => simplified.setNode(v, g.node(v)));
+  g.edges().forEach((e) => {
     var simpleLabel = simplified.edge(e.v, e.w) || { weight: 0, minlen: 1 };
     var label = g.edge(e);
     simplified.setEdge(e.v, e.w, {
@@ -56,21 +56,21 @@ function simplify(g) {
 
 function asNonCompoundGraph(g) {
   var simplified = new Graph({ multigraph: g.isMultigraph() }).setGraph(g.graph());
-  g.nodes().forEach(v => {
+  g.nodes().forEach((v) => {
     if (!g.children(v).length) {
       simplified.setNode(v, g.node(v));
     }
   });
-  g.edges().forEach(e => {
+  g.edges().forEach((e) => {
     simplified.setEdge(e, g.edge(e));
   });
   return simplified;
 }
 
 function successorWeights(g) {
-  var weightMap = g.nodes().map(v => {
+  var weightMap = g.nodes().map((v) => {
     var sucs = {};
-    g.outEdges(v).forEach(e => {
+    g.outEdges(v).forEach((e) => {
       sucs[e.w] = (sucs[e.w] || 0) + g.edge(e).weight;
     });
     return sucs;
@@ -79,9 +79,9 @@ function successorWeights(g) {
 }
 
 function predecessorWeights(g) {
-  var weightMap = g.nodes().map(v => {
+  var weightMap = g.nodes().map((v) => {
     var preds = {};
-    g.inEdges(v).forEach(e => {
+    g.inEdges(v).forEach((e) => {
       preds[e.v] = (preds[e.v] || 0) + g.edge(e).weight;
     });
     return preds;
@@ -134,7 +134,7 @@ function intersectRect(rect, point) {
  */
 function buildLayerMatrix(g) {
   var layering = range(maxRank(g) + 1).map(() => []);
-  g.nodes().forEach(v => {
+  g.nodes().forEach((v) => {
     var node = g.node(v);
     var rank = node.rank;
     if (rank !== undefined) {
@@ -149,15 +149,17 @@ function buildLayerMatrix(g) {
  * rank(v) >= 0 and at least one node w has rank(w) = 0.
  */
 function normalizeRanks(g) {
-  var min = Math.min(...g.nodes().map(v => {
-    var rank = g.node(v).rank;
-    if (rank === undefined) {
-      return Number.MAX_VALUE;
-    }
+  var min = Math.min(
+    ...g.nodes().map((v) => {
+      var rank = g.node(v).rank;
+      if (rank === undefined) {
+        return Number.MAX_VALUE;
+      }
 
-    return rank;
-  }));
-  g.nodes().forEach(v => {
+      return rank;
+    }),
+  );
+  g.nodes().forEach((v) => {
     const node = g.node(v);
     if (Object.prototype.hasOwnProperty.call(node, 'rank')) {
       node.rank -= min;
@@ -167,10 +169,10 @@ function normalizeRanks(g) {
 
 function removeEmptyRanks(g) {
   // Ranks may not start at 0, so we need to offset them
-  var offset = Math.min(...g.nodes().map(v => g.node(v).rank));
+  var offset = Math.min(...g.nodes().map((v) => g.node(v).rank));
 
   var layers = [];
-  g.nodes().forEach(v => {
+  g.nodes().forEach((v) => {
     var rank = g.node(v).rank - offset;
     if (!layers[rank]) {
       layers[rank] = [];
@@ -184,7 +186,7 @@ function removeEmptyRanks(g) {
     if (vs === undefined && i % nodeRankFactor !== 0) {
       --delta;
     } else if (vs !== undefined && delta) {
-      vs.forEach(v => g.node(v).rank += delta);
+      vs.forEach((v) => (g.node(v).rank += delta));
     }
   });
 }
@@ -202,14 +204,16 @@ function addBorderNode(g, prefix, rank, order) {
 }
 
 function maxRank(g) {
-  return Math.max(...g.nodes().map(v => {
-    var rank = g.node(v).rank;
-    if (rank === undefined) {
-      return Number.MIN_VALUE;
-    }
+  return Math.max(
+    ...g.nodes().map((v) => {
+      var rank = g.node(v).rank;
+      if (rank === undefined) {
+        return Number.MIN_VALUE;
+      }
 
-    return rank;
-  }));
+      return rank;
+    }),
+  );
 }
 
 /*
@@ -219,7 +223,7 @@ function maxRank(g) {
  */
 function partition(collection, fn) {
   var result = { lhs: [], rhs: [] };
-  collection.forEach(value => {
+  collection.forEach((value) => {
     if (fn(value)) {
       result.lhs.push(value);
     } else {
@@ -252,7 +256,15 @@ function uniqueId(prefix) {
   return prefix + id;
 }
 
-function range(start, limit = null, step = 1) { // : number[]
+/**
+ *
+ * @param {number} start - The start of the range.
+ * @param {number} [limit=null] - The end of the range. If not provided, `start` is used as the limit and the range starts from 0.
+ * @param {number} [step=1] - The step between each number in the range. Can be negative.
+ * @returns {number[]} An array of numbers within the specified range.
+ */
+function range(start, limit = null, step = 1) {
+  // : number[]
   if (limit == null) {
     limit = start;
     start = 0;

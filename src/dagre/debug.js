@@ -9,12 +9,12 @@ function debugOrdering(g) {
 
   var h = new Graph({ compound: true, multigraph: true }).setGraph({});
 
-  g.nodes().forEach(v => {
+  g.nodes().forEach((v) => {
     h.setNode(v, { label: v });
     h.setParent(v, 'layer' + g.node(v).rank);
   });
 
-  g.edges().forEach(e => h.setEdge(e.v, e.w, {}, e.name));
+  g.edges().forEach((e) => h.setEdge(e.v, e.w, {}, e.name));
 
   layerMatrix.forEach((layer, i) => {
     var layerV = 'layer' + i;

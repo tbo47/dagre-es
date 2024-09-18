@@ -1,4 +1,4 @@
-import { uniqueId } from "../util.js";
+import { uniqueId } from '../util.js';
 import { Graph } from '../../graphlib/index.js';
 
 /*
@@ -39,7 +39,7 @@ export function buildLayerGraph(g, rank, relationship) {
         return g.node(v);
       });
 
-  g.nodes().forEach(v => {
+  g.nodes().forEach((v) => {
     var node = g.node(v),
       parent = g.parent(v);
 
@@ -48,7 +48,7 @@ export function buildLayerGraph(g, rank, relationship) {
       result.setParent(v, parent || root);
 
       // This assumes we have only short edges!
-      g[relationship](v).forEach(e => {
+      g[relationship](v).forEach((e) => {
         var u = e.v === v ? e.w : e.v,
           edge = result.edge(u, v),
           weight = edge !== undefined ? edge.weight : 0;

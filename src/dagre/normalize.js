@@ -20,7 +20,7 @@ export { run, undo };
  */
 function run(g) {
   g.graph().dummyChains = [];
-  g.edges().forEach(edge => normalizeEdge(g, edge));
+  g.edges().forEach((edge) => normalizeEdge(g, edge));
 }
 
 function normalizeEdge(g, e) {
@@ -64,7 +64,7 @@ function normalizeEdge(g, e) {
 }
 
 function undo(g) {
-  g.graph().dummyChains.forEach(v => {
+  g.graph().dummyChains.forEach((v) => {
     var node = g.node(v);
     var origLabel = node.edgeLabel;
     var w;

@@ -65,7 +65,7 @@ export function allShortestPathsTests(sp) {
       expect(
         sp(g, undefined, function (v) {
           return g.inEdges(v);
-        })
+        }),
       ).to.eql({
         a: {
           a: { distance: 0 },

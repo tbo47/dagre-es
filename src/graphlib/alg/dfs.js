@@ -14,11 +14,11 @@ function dfs(g, vs, order) {
   }
 
   var navigation = (g.isDirected() ? g.successors : g.neighbors).bind(g);
-  var orderFunc = order === "post" ? postOrderDfs : preOrderDfs;
+  var orderFunc = order === 'post' ? postOrderDfs : preOrderDfs;
 
   var acc = [];
   var visited = {};
-  vs.forEach(v => {
+  vs.forEach((v) => {
     if (!g.hasNode(v)) {
       throw new Error('Graph does not have node: ' + v);
     }
@@ -38,7 +38,7 @@ function postOrderDfs(v, navigation, visited, acc) {
       if (!Object.prototype.hasOwnProperty.call(visited, curr[0])) {
         visited[curr[0]] = true;
         stack.push([curr[0], true]);
-        forEachRight(navigation(curr[0]), w => stack.push([w, false]));
+        forEachRight(navigation(curr[0]), (w) => stack.push([w, false]));
       }
     }
   }
@@ -51,7 +51,7 @@ function preOrderDfs(v, navigation, visited, acc) {
     if (!Object.prototype.hasOwnProperty.call(visited, curr)) {
       visited[curr] = true;
       acc.push(curr);
-      forEachRight(navigation(curr), w => stack.push(w));
+      forEachRight(navigation(curr), (w) => stack.push(w));
     }
   }
 }

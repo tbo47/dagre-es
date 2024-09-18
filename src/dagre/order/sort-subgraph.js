@@ -12,11 +12,11 @@ function sortSubgraph(g, v, cg, biasRight) {
   var subgraphs = {};
 
   if (bl) {
-    movable = movable.filter(w => w !== bl && w !== br);
+    movable = movable.filter((w) => w !== bl && w !== br);
   }
 
   var barycenters = barycenter(g, movable);
-  barycenters.forEach(entry => {
+  barycenters.forEach((entry) => {
     if (g.children(entry.v).length) {
       var subgraphResult = sortSubgraph(g, entry.v, cg, biasRight);
       subgraphs[entry.v] = subgraphResult;
@@ -50,8 +50,8 @@ function sortSubgraph(g, v, cg, biasRight) {
 }
 
 function expandSubgraphs(entries, subgraphs) {
-  entries.forEach(entry => {
-    entry.vs = entry.vs.flatMap(v => {
+  entries.forEach((entry) => {
+    entry.vs = entry.vs.flatMap((v) => {
       if (subgraphs[v]) {
         return subgraphs[v].vs;
       }

@@ -31,13 +31,15 @@ function longestPath(g) {
     }
     visited[v] = true;
 
-    var rank = Math.min(...g.outEdges(v).map(e => {
-      if (e == null) {
-        return Number.POSITIVE_INFINITY;
-      }
+    var rank = Math.min(
+      ...g.outEdges(v).map((e) => {
+        if (e == null) {
+          return Number.POSITIVE_INFINITY;
+        }
 
-      return dfs(e.w) - g.edge(e).minlen;
-    }));
+        return dfs(e.w) - g.edge(e).minlen;
+      }),
+    );
 
     if (rank === Number.POSITIVE_INFINITY) {
       rank = 0;

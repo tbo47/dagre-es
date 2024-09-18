@@ -2,7 +2,7 @@ export const addSubgraphConstraints = (g, cg, vs) => {
   var prev = {},
     rootPrev;
 
-  vs.forEach(v => {
+  vs.forEach((v) => {
     var child = g.parent(v),
       parent,
       prevChild;
@@ -46,4 +46,4 @@ export const addSubgraphConstraints = (g, cg, vs) => {
   }
   dfs(undefined);
   */
-}
+};

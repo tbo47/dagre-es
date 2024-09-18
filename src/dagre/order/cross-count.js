@@ -1,4 +1,4 @@
-import { zipObject } from "../util.js"
+import { zipObject } from '../util.js';
 
 export { crossCount };
 
@@ -30,11 +30,17 @@ function twoLayerCrossCount(g, northLayer, southLayer) {
   // Sort all of the edges between the north and south layers by their position
   // in the north layer and then the south. Map these edges to the position of
   // their head in the south layer.
-  var southPos = zipObject(southLayer, southLayer.map((v, i) => i));
-  var southEntries = northLayer.flatMap(v => {
-    return g.outEdges(v).map(e => {
-      return { pos: southPos[e.w], weight: g.edge(e).weight };
-    }).sort((a, b) => a.pos - b.pos);
+  var southPos = zipObject(
+    southLayer,
+    southLayer.map((v, i) => i),
+  );
+  var southEntries = northLayer.flatMap((v) => {
+    return g
+      .outEdges(v)
+      .map((e) => {
+        return { pos: southPos[e.w], weight: g.edge(e).weight };
+      })
+      .sort((a, b) => a.pos - b.pos);
   });
 
   // Build the accumulator tree
@@ -46,7 +52,7 @@ function twoLayerCrossCount(g, northLayer, southLayer) {
 
   // Calculate the weighted crossings
   var cc = 0;
-  southEntries.forEach(entry => {
+  southEntries.forEach((entry) => {
     var index = entry.pos + firstIndex;
     tree[index] += entry.weight;
     var weightSum = 0;

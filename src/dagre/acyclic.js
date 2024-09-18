@@ -5,7 +5,7 @@ export { run, undo };
 
 function run(g) {
   var fas = g.graph().acyclicer === 'greedy' ? greedyFAS(g, weightFn(g)) : dfsFAS(g);
-  fas.forEach(e => {
+  fas.forEach((e) => {
     var label = g.edge(e);
     g.removeEdge(e);
     label.forwardName = e.name;
@@ -31,7 +31,7 @@ function dfsFAS(g) {
     }
     visited[v] = true;
     stack[v] = true;
-    g.outEdges(v).forEach(e => {
+    g.outEdges(v).forEach((e) => {
       if (Object.prototype.hasOwnProperty.call(stack, e.w)) {
         fas.push(e);
       } else {
@@ -46,7 +46,7 @@ function dfsFAS(g) {
 }
 
 function undo(g) {
-  g.edges().forEach(e => {
+  g.edges().forEach((e) => {
     var label = g.edge(e);
     if (label.reversed) {
       g.removeEdge(e);

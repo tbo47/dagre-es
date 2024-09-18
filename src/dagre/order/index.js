@@ -25,8 +25,8 @@ export { order };
  */
 function order(g) {
   var maxRank = util.maxRank(g),
-    downLayerGraphs = buildLayerGraphs(g, util.range(1, maxRank + 1), "inEdges"),
-    upLayerGraphs = buildLayerGraphs(g, util.range(maxRank - 1, -1, -1), "outEdges");
+    downLayerGraphs = buildLayerGraphs(g, util.range(1, maxRank + 1), 'inEdges'),
+    upLayerGraphs = buildLayerGraphs(g, util.range(maxRank - 1, -1, -1), 'outEdges');
 
   var layering = initOrder(g);
   assignOrder(g, layering);
@@ -50,15 +50,15 @@ function order(g) {
 }
 
 function buildLayerGraphs(g, ranks, relationship) {
-  return ranks.map(rank => buildLayerGraph(g, rank, relationship));
+  return ranks.map((rank) => buildLayerGraph(g, rank, relationship));
 }
 
 function sweepLayerGraphs(layerGraphs, biasRight) {
   var cg = new Graph();
-  layerGraphs.forEach(lg => {
+  layerGraphs.forEach((lg) => {
     var root = lg.graph().root;
     var sorted = sortSubgraph(lg, root, cg, biasRight);
-    sorted.vs.forEach((v, i) => lg.node(v).order = i);
+    sorted.vs.forEach((v, i) => (lg.node(v).order = i));
     addSubgraphConstraints(lg, cg, sorted.vs);
   });
 }
@@ -66,6 +66,6 @@ function sweepLayerGraphs(layerGraphs, biasRight) {
 function assignOrder(g, layering) {
   // Object.values(layering).forEach((layer: [string, number][]) => {
   Object.values(layering).forEach((layer) => {
-    layer.forEach((v, i) => g.node(v).order = i)
+    layer.forEach((v, i) => (g.node(v).order = i));
   });
 }

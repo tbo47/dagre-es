@@ -27,20 +27,20 @@ export { run, cleanup };
  */
 function run(g) {
   var root = util.addDummyNode(g, 'root', {}, '_root');
-  var depths = treeDepths(g) //  as Record<string, number>;
+  var depths = treeDepths(g); //  as Record<string, number>;
   var height = Math.max(...Object.values(depths)) - 1; // Note: depths is an Object not an array
   var nodeSep = 2 * height + 1;
 
   g.graph().nestingRoot = root;
 
   // Multiply minlen by nodeSep to align nodes on non-border ranks.
-  g.edges().forEach(e => g.edge(e).minlen *= nodeSep);
+  g.edges().forEach((e) => (g.edge(e).minlen *= nodeSep));
 
   // Calculate a weight that is sufficient to keep subgraphs vertically compact
   var weight = sumWeights(g) + 1;
 
   // Create border nodes and link them up
-  g.children().forEach(child => dfs(g, root, nodeSep, weight, height, depths, child));
+  g.children().forEach((child) => dfs(g, root, nodeSep, weight, height, depths, child));
 
   // Save the multiplier for node layers for later removal of empty border
   // layers.
@@ -65,7 +65,7 @@ function dfs(g, root, nodeSep, weight, height, depths, v) {
   g.setParent(bottom, v);
   label.borderBottom = bottom;
 
-  children.forEach(child => {
+  children.forEach((child) => {
     dfs(g, root, nodeSep, weight, height, depths, child);
 
     var childNode = g.node(child);
@@ -97,11 +97,11 @@ function treeDepths(g) {
   function dfs(v, depth) {
     var children = g.children(v);
     if (children && children.length) {
-      children.forEach(child => dfs(child, depth + 1));
+      children.forEach((child) => dfs(child, depth + 1));
     }
     depths[v] = depth;
   }
-  g.children().forEach(v => dfs(v, 1));
+  g.children().forEach((v) => dfs(v, 1));
   return depths;
 }
 
@@ -113,7 +113,7 @@ function cleanup(g) {
   var graphLabel = g.graph();
   g.removeNode(graphLabel.nestingRoot);
   delete graphLabel.nestingRoot;
-  g.edges().forEach(e => {
+  g.edges().forEach((e) => {
     var edge = g.edge(e);
     if (edge.nestingEdge) {
       g.removeEdge(e);

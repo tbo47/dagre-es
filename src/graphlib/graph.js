@@ -24,9 +24,15 @@ var EDGE_KEY_DELIM = '\x01';
 export class Graph {
   // as { directed?: boolean, multigraph?: boolean, compound?: boolean }
   constructor(opts = {}) {
-    this._isDirected = Object.prototype.hasOwnProperty.call(opts, 'directed') ? opts.directed : true;
-    this._isMultigraph = Object.prototype.hasOwnProperty.call(opts, 'multigraph') ? opts.multigraph : false;
-    this._isCompound = Object.prototype.hasOwnProperty.call(opts, 'compound') ? opts.compound : false;
+    this._isDirected = Object.prototype.hasOwnProperty.call(opts, 'directed')
+      ? opts.directed
+      : true;
+    this._isMultigraph = Object.prototype.hasOwnProperty.call(opts, 'multigraph')
+      ? opts.multigraph
+      : false;
+    this._isCompound = Object.prototype.hasOwnProperty.call(opts, 'compound')
+      ? opts.compound
+      : false;
 
     // Label for the graph itself
     this._label = undefined;
@@ -100,14 +106,14 @@ export class Graph {
     return Object.keys(this._nodes);
   }
   sources() {
-    return this.nodes().filter(v => Object.keys(this._in[v]).length === 0);
+    return this.nodes().filter((v) => Object.keys(this._in[v]).length === 0);
   }
   sinks() {
-    return this.nodes().filter(v => Object.keys(this._out[v]).length === 0);
+    return this.nodes().filter((v) => Object.keys(this._out[v]).length === 0);
   }
   setNodes(vs, value) {
     var args = arguments;
-    vs.forEach(v => {
+    vs.forEach((v) => {
       if (args.length > 1) {
         this.setNode(v, value);
       } else {
@@ -146,12 +152,12 @@ export class Graph {
   }
   removeNode(v) {
     if (Object.prototype.hasOwnProperty.call(this._nodes, v)) {
-      var removeEdge = e => this.removeEdge(this._edgeObjs[e]);
+      var removeEdge = (e) => this.removeEdge(this._edgeObjs[e]);
       delete this._nodes[v];
       if (this._isCompound) {
         this._removeFromParentsChildList(v);
         delete this._parent[v];
-        this.children(v).forEach(child => {
+        this.children(v).forEach((child) => {
           this.setParent(child);
         });
         delete this._children[v];
@@ -257,7 +263,7 @@ export class Graph {
     copy.setGraph(this.graph());
 
     var self = this;
-    Object.entries(this._nodes).forEach(function([v, value]) {
+    Object.entries(this._nodes).forEach(function ([v, value]) {
       if (filter(v)) {
         copy.setNode(v, value);
       }
@@ -284,7 +290,7 @@ export class Graph {
     }
 
     if (this._isCompound) {
-      copy.nodes().forEach(v => copy.setParent(v, findParent(v)));
+      copy.nodes().forEach((v) => copy.setParent(v, findParent(v)));
     }
 
     return copy;
@@ -424,7 +430,7 @@ export class Graph {
       if (!u) {
         return edges;
       }
-      return edges.filter(edge => edge.v === u);
+      return edges.filter((edge) => edge.v === u);
     }
   }
   outEdges(v, w) {
@@ -434,7 +440,7 @@ export class Graph {
       if (!w) {
         return edges;
       }
-      return edges.filter(edge => edge.w === w);
+      return edges.filter((edge) => edge.w === w);
     }
   }
   nodeEdges(v, w) {
@@ -473,8 +479,7 @@ function edgeArgsToId(isDirected, v_, w_, name) {
     v = w;
     w = tmp;
   }
-  return v + EDGE_KEY_DELIM + w + EDGE_KEY_DELIM +
-             (name === undefined ? DEFAULT_EDGE_NAME : name);
+  return v + EDGE_KEY_DELIM + w + EDGE_KEY_DELIM + (name === undefined ? DEFAULT_EDGE_NAME : name);
 }
 
 function edgeArgsToObj(isDirected, v_, w_, name) {
@@ -486,7 +491,7 @@ function edgeArgsToObj(isDirected, v_, w_, name) {
     w = tmp;
   }
   // var edgeObj = { v, w } as { v: string, w: string, name?: string };
-  var edgeObj = { v, w }
+  var edgeObj = { v, w };
   if (name) {
     edgeObj.name = name;
   }

@@ -102,7 +102,7 @@ class PriorityQueue {
           ' Old: ' +
           this._arr[index].priority +
           ' New: ' +
-          priority
+          priority,
       );
     }
     this._arr[index].priority = priority;

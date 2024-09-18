@@ -25,7 +25,7 @@ function prim(g, weightFunc) {
     return result;
   }
 
-  g.nodes().forEach(v => {
+  g.nodes().forEach((v) => {
     pq.add(v, Number.POSITIVE_INFINITY);
     result.setNode(v);
   });

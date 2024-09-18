@@ -10,7 +10,9 @@ function positionEdgeLabels(selection, g) {
 
   function translate(e) {
     var edge = g.edge(e);
-    return Object.prototype.hasOwnProperty.call(edge, 'x') ? 'translate(' + edge.x + ',' + edge.y + ')' : '';
+    return Object.prototype.hasOwnProperty.call(edge, 'x')
+      ? 'translate(' + edge.x + ',' + edge.y + ')'
+      : '';
   }
 
   created.attr('transform', translate);

@@ -13,7 +13,7 @@ function components(g) {
     g.predecessors(v).forEach(dfs);
   }
 
-  g.nodes().forEach(function(v) {
+  g.nodes().forEach(function (v) {
     cmpt = [];
     dfs(v);
     if (cmpt.length) {

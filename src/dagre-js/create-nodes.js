@@ -28,7 +28,7 @@ var createNodes = function (selection, g, shapes) {
     util.applyClass(
       thisGroup,
       node['class'],
-      (thisGroup.classed('update') ? 'update ' : '') + 'node'
+      (thisGroup.classed('update') ? 'update ' : '') + 'node',
     );
 
     thisGroup.select('g.label').remove();
@@ -61,7 +61,7 @@ var createNodes = function (selection, g, shapes) {
         (node.paddingLeft - node.paddingRight) / 2 +
         ',' +
         (node.paddingTop - node.paddingBottom) / 2 +
-        ')'
+        ')',
     );
 
     var root = d3.select(this);

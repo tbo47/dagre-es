@@ -52,7 +52,7 @@ describe('json', function () {
   it('preserves parent / child relationships', function () {
     expect(rw(new Graph({ compound: true }).setNode('a')).parent('a')).to.be.undefined;
     expect(rw(new Graph({ compound: true }).setParent('a', 'parent')).parent('a')).to.equal(
-      'parent'
+      'parent',
     );
   });
 });

@@ -17,7 +17,7 @@ function sort(entries, biasRight) {
 
   vsIndex = consumeUnsortable(vs, unsortable, vsIndex);
 
-  sortable.forEach(entry => {
+  sortable.forEach((entry) => {
     vsIndex += entry.vs.length;
     vs.push(entry.vs);
     sum += entry.barycenter * entry.weight;
@@ -25,7 +25,7 @@ function sort(entries, biasRight) {
     vsIndex = consumeUnsortable(vs, unsortable, vsIndex);
   });
 
-  var result = { vs: vs.flat(1) } // as { vs: string[]; barycenter?: number; weight?: number };
+  var result = { vs: vs.flat(1) }; // as { vs: string[]; barycenter?: number; weight?: number };
   if (weight) {
     result.barycenter = sum / weight;
     result.weight = weight;

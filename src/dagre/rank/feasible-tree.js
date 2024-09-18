@@ -52,7 +52,7 @@ function feasibleTree(g) {
  */
 function tightTree(t, g) {
   function dfs(v) {
-    g.nodeEdges(v).forEach(e => {
+    g.nodeEdges(v).forEach((e) => {
       var edgeV = e.v,
         w = v === edgeV ? e.w : edgeV;
       if (!t.hasNode(w) && !slack(g, e)) {
@@ -74,20 +74,23 @@ function tightTree(t, g) {
 function findMinSlackEdge(t, g) {
   const edges = g.edges();
 
-  return edges.reduce((acc, edge) => {
-    let edgeSlack = Number.POSITIVE_INFINITY;
-    if (t.hasNode(edge.v) !== t.hasNode(edge.w)) {
-      edgeSlack = slack(g, edge);
-    }
+  return edges.reduce(
+    (acc, edge) => {
+      let edgeSlack = Number.POSITIVE_INFINITY;
+      if (t.hasNode(edge.v) !== t.hasNode(edge.w)) {
+        edgeSlack = slack(g, edge);
+      }
 
-    if (edgeSlack < acc[0]) {
-      return [edgeSlack, edge];
-    }
+      if (edgeSlack < acc[0]) {
+        return [edgeSlack, edge];
+      }
 
-    return acc;
-  }, [Number.POSITIVE_INFINITY, null])[1];
+      return acc;
+    },
+    [Number.POSITIVE_INFINITY, null],
+  )[1];
 }
 
 function shiftRanks(t, g, delta) {
-  t.nodes().forEach(v => g.node(v).rank += delta);
+  t.nodes().forEach((v) => (g.node(v).rank += delta));
 }

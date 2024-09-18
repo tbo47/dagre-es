@@ -12,7 +12,7 @@ function dijkstra(g, source, weightFn, edgeFn) {
     edgeFn ||
       function (v) {
         return g.outEdges(v);
-      }
+      },
   );
 }
 
@@ -33,7 +33,7 @@ function runDijkstra(g, source, weightFn, edgeFn) {
           'Bad edge: ' +
           edge +
           ' Weight: ' +
-          weight
+          weight,
       );
     }
 

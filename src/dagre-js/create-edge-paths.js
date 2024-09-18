@@ -32,7 +32,7 @@ var createEdgePaths = function (selection, g, arrows) {
     util.applyClass(
       domEdge,
       edge['class'],
-      (domEdge.classed('update') ? 'update ' : '') + 'edgePath'
+      (domEdge.classed('update') ? 'update ' : '') + 'edgePath',
     );
   });
 

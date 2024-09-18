@@ -1,6 +1,4 @@
-import { range } from "../util.js";
-
-export { initOrder };
+import { range } from '../util.js';
 
 /*
  * Assigns an initial order value for each node by performing a DFS search
@@ -13,10 +11,10 @@ export { initOrder };
  * Returns a layering matrix with an array per layer and each layer sorted by
  * the order of its nodes.
  */
-function initOrder(g) {
+export function initOrder(g) {
   var visited = {};
-  var simpleNodes = g.nodes().filter(v => !g.children(v).length);
-  var maxRank = Math.max(...simpleNodes.map(v => g.node(v).rank));
+  var simpleNodes = g.nodes().filter((v) => !g.children(v).length);
+  var maxRank = Math.max(...simpleNodes.map((v) => g.node(v).rank));
   var layers = range(maxRank + 1).map(() => []);
 
   function dfs(v) {

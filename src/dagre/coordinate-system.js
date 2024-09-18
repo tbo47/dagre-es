@@ -20,8 +20,8 @@ function undo(g) {
 }
 
 function swapWidthHeight(g) {
-  g.nodes().forEach(v => swapWidthHeightOne(g.node(v)));
-  g.edges().forEach(e => swapWidthHeightOne(g.edge(e)));
+  g.nodes().forEach((v) => swapWidthHeightOne(g.node(v)));
+  g.edges().forEach((e) => swapWidthHeightOne(g.edge(e)));
 }
 
 function swapWidthHeightOne(attrs) {
@@ -31,9 +31,9 @@ function swapWidthHeightOne(attrs) {
 }
 
 function reverseY(g) {
-  g.nodes().forEach(v => reverseYOne(g.node(v)));
+  g.nodes().forEach((v) => reverseYOne(g.node(v)));
 
-  g.edges().forEach(e => {
+  g.edges().forEach((e) => {
     var edge = g.edge(e);
     edge.points.forEach(reverseYOne);
     if (Object.prototype.hasOwnProperty.call(edge, 'y')) {
@@ -47,9 +47,9 @@ function reverseYOne(attrs) {
 }
 
 function swapXY(g) {
-  g.nodes().forEach(v => swapXYOne(g.node(v)));
+  g.nodes().forEach((v) => swapXYOne(g.node(v)));
 
-  g.edges().forEach(e => {
+  g.edges().forEach((e) => {
     var edge = g.edge(e);
     edge.points.forEach(swapXYOne);
     if (Object.prototype.hasOwnProperty.call(edge, 'x')) {
