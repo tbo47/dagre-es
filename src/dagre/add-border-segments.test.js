@@ -1,5 +1,4 @@
-import chai from '../../test/chai.js';
-const expect = chai.expect;
+import { describe, expect, it } from 'vitest';
 import { addBorderSegments } from './add-border-segments.js';
 import { Graph } from '../graphlib/index.js';
 

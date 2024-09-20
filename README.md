@@ -1,10 +1,6 @@
 <p align="center">
-  <a href="https://www.npmjs.com/dagre-d3-es">
-    <img src="https://img.shields.io/npm/v/dagre-d3-es.svg?logo=npm&logoColor=fff&label=NPM+package&color=limegreen" alt="dagre-d3-es on npm" />
-  </a>&nbsp;
-  <a href="https://www.npmjs.com/dagre-d3-es">
-    <img src="https://img.shields.io/npm/dw/dagre-d3-es.svg?logo=npm&logoColor=fff&label=NPM+package&color=limegreen" alt="dagre-d3-es on npm" />
-  </a>&nbsp;
+  <a href="https://www.npmjs.com/dagre-d3-es"><img src="https://img.shields.io/npm/v/dagre-d3-es.svg?logo=npm&logoColor=fff&label=NPM+package&color=limegreen" alt="dagre-d3-es on npm" /></a>&nbsp;
+  <a href="https://www.npmjs.com/dagre-d3-es"><img src="https://img.shields.io/npm/dw/dagre-d3-es.svg?logo=npm&logoColor=fff&label=NPM+package&color=limegreen" alt="dagre-d3-es on npm" /></a>
 </p>
 
 # dagre-d3-es
@@ -15,10 +11,6 @@ It uses [ES](https://262.ecma-international.org/6.0/) modules, thus the name [da
 
 [dagre-d3-es](https://www.npmjs.com/package/dagre-d3-es) follows [d3](https://www.npmjs.com/package/d3) versions. Ex: dagre-d3-es version 7 depends on [d3](https://www.npmjs.com/package/d3) version 7.
 
-## Sponsors
-
-You can sponsor this library at [GitHub Sponsors](https://github.com/sponsors/tbo47).
-
 ## Demos
 
 [Simple graph demo](https://codesandbox.io/s/dagre-d3-es-tree-9ywg9) using react, dagre-d3-es.
@@ -28,7 +20,7 @@ Clone and run [dagre-es-example](https://github.com/tbo47/dagre-es-example) usin
 ## Install
 
 ```
-npm install dagre-d3-es --save
+npm install dagre-d3-es
 ```
 
 ## Code example

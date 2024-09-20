@@ -1,5 +1,5 @@
-import chai from '../../../test/chai.js';
-const expect = chai.expect;
+import { describe, expect, it } from 'vitest';
+
 import { Graph } from '../graph.js';
 import { floydWarshall } from './floyd-warshall.js';
 import { allShortestPathsTests } from '../../../test/graphlib/alg/all-shortest-paths.js';

@@ -1,5 +1,5 @@
-import chai from '../../../test/chai.js';
-const expect = chai.expect;
+import { describe, expect, it } from 'vitest';
+
 import { List } from './list.js';
 
 describe('data.List', function () {

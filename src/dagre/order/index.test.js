@@ -1,6 +1,6 @@
 import * as _ from 'lodash-es';
-import chai from '../../../test/chai.js';
-const expect = chai.expect;
+import { describe, expect, it } from 'vitest';
+
 import { Graph } from '../../graphlib/graph.js';
 import { order } from './index.js';
 import { crossCount } from './cross-count.js';

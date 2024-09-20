@@ -1,7 +1,6 @@
 import { Graph } from '../graphlib/index.js';
 import * as coordinateSystem from './coordinate-system.js';
-import chai from '../../test/chai.js';
-const expect = chai.expect;
+import { describe, expect, it } from 'vitest';
 
 describe('coordinateSystem', function () {
   var g;

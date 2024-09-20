@@ -1,5 +1,5 @@
-import chai from '../../../test/chai.js';
-const expect = chai.expect;
+import { describe, expect, it } from 'vitest';
+
 import { Graph } from '../graph.js';
 import { components } from './components.js';
 
