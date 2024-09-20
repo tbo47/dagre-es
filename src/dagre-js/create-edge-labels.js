@@ -1,5 +1,4 @@
 import * as d3 from 'd3';
-import * as _ from 'lodash-es';
 import { addLabel } from './label/add-label.js';
 import * as util from './util.js';
 
@@ -28,10 +27,10 @@ let createEdgeLabels = function (selection, g) {
     if (edge.labelId) {
       label.attr('id', edge.labelId);
     }
-    if (!_.has(edge, 'width')) {
+    if (!Object.prototype.hasOwnProperty.call(edge, 'width')) {
       edge.width = bbox.width;
     }
-    if (!_.has(edge, 'height')) {
+    if (!Object.prototype.hasOwnProperty.call(edge, 'height')) {
       edge.height = bbox.height;
     }
   });

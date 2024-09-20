@@ -67,7 +67,7 @@ describe('alg.dijkstra', function () {
     expect(
       dijkstra(g, 'd', undefined, function (e) {
         return g.inEdges(e);
-      })
+      }),
     ).to.eql({
       a: { distance: 2, predecessor: 'c' },
       b: { distance: 2, predecessor: 'c' },

@@ -3,7 +3,7 @@
     "checkJs": true,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "lib": ["dom", "dom.iterable", "es2020"],
+    "lib": ["dom", "dom.iterable", "es2022"],
     "types": [
       // vitest types don't work with module "node16", see
       // https://github.com/vitejs/vite/issues/11552

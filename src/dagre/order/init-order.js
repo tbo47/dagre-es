@@ -1,6 +1,4 @@
-import * as _ from 'lodash-es';
-
-export { initOrder };
+import { range } from '../util.js';
 
 /*
  * Assigns an initial order value for each node by performing a DFS search
@@ -13,32 +11,22 @@ export { initOrder };
  * Returns a layering matrix with an array per layer and each layer sorted by
  * the order of its nodes.
  */
-function initOrder(g) {
+export function initOrder(g) {
   var visited = {};
-  var simpleNodes = _.filter(g.nodes(), function (v) {
-    return !g.children(v).length;
-  });
-  var maxRank = _.max(
-    _.map(simpleNodes, function (v) {
-      return g.node(v).rank;
-    })
-  );
-  var layers = _.map(_.range(maxRank + 1), function () {
-    return [];
-  });
+  var simpleNodes = g.nodes().filter((v) => !g.children(v).length);
+  var maxRank = Math.max(...simpleNodes.map((v) => g.node(v).rank));
+  var layers = range(maxRank + 1).map(() => []);
 
   function dfs(v) {
-    if (_.has(visited, v)) return;
+    if (visited[v]) return;
     visited[v] = true;
     var node = g.node(v);
     layers[node.rank].push(v);
-    _.forEach(g.successors(v), dfs);
+    g.successors(v).forEach(dfs);
   }
 
-  var orderedVs = _.sortBy(simpleNodes, function (v) {
-    return g.node(v).rank;
-  });
-  _.forEach(orderedVs, dfs);
+  var orderedVs = simpleNodes.sort((a, b) => g.node(a).rank - g.node(b).rank);
+  orderedVs.forEach(dfs);
 
   return layers;
 }

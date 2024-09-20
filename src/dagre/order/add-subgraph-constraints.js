@@ -1,12 +1,8 @@
-import * as _ from 'lodash-es';
-
-export { addSubgraphConstraints };
-
-function addSubgraphConstraints(g, cg, vs) {
+export const addSubgraphConstraints = (g, cg, vs) => {
   var prev = {},
     rootPrev;
 
-  _.forEach(vs, function (v) {
+  vs.forEach((v) => {
     var child = g.parent(v),
       parent,
       prevChild;
@@ -50,4 +46,4 @@ function addSubgraphConstraints(g, cg, vs) {
   }
   dfs(undefined);
   */
-}
+};

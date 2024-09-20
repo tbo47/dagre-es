@@ -1,5 +1,4 @@
 import * as d3 from 'd3';
-import * as _ from 'lodash-es';
 import * as util from './util.js';
 
 export { positionEdgeLabels };
@@ -11,7 +10,9 @@ function positionEdgeLabels(selection, g) {
 
   function translate(e) {
     var edge = g.edge(e);
-    return _.has(edge, 'x') ? 'translate(' + edge.x + ',' + edge.y + ')' : '';
+    return Object.prototype.hasOwnProperty.call(edge, 'x')
+      ? 'translate(' + edge.x + ',' + edge.y + ')'
+      : '';
   }
 
   created.attr('transform', translate);
