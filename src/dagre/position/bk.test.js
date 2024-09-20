@@ -1,6 +1,6 @@
 import * as _ from 'lodash-es';
-import chai from '../../../test/chai.js';
-const expect = chai.expect;
+import { describe, expect, it } from 'vitest';
+
 import { buildLayerMatrix } from '../util.js';
 import {
   findType1Conflicts,

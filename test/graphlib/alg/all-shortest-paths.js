@@ -1,5 +1,4 @@
-import chai from '../../chai.js';
-const expect = chai.expect;
+import { describe, expect, it } from 'vitest';
 import { Graph } from '../../../src/graphlib/graph.js';
 
 export function allShortestPathsTests(sp) {

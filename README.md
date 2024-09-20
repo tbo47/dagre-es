@@ -28,7 +28,7 @@ Clone and run [dagre-es-example](https://github.com/tbo47/dagre-es-example) usin
 ## Install
 
 ```
-npm install dagre-d3-es --save
+npm install dagre-d3-es
 ```
 
 ## Code example
