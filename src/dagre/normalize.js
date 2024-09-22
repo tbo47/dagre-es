@@ -1,3 +1,8 @@
+/**
+ * TypeScript type imports:
+ *
+ * @import { Graph } from '../graphlib/graph.js';
+ */
 import * as util from './util.js';
 
 export { run, undo };
@@ -23,6 +28,9 @@ function run(g) {
   g.edges().forEach((edge) => normalizeEdge(g, edge));
 }
 
+/**
+ * @param {Graph} g
+ */
 function normalizeEdge(g, e) {
   var v = e.v;
   var vRank = g.node(v).rank;
@@ -36,7 +44,20 @@ function normalizeEdge(g, e) {
 
   g.removeEdge(e);
 
-  var dummy, attrs, i;
+  /**
+   * @typedef {Object} Attrs
+   * @property {number} width
+   * @property {number} height
+   * @property {ReturnType<Graph["node"]>} edgeLabel
+   * @property {any} edgeObj
+   * @property {ReturnType<Graph["node"]>["rank"]} rank
+   * @property {string} [dummy]
+   * @property {ReturnType<Graph["node"]>["labelpos"]} [labelpos]
+   */
+
+  /** @type {Attrs | undefined} */
+  var attrs = undefined;
+  var dummy, i;
   for (i = 0, ++vRank; vRank < wRank; ++i, ++vRank) {
     edgeLabel.points = [];
     attrs = {
