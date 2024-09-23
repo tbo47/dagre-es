@@ -311,15 +311,17 @@ export class Graph {
     return Object.values(this._edgeObjs);
   }
   setPath(vs, value) {
-    var args = arguments;
-    vs.reduce((v, w) => {
-      if (args.length > 1) {
-        this.setEdge(v, w, value);
-      } else {
-        this.setEdge(v, w);
-      }
-      return w;
-    });
+    const args = arguments;
+    if (vs.length > 0) {
+      vs.reduce((v, w) => {
+        if (args.length > 1) {
+          this.setEdge(v, w, value);
+        } else {
+          this.setEdge(v, w);
+        }
+        return w;
+      });
+    }
     return this;
   }
   /*
