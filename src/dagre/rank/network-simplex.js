@@ -173,20 +173,24 @@ function enterEdge(t, g, edge) {
     flip = true;
   }
 
-  var candidates = g.edges().filter((edge) => {
+  const candidates = g.edges().filter((edge) => {
     return (
       flip === isDescendant(t, t.node(edge.v), tailLabel) &&
       flip !== isDescendant(t, t.node(edge.w), tailLabel)
     );
   });
 
-  return candidates.reduce((acc, edge) => {
-    if (slack(g, edge) < slack(g, acc)) {
-      return edge;
-    }
+  if (candidates.length > 0) {
+    return candidates.reduce((acc, edge) => {
+      if (slack(g, edge) < slack(g, acc)) {
+        return edge;
+      }
 
-    return acc;
-  });
+      return acc;
+    });
+  } else {
+    return undefined;
+  }
 }
 
 function exchangeEdges(t, g, e, f) {

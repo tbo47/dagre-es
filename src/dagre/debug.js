@@ -19,10 +19,12 @@ function debugOrdering(g) {
   layerMatrix.forEach((layer, i) => {
     var layerV = 'layer' + i;
     h.setNode(layerV, { rank: 'same' });
-    layer.reduce((u, v) => {
-      h.setEdge(u, v, { style: 'invis' });
-      return v;
-    });
+    if (layer.length > 0) {
+      layer.reduce((u, v) => {
+        h.setEdge(u, v, { style: 'invis' });
+        return v;
+      });
+    }
   });
 
   return h;
