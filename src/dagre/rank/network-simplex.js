@@ -188,6 +188,8 @@ function enterEdge(t, g, edge) {
 
       return acc;
     });
+  } else {
+    return undefined;
   }
 }
 
