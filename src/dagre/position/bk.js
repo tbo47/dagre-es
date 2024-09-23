@@ -71,7 +71,7 @@ function findType1Conflicts(g, layering) {
     return layer;
   }
 
-  if (Array.isArray(layering) && layering.length > 0) layering.reduce(visitLayer);
+  if (layering.length > 0) layering.reduce(visitLayer);
   return conflicts;
 }
 
@@ -114,7 +114,7 @@ function findType2Conflicts(g, layering) {
     return south;
   }
 
-  if (Array.isArray(layering) && layering.length > 0) layering.reduce(visitLayer);
+  if (layering.length > 0) layering.reduce(visitLayer);
   return conflicts;
 }
 
