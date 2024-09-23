@@ -7,8 +7,8 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "generate_types": "find . -name '*.d.ts' -type f -delete ; tsc --build",
-    "___prepack": "npm run generate_types",
+    "generate_types": "find src -name '*.d.ts' -type f -delete ; tsc --build",
+    "prepack": "npm run generate_types",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",

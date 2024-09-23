@@ -94,6 +94,8 @@ var EDGE_DEFAULT_ATTRS = {
  * @typedef {Object} Node
  * @property {string} label - The label of the node.
  * @property {number} [paddingX] - The horizontal padding of the node.
+ * @property {number} [paddingY] - The vertical padding of the node.
+ * @property {number} [padding] - The padding of the node for all directions. Overrides `paddingX` and `paddingY`.
  * @property {number} [paddingLeft] - The left padding of the node.
  * @property {number} [paddingRight] - The right padding of the node.
  * @property {number} [_prevWidth]
