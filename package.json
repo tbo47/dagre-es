@@ -2,7 +2,6 @@
   "name": "dagre-d3-es",
   "version": "7.0.11",
   "description": "",
-  "author": "Thibaut Lassalle",
   "license": "MIT",
   "main": "src/index.js",
   "type": "module",
@@ -37,6 +36,24 @@
     "typescript": "^5.6.2",
     "vitest": "^2.1.1"
   },
+  "contributors": [
+    {
+      "name": "Thibaut Lassalle",
+      "url": "https://tbo47.github.io/"
+    },
+    {
+      "name": "Alois Klink",
+      "url": "https://github.com/aloisklink"
+    },
+    {
+      "name": "David Newell",
+      "url": "https://github.com/rustedgrail"
+    },
+    {
+      "name": "Sidharth Vinod",
+      "url": "https://github.com/sidharthv96"
+    }
+  ],
   "files": [
     "src/**/*",
     "!src/**/*.test.js"
