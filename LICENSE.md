@@ -2,7 +2,7 @@ Original dagre-d3 copyright: Copyright (c) 2013 Chris Pettitt
 Original dagre copyright: Copyright (c) 2012-2014 Chris Pettitt
 Original graphlib copyright: Copyright (c) 2012-2014 Chris Pettitt
 
-Copyright (c) 2022-2024 dagre-es contributors
+Copyright (c) 2022-2024 Thibaut Lassalle, David Newell, Alois Klink, Sidharth Vinod and dagre-es contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
