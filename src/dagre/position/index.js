@@ -21,7 +21,7 @@ function positionY(g) {
     var maxHeight = _.max(
       _.map(layer, function (v) {
         return g.node(v).height;
-      })
+      }),
     );
     _.forEach(layer, function (v) {
       g.node(v).y = prevY + maxHeight / 2;

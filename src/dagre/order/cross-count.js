@@ -34,7 +34,7 @@ function twoLayerCrossCount(g, northLayer, southLayer) {
     southLayer,
     _.map(southLayer, function (v, i) {
       return i;
-    })
+    }),
   );
   var southEntries = _.flatten(
     _.map(northLayer, function (v) {
@@ -42,9 +42,9 @@ function twoLayerCrossCount(g, northLayer, southLayer) {
         _.map(g.outEdges(v), function (e) {
           return { pos: southPos[e.w], weight: g.edge(e).weight };
         }),
-        'pos'
+        'pos',
       );
-    })
+    }),
   );
 
   // Build the accumulator tree
@@ -75,7 +75,7 @@ function twoLayerCrossCount(g, northLayer, southLayer) {
         tree[index] += entry.weight;
       }
       cc += entry.weight * weightSum;
-    })
+    }),
   );
 
   return cc;

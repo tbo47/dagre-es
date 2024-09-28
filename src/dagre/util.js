@@ -16,6 +16,11 @@ export {
   partition,
   time,
   notime,
+  uniqueId,
+  range,
+  pick,
+  mapValues,
+  zipObject,
 };
 
 /*
@@ -152,7 +157,7 @@ function normalizeRanks(g) {
   var min = _.min(
     _.map(g.nodes(), function (v) {
       return g.node(v).rank;
-    })
+    }),
   );
   _.forEach(g.nodes(), function (v) {
     var node = g.node(v);
@@ -167,7 +172,7 @@ function removeEmptyRanks(g) {
   var offset = _.min(
     _.map(g.nodes(), function (v) {
       return g.node(v).rank;
-    })
+    }),
   );
 
   var layers = [];
@@ -196,7 +201,7 @@ function addBorderNode(g, prefix, rank, order) {
   var node = {
     width: 0,
     height: 0,
-  };
+  }; // as { width: number; height: number; rank?: number; order?: number };
   if (arguments.length >= 4) {
     node.rank = rank;
     node.order = order;
@@ -211,7 +216,7 @@ function maxRank(g) {
       if (!_.isUndefined(rank)) {
         return rank;
       }
-    })
+    }),
   );
 }
 
@@ -247,4 +252,67 @@ function time(name, fn) {
 
 function notime(name, fn) {
   return fn();
+}
+
+let idCounter = 0;
+function uniqueId(prefix) {
+  var id = ++idCounter;
+  return prefix + id;
+}
+
+/**
+ *
+ * @param {number} start - The start of the range.
+ * @param {number} [limit=null] - The end of the range. If not provided, `start` is used as the limit and the range starts from 0.
+ * @param {number} [step=1] - The step between each number in the range. Can be negative.
+ * @returns {number[]} An array of numbers within the specified range.
+ */
+function range(start, limit = null, step = 1) {
+  // : number[]
+  if (limit == null) {
+    limit = start;
+    start = 0;
+  }
+
+  let endCon = (i) => i < limit;
+  if (step < 0) {
+    endCon = (i) => limit < i;
+  }
+
+  const range = [];
+  for (let i = start; endCon(i); i += step) {
+    range.push(i);
+  }
+
+  return range;
+}
+
+function pick(source, keys) {
+  const dest = {};
+  for (const key of keys) {
+    if (source[key] !== undefined) {
+      dest[key] = source[key];
+    }
+  }
+
+  return dest;
+}
+
+function mapValues(obj, funcOrProp) {
+  let func = funcOrProp;
+  if (typeof funcOrProp === 'string') {
+    func = (val) => val[funcOrProp];
+  }
+
+  return Object.entries(obj).reduce((acc, [k, v]) => {
+    acc[k] = func(v, k);
+    return acc;
+  }, {});
+}
+
+function zipObject(props, values) {
+  return props.reduce((acc, key, i) => {
+    acc[key] = values[i];
+    return acc;
+  }, {});
 }

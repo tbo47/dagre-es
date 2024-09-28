@@ -11,7 +11,7 @@ function floydWarshall(g, weightFn, edgeFn) {
     edgeFn ||
       function (v) {
         return g.outEdges(v);
-      }
+      },
   );
 }
 

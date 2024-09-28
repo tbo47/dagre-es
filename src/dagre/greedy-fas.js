@@ -24,7 +24,7 @@ function greedyFAS(g, weightFn) {
   return _.flatten(
     _.map(results, function (e) {
       return g.outEdges(e.v, e.w);
-    })
+    }),
   );
 }
 

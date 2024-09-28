@@ -83,7 +83,7 @@ function diamond(parent, bbox, node) {
       .map(function (p) {
         return p.x + ',' + p.y;
       })
-      .join(' ')
+      .join(' '),
   );
 
   node.intersect = function (p) {

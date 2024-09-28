@@ -1,5 +1,5 @@
 import * as _ from 'lodash-es';
-import * as util from './util.js';
+import { addDummyNode } from './util.js';
 
 export { addBorderSegments };
 
@@ -27,7 +27,7 @@ function addBorderSegments(g) {
 function addBorderNode(g, prop, prefix, sg, sgNode, rank) {
   var label = { width: 0, height: 0, rank: rank, borderType: prop };
   var prev = sgNode[prop][rank - 1];
-  var curr = util.addDummyNode(g, 'border', label, prefix);
+  var curr = addDummyNode(g, 'border', label, prefix);
   sgNode[prop][rank] = curr;
   g.setParent(curr, sg);
   if (prev) {

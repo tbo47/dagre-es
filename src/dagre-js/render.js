@@ -90,8 +90,27 @@ var EDGE_DEFAULT_ATTRS = {
   curve: d3.curveLinear,
 };
 
+/**
+ * @typedef {Object} Node
+ * @property {string} label - The label of the node.
+ * @property {number} [paddingX] - The horizontal padding of the node.
+ * @property {number} [paddingY] - The vertical padding of the node.
+ * @property {number} [padding] - The padding of the node for all directions. Overrides `paddingX` and `paddingY`.
+ * @property {number} [paddingLeft] - The left padding of the node.
+ * @property {number} [paddingRight] - The right padding of the node.
+ * @property {number} [_prevWidth]
+ * @property {number} [width]
+ * @property {number} [_prevHeight]
+ * @property {number} [height]
+ */
+
+/**
+ * Pre-processes the graph by setting default labels and padding for nodes.
+ * @param {Object} g - The graph object.
+ */
 function preProcessGraph(g) {
   g.nodes().forEach(function (v) {
+    /** @type {Node} */
     var node = g.node(v);
     if (!_.has(node, 'label') && !g.children(v).length) {
       node.label = v;
@@ -136,6 +155,7 @@ function preProcessGraph(g) {
   });
 
   g.edges().forEach(function (e) {
+    /** @type {Node} */
     var edge = g.edge(e);
     if (!_.has(edge, 'label')) {
       edge.label = '';
@@ -146,6 +166,7 @@ function preProcessGraph(g) {
 
 function postProcessGraph(g) {
   _.each(g.nodes(), function (v) {
+    /** @type {Node} */
     var node = g.node(v);
 
     // Restore original dimensions

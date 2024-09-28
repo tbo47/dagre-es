@@ -1,4 +1,5 @@
 import * as _ from 'lodash-es';
+import { _has } from '../lodash.js';
 
 var DEFAULT_EDGE_NAME = '\x00';
 var GRAPH_NODE = '\x00';
@@ -124,7 +125,7 @@ export class Graph {
     return this;
   }
   setNode(v, value) {
-    if (_.has(this._nodes, v)) {
+    if (_has(this._nodes, v)) {
       if (arguments.length > 1) {
         this._nodes[v] = value;
       }
@@ -361,7 +362,7 @@ export class Graph {
     }
 
     var e = edgeArgsToId(this._isDirected, v, w, name);
-    if (_.has(this._edgeLabels, e)) {
+    if (_has(this._edgeLabels, e)) {
       if (valueSpecified) {
         this._edgeLabels[e] = value;
       }

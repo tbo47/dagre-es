@@ -9,6 +9,6 @@ function dijkstraAll(g, weightFunc, edgeFunc) {
     function (acc, v) {
       acc[v] = dijkstra(g, v, weightFunc, edgeFunc);
     },
-    {}
+    {},
   );
 }

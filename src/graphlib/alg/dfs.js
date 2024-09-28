@@ -1,4 +1,5 @@
 import * as _ from 'lodash-es';
+import { _has } from '../../lodash.js';
 
 export { dfs };
 
@@ -30,7 +31,7 @@ function dfs(g, vs, order) {
 }
 
 function doDfs(g, v, postorder, visited, navigation, acc) {
-  if (!_.has(visited, v)) {
+  if (!_has(visited, v)) {
     visited[v] = true;
 
     if (!postorder) {

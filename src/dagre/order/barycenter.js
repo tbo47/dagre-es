@@ -18,7 +18,7 @@ function barycenter(g, movable) {
             weight: acc.weight + edge.weight,
           };
         },
-        { sum: 0, weight: 0 }
+        { sum: 0, weight: 0 },
       );
 
       return {

@@ -5,11 +5,11 @@ on:
   pull_request:
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [18.x, 20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
       - uses: actions/checkout@v3
@@ -18,11 +18,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci # throws an error if the package-lock.json file is out of sync
+      - run: npm ci
       - name: Check for linting errors (run `npm run lint:fix` to fix)
         run: npm run lint
       - name: Check for prettier errors (run `npm run format` to fix)
         run: npx prettier --check .
+      - name: Run unit tests
+        run: npm test
       - name: Build the npm package to publish
         run: npm pack
       - uses: actions/upload-artifact@v3

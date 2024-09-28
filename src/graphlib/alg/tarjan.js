@@ -1,4 +1,5 @@
 import * as _ from 'lodash-es';
+import { _has } from '../../lodash.js';
 
 export { tarjan };
 
@@ -17,7 +18,7 @@ function tarjan(g) {
     stack.push(v);
 
     g.successors(v).forEach(function (w) {
-      if (!_.has(visited, w)) {
+      if (!_has(visited, w)) {
         dfs(w);
         entry.lowlink = Math.min(entry.lowlink, visited[w].lowlink);
       } else if (visited[w].onStack) {
