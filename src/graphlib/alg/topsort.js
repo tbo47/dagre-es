@@ -1,3 +1,5 @@
+import * as _ from 'lodash-es';
+
 export { topsort, CycleException };
 
 topsort.CycleException = CycleException;
@@ -15,15 +17,15 @@ function topsort(g) {
     if (!Object.prototype.hasOwnProperty.call(visited, node)) {
       stack[node] = true;
       visited[node] = true;
-      g.predecessors(node).forEach(visit);
+      _.each(g.predecessors(node), visit);
       delete stack[node];
       results.push(node);
     }
   }
 
-  g.sinks().forEach(visit);
+  _.each(g.sinks(), visit);
 
-  if (Object.keys(visited).length !== g.nodeCount()) {
+  if (_.size(visited) !== g.nodeCount()) {
     throw new CycleException();
   }
 

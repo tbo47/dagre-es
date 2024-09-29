@@ -1,5 +1,7 @@
-import { uniqueId } from '../util.js';
+import * as _ from 'lodash-es';
 import { Graph } from '../../graphlib/index.js';
+
+export { buildLayerGraph };
 
 /*
  * Constructs a graph that can be used to sort a layer of nodes. The graph will
@@ -31,7 +33,7 @@ import { Graph } from '../../graphlib/index.js';
  *    5. The weights for copied edges are aggregated as need, since the output
  *       graph is not a multi-graph.
  */
-export function buildLayerGraph(g, rank, relationship) {
+function buildLayerGraph(g, rank, relationship) {
   var root = createRootNode(g),
     result = new Graph({ compound: true })
       .setGraph({ root: root })
@@ -39,7 +41,7 @@ export function buildLayerGraph(g, rank, relationship) {
         return g.node(v);
       });
 
-  g.nodes().forEach((v) => {
+  _.forEach(g.nodes(), function (v) {
     var node = g.node(v),
       parent = g.parent(v);
 
@@ -48,10 +50,10 @@ export function buildLayerGraph(g, rank, relationship) {
       result.setParent(v, parent || root);
 
       // This assumes we have only short edges!
-      g[relationship](v).forEach((e) => {
+      _.forEach(g[relationship](v), function (e) {
         var u = e.v === v ? e.w : e.v,
           edge = result.edge(u, v),
-          weight = edge !== undefined ? edge.weight : 0;
+          weight = !_.isUndefined(edge) ? edge.weight : 0;
         result.setEdge(u, v, { weight: g.edge(e).weight + weight });
       });
 
@@ -69,6 +71,6 @@ export function buildLayerGraph(g, rank, relationship) {
 
 function createRootNode(g) {
   var v;
-  while (g.hasNode((v = uniqueId('_root'))));
+  while (g.hasNode((v = _.uniqueId('_root'))));
   return v;
 }

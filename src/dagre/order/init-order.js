@@ -1,4 +1,4 @@
-import { range } from '../util.js';
+import * as _ from 'lodash-es';
 
 /*
  * Assigns an initial order value for each node by performing a DFS search
@@ -13,20 +13,30 @@ import { range } from '../util.js';
  */
 export function initOrder(g) {
   var visited = {};
-  var simpleNodes = g.nodes().filter((v) => !g.children(v).length);
-  var maxRank = Math.max(...simpleNodes.map((v) => g.node(v).rank));
-  var layers = range(maxRank + 1).map(() => []);
+  var simpleNodes = _.filter(g.nodes(), function (v) {
+    return !g.children(v).length;
+  });
+  var maxRank = _.max(
+    _.map(simpleNodes, function (v) {
+      return g.node(v).rank;
+    }),
+  );
+  var layers = _.map(_.range(maxRank + 1), function () {
+    return [];
+  });
 
   function dfs(v) {
-    if (visited[v]) return;
+    if (_.has(visited, v)) return;
     visited[v] = true;
     var node = g.node(v);
     layers[node.rank].push(v);
-    g.successors(v).forEach(dfs);
+    _.forEach(g.successors(v), dfs);
   }
 
-  var orderedVs = simpleNodes.sort((a, b) => g.node(a).rank - g.node(b).rank);
-  orderedVs.forEach(dfs);
+  var orderedVs = _.sortBy(simpleNodes, function (v) {
+    return g.node(v).rank;
+  });
+  _.forEach(orderedVs, dfs);
 
   return layers;
 }

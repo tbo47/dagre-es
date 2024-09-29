@@ -1,3 +1,4 @@
+import * as _ from 'lodash-es';
 import * as util from './util.js';
 
 export { run, cleanup };
@@ -27,20 +28,24 @@ export { run, cleanup };
  */
 function run(g) {
   var root = util.addDummyNode(g, 'root', {}, '_root');
-  var depths = treeDepths(g); //  as Record<string, number>;
-  var height = Math.max(...Object.values(depths)) - 1; // Note: depths is an Object not an array
+  var depths = treeDepths(g);
+  var height = _.max(_.values(depths)) - 1; // Note: depths is an Object not an array
   var nodeSep = 2 * height + 1;
 
   g.graph().nestingRoot = root;
 
   // Multiply minlen by nodeSep to align nodes on non-border ranks.
-  g.edges().forEach((e) => (g.edge(e).minlen *= nodeSep));
+  _.forEach(g.edges(), function (e) {
+    g.edge(e).minlen *= nodeSep;
+  });
 
   // Calculate a weight that is sufficient to keep subgraphs vertically compact
   var weight = sumWeights(g) + 1;
 
   // Create border nodes and link them up
-  g.children().forEach((child) => dfs(g, root, nodeSep, weight, height, depths, child));
+  _.forEach(g.children(), function (child) {
+    dfs(g, root, nodeSep, weight, height, depths, child);
+  });
 
   // Save the multiplier for node layers for later removal of empty border
   // layers.
@@ -65,7 +70,7 @@ function dfs(g, root, nodeSep, weight, height, depths, v) {
   g.setParent(bottom, v);
   label.borderBottom = bottom;
 
-  children.forEach((child) => {
+  _.forEach(children, function (child) {
     dfs(g, root, nodeSep, weight, height, depths, child);
 
     var childNode = g.node(child);
@@ -97,23 +102,33 @@ function treeDepths(g) {
   function dfs(v, depth) {
     var children = g.children(v);
     if (children && children.length) {
-      children.forEach((child) => dfs(child, depth + 1));
+      _.forEach(children, function (child) {
+        dfs(child, depth + 1);
+      });
     }
     depths[v] = depth;
   }
-  g.children().forEach((v) => dfs(v, 1));
+  _.forEach(g.children(), function (v) {
+    dfs(v, 1);
+  });
   return depths;
 }
 
 function sumWeights(g) {
-  return g.edges().reduce((acc, e) => acc + g.edge(e).weight, 0);
+  return _.reduce(
+    g.edges(),
+    function (acc, e) {
+      return acc + g.edge(e).weight;
+    },
+    0,
+  );
 }
 
 function cleanup(g) {
   var graphLabel = g.graph();
   g.removeNode(graphLabel.nestingRoot);
   delete graphLabel.nestingRoot;
-  g.edges().forEach((e) => {
+  _.forEach(g.edges(), function (e) {
     var edge = g.edge(e);
     if (edge.nestingEdge) {
       g.removeEdge(e);

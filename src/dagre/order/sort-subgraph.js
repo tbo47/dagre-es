@@ -1,3 +1,4 @@
+import * as _ from 'lodash-es';
 import { barycenter } from './barycenter.js';
 import { resolveConflicts } from './resolve-conflicts.js';
 import { sort } from './sort.js';
@@ -12,11 +13,13 @@ function sortSubgraph(g, v, cg, biasRight) {
   var subgraphs = {};
 
   if (bl) {
-    movable = movable.filter((w) => w !== bl && w !== br);
+    movable = _.filter(movable, function (w) {
+      return w !== bl && w !== br;
+    });
   }
 
   var barycenters = barycenter(g, movable);
-  barycenters.forEach((entry) => {
+  _.forEach(barycenters, function (entry) {
     if (g.children(entry.v).length) {
       var subgraphResult = sortSubgraph(g, entry.v, cg, biasRight);
       subgraphs[entry.v] = subgraphResult;
@@ -32,7 +35,7 @@ function sortSubgraph(g, v, cg, biasRight) {
   var result = sort(entries, biasRight);
 
   if (bl) {
-    result.vs = [bl, result.vs, br].flat(1);
+    result.vs = _.flatten([bl, result.vs, br]);
     if (g.predecessors(bl).length) {
       var blPred = g.node(g.predecessors(bl)[0]),
         brPred = g.node(g.predecessors(br)[0]);
@@ -50,18 +53,20 @@ function sortSubgraph(g, v, cg, biasRight) {
 }
 
 function expandSubgraphs(entries, subgraphs) {
-  entries.forEach((entry) => {
-    entry.vs = entry.vs.flatMap((v) => {
-      if (subgraphs[v]) {
-        return subgraphs[v].vs;
-      }
-      return v;
-    });
+  _.forEach(entries, function (entry) {
+    entry.vs = _.flatten(
+      entry.vs.map(function (v) {
+        if (subgraphs[v]) {
+          return subgraphs[v].vs;
+        }
+        return v;
+      }),
+    );
   });
 }
 
 function mergeBarycenters(target, other) {
-  if (target.barycenter !== undefined) {
+  if (!_.isUndefined(target.barycenter)) {
     target.barycenter =
       (target.barycenter * target.weight + other.barycenter * other.weight) /
       (target.weight + other.weight);

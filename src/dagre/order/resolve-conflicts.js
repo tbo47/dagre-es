@@ -1,4 +1,4 @@
-import { pick } from '../util.js';
+import * as _ from 'lodash-es';
 
 export { resolveConflicts };
 
@@ -29,7 +29,7 @@ export { resolveConflicts };
  */
 function resolveConflicts(entries, cg) {
   var mappedEntries = {};
-  entries.forEach((entry, i) => {
+  _.forEach(entries, function (entry, i) {
     var tmp = (mappedEntries[entry.v] = {
       indegree: 0,
       in: [],
@@ -37,7 +37,7 @@ function resolveConflicts(entries, cg) {
       vs: [entry.v],
       i: i,
     });
-    if (entry.barycenter !== undefined) {
+    if (!_.isUndefined(entry.barycenter)) {
       // @ts-expect-error
       tmp.barycenter = entry.barycenter;
       // @ts-expect-error
@@ -45,16 +45,19 @@ function resolveConflicts(entries, cg) {
     }
   });
 
-  cg.edges().forEach((e) => {
+  _.forEach(cg.edges(), function (e) {
     var entryV = mappedEntries[e.v];
     var entryW = mappedEntries[e.w];
-    if (entryV !== undefined && entryW !== undefined) {
+    if (!_.isUndefined(entryV) && !_.isUndefined(entryW)) {
       entryW.indegree++;
       entryV.out.push(mappedEntries[e.w]);
     }
   });
 
-  var sourceSet = Object.values(mappedEntries).filter((entry) => !entry.indegree);
+  var sourceSet = _.filter(mappedEntries, function (entry) {
+    // @ts-expect-error
+    return !entry.indegree;
+  });
 
   return doResolveConflicts(sourceSet);
 }
@@ -68,8 +71,8 @@ function doResolveConflicts(sourceSet) {
         return;
       }
       if (
-        uEntry.barycenter === undefined ||
-        vEntry.barycenter === undefined ||
+        _.isUndefined(uEntry.barycenter) ||
+        _.isUndefined(vEntry.barycenter) ||
         uEntry.barycenter >= vEntry.barycenter
       ) {
         mergeEntries(vEntry, uEntry);
@@ -89,15 +92,18 @@ function doResolveConflicts(sourceSet) {
   while (sourceSet.length) {
     var entry = sourceSet.pop();
     entries.push(entry);
-    entry['in'].reverse().forEach(handleIn(entry));
-    entry.out.forEach(handleOut(entry));
+    _.forEach(entry['in'].reverse(), handleIn(entry));
+    _.forEach(entry.out, handleOut(entry));
   }
 
-  return entries
-    .filter((entry) => !entry.merged)
-    .map((entry) => {
-      return pick(entry, ['vs', 'i', 'barycenter', 'weight']);
-    });
+  return _.map(
+    _.filter(entries, function (entry) {
+      return !entry.merged;
+    }),
+    function (entry) {
+      return _.pick(entry, ['vs', 'i', 'barycenter', 'weight']);
+    },
+  );
 }
 
 function mergeEntries(target, source) {

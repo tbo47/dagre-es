@@ -1,3 +1,4 @@
+import * as _ from 'lodash-es';
 import * as util from '../util.js';
 
 export { sort };
@@ -7,7 +8,9 @@ function sort(entries, biasRight) {
     return Object.prototype.hasOwnProperty.call(entry, 'barycenter');
   });
   var sortable = parts.lhs,
-    unsortable = parts.rhs.sort((a, b) => b.i - a.i),
+    unsortable = _.sortBy(parts.rhs, function (entry) {
+      return -entry.i;
+    }),
     vs = [],
     sum = 0,
     weight = 0,
@@ -17,7 +20,7 @@ function sort(entries, biasRight) {
 
   vsIndex = consumeUnsortable(vs, unsortable, vsIndex);
 
-  sortable.forEach((entry) => {
+  _.forEach(sortable, function (entry) {
     vsIndex += entry.vs.length;
     vs.push(entry.vs);
     sum += entry.barycenter * entry.weight;
@@ -25,7 +28,7 @@ function sort(entries, biasRight) {
     vsIndex = consumeUnsortable(vs, unsortable, vsIndex);
   });
 
-  var result = { vs: vs.flat(1) }; // as { vs: string[]; barycenter?: number; weight?: number };
+  var result = { vs: _.flatten(vs) };
   if (weight) {
     result.barycenter = sum / weight;
     result.weight = weight;
@@ -35,7 +38,7 @@ function sort(entries, biasRight) {
 
 function consumeUnsortable(vs, unsortable, index) {
   var last;
-  while (unsortable.length && (last = unsortable[unsortable.length - 1]).i <= index) {
+  while (unsortable.length && (last = _.last(unsortable)).i <= index) {
     unsortable.pop();
     vs.push(last.vs);
     index++;
