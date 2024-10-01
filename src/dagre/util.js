@@ -1,3 +1,4 @@
+import * as _ from 'lodash-es';
 import { Graph } from '../graphlib/index.js';
 
 export {
@@ -15,11 +16,6 @@ export {
   partition,
   time,
   notime,
-  uniqueId,
-  range,
-  pick,
-  mapValues,
-  zipObject,
 };
 
 /*
@@ -28,7 +24,7 @@ export {
 function addDummyNode(g, type, attrs, name) {
   var v;
   do {
-    v = uniqueId(name);
+    v = _.uniqueId(name);
   } while (g.hasNode(v));
 
   attrs.dummy = type;
@@ -42,8 +38,10 @@ function addDummyNode(g, type, attrs, name) {
  */
 function simplify(g) {
   var simplified = new Graph().setGraph(g.graph());
-  g.nodes().forEach((v) => simplified.setNode(v, g.node(v)));
-  g.edges().forEach((e) => {
+  _.forEach(g.nodes(), function (v) {
+    simplified.setNode(v, g.node(v));
+  });
+  _.forEach(g.edges(), function (e) {
     var simpleLabel = simplified.edge(e.v, e.w) || { weight: 0, minlen: 1 };
     var label = g.edge(e);
     simplified.setEdge(e.v, e.w, {
@@ -56,37 +54,37 @@ function simplify(g) {
 
 function asNonCompoundGraph(g) {
   var simplified = new Graph({ multigraph: g.isMultigraph() }).setGraph(g.graph());
-  g.nodes().forEach((v) => {
+  _.forEach(g.nodes(), function (v) {
     if (!g.children(v).length) {
       simplified.setNode(v, g.node(v));
     }
   });
-  g.edges().forEach((e) => {
+  _.forEach(g.edges(), function (e) {
     simplified.setEdge(e, g.edge(e));
   });
   return simplified;
 }
 
 function successorWeights(g) {
-  var weightMap = g.nodes().map((v) => {
+  var weightMap = _.map(g.nodes(), function (v) {
     var sucs = {};
-    g.outEdges(v).forEach((e) => {
+    _.forEach(g.outEdges(v), function (e) {
       sucs[e.w] = (sucs[e.w] || 0) + g.edge(e).weight;
     });
     return sucs;
   });
-  return zipObject(g.nodes(), weightMap);
+  return _.zipObject(g.nodes(), weightMap);
 }
 
 function predecessorWeights(g) {
-  var weightMap = g.nodes().map((v) => {
+  var weightMap = _.map(g.nodes(), function (v) {
     var preds = {};
-    g.inEdges(v).forEach((e) => {
+    _.forEach(g.inEdges(v), function (e) {
       preds[e.v] = (preds[e.v] || 0) + g.edge(e).weight;
     });
     return preds;
   });
-  return zipObject(g.nodes(), weightMap);
+  return _.zipObject(g.nodes(), weightMap);
 }
 
 /*
@@ -129,15 +127,17 @@ function intersectRect(rect, point) {
 }
 
 /*
- * Given a DAG with each node assigned 'rank' and 'order' properties, this
+ * Given a DAG with each node assigned "rank" and "order" properties, this
  * function will produce a matrix with the ids of each node.
  */
 function buildLayerMatrix(g) {
-  var layering = range(maxRank(g) + 1).map(() => []);
-  g.nodes().forEach((v) => {
+  var layering = _.map(_.range(maxRank(g) + 1), function () {
+    return [];
+  });
+  _.forEach(g.nodes(), function (v) {
     var node = g.node(v);
     var rank = node.rank;
-    if (rank !== undefined) {
+    if (!_.isUndefined(rank)) {
       layering[rank][node.order] = v;
     }
   });
@@ -149,19 +149,14 @@ function buildLayerMatrix(g) {
  * rank(v) >= 0 and at least one node w has rank(w) = 0.
  */
 function normalizeRanks(g) {
-  var min = Math.min(
-    ...g.nodes().map((v) => {
-      var rank = g.node(v).rank;
-      if (rank === undefined) {
-        return Number.MAX_VALUE;
-      }
-
-      return rank;
+  var min = _.min(
+    _.map(g.nodes(), function (v) {
+      return g.node(v).rank;
     }),
   );
-  g.nodes().forEach((v) => {
-    const node = g.node(v);
-    if (Object.prototype.hasOwnProperty.call(node, 'rank')) {
+  _.forEach(g.nodes(), function (v) {
+    var node = g.node(v);
+    if (_.has(node, 'rank')) {
       node.rank -= min;
     }
   });
@@ -169,10 +164,14 @@ function normalizeRanks(g) {
 
 function removeEmptyRanks(g) {
   // Ranks may not start at 0, so we need to offset them
-  var offset = Math.min(...g.nodes().map((v) => g.node(v).rank));
+  var offset = _.min(
+    _.map(g.nodes(), function (v) {
+      return g.node(v).rank;
+    }),
+  );
 
   var layers = [];
-  g.nodes().forEach((v) => {
+  _.forEach(g.nodes(), function (v) {
     var rank = g.node(v).rank - offset;
     if (!layers[rank]) {
       layers[rank] = [];
@@ -182,11 +181,13 @@ function removeEmptyRanks(g) {
 
   var delta = 0;
   var nodeRankFactor = g.graph().nodeRankFactor;
-  Array.from(layers).forEach((vs, i) => {
-    if (vs === undefined && i % nodeRankFactor !== 0) {
+  _.forEach(layers, function (vs, i) {
+    if (_.isUndefined(vs) && i % nodeRankFactor !== 0) {
       --delta;
-    } else if (vs !== undefined && delta) {
-      vs.forEach((v) => (g.node(v).rank += delta));
+    } else if (delta) {
+      _.forEach(vs, function (v) {
+        g.node(v).rank += delta;
+      });
     }
   });
 }
@@ -195,7 +196,7 @@ function addBorderNode(g, prefix, rank, order) {
   var node = {
     width: 0,
     height: 0,
-  }; // as { width: number; height: number; rank?: number; order?: number };
+  };
   if (arguments.length >= 4) {
     node.rank = rank;
     node.order = order;
@@ -204,14 +205,12 @@ function addBorderNode(g, prefix, rank, order) {
 }
 
 function maxRank(g) {
-  return Math.max(
-    ...g.nodes().map((v) => {
+  return _.max(
+    _.map(g.nodes(), function (v) {
       var rank = g.node(v).rank;
-      if (rank === undefined) {
-        return Number.MIN_VALUE;
+      if (!_.isUndefined(rank)) {
+        return rank;
       }
-
-      return rank;
     }),
   );
 }
@@ -223,7 +222,7 @@ function maxRank(g) {
  */
 function partition(collection, fn) {
   var result = { lhs: [], rhs: [] };
-  collection.forEach((value) => {
+  _.forEach(collection, function (value) {
     if (fn(value)) {
       result.lhs.push(value);
     } else {
@@ -238,77 +237,14 @@ function partition(collection, fn) {
  * time it takes to execute the function.
  */
 function time(name, fn) {
-  var start = Date.now();
+  var start = _.now();
   try {
     return fn();
   } finally {
-    console.log(name + ' time: ' + (Date.now() - start) + 'ms');
+    console.log(name + ' time: ' + (_.now() - start) + 'ms');
   }
 }
 
 function notime(name, fn) {
   return fn();
-}
-
-let idCounter = 0;
-function uniqueId(prefix) {
-  var id = ++idCounter;
-  return prefix + id;
-}
-
-/**
- *
- * @param {number} start - The start of the range.
- * @param {number} [limit=null] - The end of the range. If not provided, `start` is used as the limit and the range starts from 0.
- * @param {number} [step=1] - The step between each number in the range. Can be negative.
- * @returns {number[]} An array of numbers within the specified range.
- */
-function range(start, limit = null, step = 1) {
-  // : number[]
-  if (limit == null) {
-    limit = start;
-    start = 0;
-  }
-
-  let endCon = (i) => i < limit;
-  if (step < 0) {
-    endCon = (i) => limit < i;
-  }
-
-  const range = [];
-  for (let i = start; endCon(i); i += step) {
-    range.push(i);
-  }
-
-  return range;
-}
-
-function pick(source, keys) {
-  const dest = {};
-  for (const key of keys) {
-    if (source[key] !== undefined) {
-      dest[key] = source[key];
-    }
-  }
-
-  return dest;
-}
-
-function mapValues(obj, funcOrProp) {
-  let func = funcOrProp;
-  if (typeof funcOrProp === 'string') {
-    func = (val) => val[funcOrProp];
-  }
-
-  return Object.entries(obj).reduce((acc, [k, v]) => {
-    acc[k] = func(v, k);
-    return acc;
-  }, {});
-}
-
-function zipObject(props, values) {
-  return props.reduce((acc, key, i) => {
-    acc[key] = values[i];
-    return acc;
-  }, {});
 }

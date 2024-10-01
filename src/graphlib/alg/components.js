@@ -1,3 +1,5 @@
+import * as _ from 'lodash-es';
+
 export { components };
 
 function components(g) {
@@ -9,11 +11,11 @@ function components(g) {
     if (Object.prototype.hasOwnProperty.call(visited, v)) return;
     visited[v] = true;
     cmpt.push(v);
-    g.successors(v).forEach(dfs);
-    g.predecessors(v).forEach(dfs);
+    _.each(g.successors(v), dfs);
+    _.each(g.predecessors(v), dfs);
   }
 
-  g.nodes().forEach(function (v) {
+  _.each(g.nodes(), function (v) {
     cmpt = [];
     dfs(v);
     if (cmpt.length) {

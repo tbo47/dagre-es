@@ -1,3 +1,4 @@
+import * as _ from 'lodash-es';
 import * as util from './util.js';
 
 export { addBorderSegments };
@@ -7,7 +8,7 @@ function addBorderSegments(g) {
     var children = g.children(v);
     var node = g.node(v);
     if (children.length) {
-      children.forEach(dfs);
+      _.forEach(children, dfs);
     }
 
     if (Object.prototype.hasOwnProperty.call(node, 'minRank')) {
@@ -20,7 +21,7 @@ function addBorderSegments(g) {
     }
   }
 
-  g.children().forEach(dfs);
+  _.forEach(g.children(), dfs);
 }
 
 function addBorderNode(g, prop, prefix, sg, sgNode, rank) {

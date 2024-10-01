@@ -1,3 +1,4 @@
+import * as _ from 'lodash-es';
 import { PriorityQueue } from '../data/priority-queue.js';
 import { Graph } from '../graph.js';
 
@@ -25,7 +26,7 @@ function prim(g, weightFunc) {
     return result;
   }
 
-  g.nodes().forEach((v) => {
+  _.each(g.nodes(), function (v) {
     pq.add(v, Number.POSITIVE_INFINITY);
     result.setNode(v);
   });

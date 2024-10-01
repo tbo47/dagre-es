@@ -1,8 +1,9 @@
+import * as _ from 'lodash-es';
 import { PriorityQueue } from '../data/priority-queue.js';
 
 export { dijkstra };
 
-const DEFAULT_WEIGHT_FUNC = () => 1;
+var DEFAULT_WEIGHT_FUNC = _.constant(1);
 
 function dijkstra(g, source, weightFn, edgeFn) {
   return runDijkstra(

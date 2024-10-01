@@ -1,3 +1,5 @@
+import * as _ from 'lodash-es';
+
 var DEFAULT_EDGE_NAME = '\x00';
 var GRAPH_NODE = '\x00';
 var EDGE_KEY_DELIM = '\x01';
@@ -22,7 +24,6 @@ var EDGE_KEY_DELIM = '\x01';
 //    edges up and, object properties, which have string keys, are the closest
 //    we're going to get to a performant hashtable in JavaScript.
 export class Graph {
-  // as { directed?: boolean, multigraph?: boolean, compound?: boolean }
   constructor(opts = {}) {
     this._isDirected = Object.prototype.hasOwnProperty.call(opts, 'directed')
       ? opts.directed
@@ -38,10 +39,10 @@ export class Graph {
     this._label = undefined;
 
     // Defaults to be set when creating a new node
-    this._defaultNodeLabelFn = () => undefined;
+    this._defaultNodeLabelFn = _.constant(undefined);
 
     // Defaults to be set when creating a new edge
-    this._defaultEdgeLabelFn = () => undefined;
+    this._defaultEdgeLabelFn = _.constant(undefined);
 
     // v -> label
     this._nodes = {};
@@ -92,32 +93,38 @@ export class Graph {
   }
   /* === Node functions ========== */
   setDefaultNodeLabel(newDefault) {
-    this._defaultNodeLabelFn = newDefault;
-    if (typeof newDefault !== 'function') {
-      this._defaultNodeLabelFn = () => newDefault;
+    if (!_.isFunction(newDefault)) {
+      newDefault = _.constant(newDefault);
     }
-
+    this._defaultNodeLabelFn = newDefault;
     return this;
   }
   nodeCount() {
     return this._nodeCount;
   }
   nodes() {
-    return Object.keys(this._nodes);
+    return _.keys(this._nodes);
   }
   sources() {
-    return this.nodes().filter((v) => Object.keys(this._in[v]).length === 0);
+    var self = this;
+    return _.filter(this.nodes(), function (v) {
+      return _.isEmpty(self._in[v]);
+    });
   }
   sinks() {
-    return this.nodes().filter((v) => Object.keys(this._out[v]).length === 0);
+    var self = this;
+    return _.filter(this.nodes(), function (v) {
+      return _.isEmpty(self._out[v]);
+    });
   }
   setNodes(vs, value) {
     var args = arguments;
-    vs.forEach((v) => {
+    var self = this;
+    _.each(vs, function (v) {
       if (args.length > 1) {
-        this.setNode(v, value);
+        self.setNode(v, value);
       } else {
-        this.setNode(v);
+        self.setNode(v);
       }
     });
     return this;
@@ -157,15 +164,15 @@ export class Graph {
       if (this._isCompound) {
         this._removeFromParentsChildList(v);
         delete this._parent[v];
-        this.children(v).forEach((child) => {
+        _.each(this.children(v), (child) => {
           this.setParent(child);
         });
         delete this._children[v];
       }
-      Object.keys(this._in[v]).forEach(removeEdge);
+      _.each(_.keys(this._in[v]), removeEdge);
       delete this._in[v];
       delete this._preds[v];
-      Object.keys(this._out[v]).forEach(removeEdge);
+      _.each(_.keys(this._out[v]), removeEdge);
       delete this._out[v];
       delete this._sucs[v];
       --this._nodeCount;
@@ -177,12 +184,12 @@ export class Graph {
       throw new Error('Cannot set parent in a non-compound graph');
     }
 
-    if (parent === undefined) {
+    if (_.isUndefined(parent)) {
       parent = GRAPH_NODE;
     } else {
       // Coerce parent to string
       parent += '';
-      for (var ancestor = parent; ancestor !== undefined; ancestor = this.parent(ancestor)) {
+      for (var ancestor = parent; !_.isUndefined(ancestor); ancestor = this.parent(ancestor)) {
         if (ancestor === v) {
           throw new Error('Setting ' + parent + ' as parent of ' + v + ' would create a cycle');
         }
@@ -208,11 +215,15 @@ export class Graph {
       }
     }
   }
-  children(v = GRAPH_NODE) {
+  children(v) {
+    if (_.isUndefined(v)) {
+      v = GRAPH_NODE;
+    }
+
     if (this._isCompound) {
       var children = this._children[v];
       if (children) {
-        return Object.keys(children);
+        return _.keys(children);
       }
     } else if (v === GRAPH_NODE) {
       return this.nodes();
@@ -223,24 +234,19 @@ export class Graph {
   predecessors(v) {
     var predsV = this._preds[v];
     if (predsV) {
-      return Object.keys(predsV);
+      return _.keys(predsV);
     }
   }
   successors(v) {
     var sucsV = this._sucs[v];
     if (sucsV) {
-      return Object.keys(sucsV);
+      return _.keys(sucsV);
     }
   }
   neighbors(v) {
     var preds = this.predecessors(v);
     if (preds) {
-      const union = new Set(preds);
-      for (var succ of this.successors(v)) {
-        union.add(succ);
-      }
-
-      return Array.from(union.values());
+      return _.union(preds, this.successors(v));
     }
   }
   isLeaf(v) {
@@ -263,14 +269,14 @@ export class Graph {
     copy.setGraph(this.graph());
 
     var self = this;
-    Object.entries(this._nodes).forEach(function ([v, value]) {
+    _.each(this._nodes, function (value, v) {
       if (filter(v)) {
         copy.setNode(v, value);
       }
     });
 
-    // Object.values(this._edgeObjs).forEach((e: { v: string, w: string }) => {
-    Object.values(this._edgeObjs).forEach((e) => {
+    _.each(this._edgeObjs, function (e) {
+      // @ts-expect-error
       if (copy.hasNode(e.v) && copy.hasNode(e.w)) {
         copy.setEdge(e, self.edge(e));
       }
@@ -290,45 +296,44 @@ export class Graph {
     }
 
     if (this._isCompound) {
-      copy.nodes().forEach((v) => copy.setParent(v, findParent(v)));
+      _.each(copy.nodes(), function (v) {
+        copy.setParent(v, findParent(v));
+      });
     }
 
     return copy;
   }
   /* === Edge functions ========== */
   setDefaultEdgeLabel(newDefault) {
-    this._defaultEdgeLabelFn = newDefault;
-    if (typeof newDefault !== 'function') {
-      this._defaultEdgeLabelFn = () => newDefault;
+    if (!_.isFunction(newDefault)) {
+      newDefault = _.constant(newDefault);
     }
-
+    this._defaultEdgeLabelFn = newDefault;
     return this;
   }
   edgeCount() {
     return this._edgeCount;
   }
   edges() {
-    return Object.values(this._edgeObjs);
+    return _.values(this._edgeObjs);
   }
   setPath(vs, value) {
-    const args = arguments;
-    if (vs.length > 0) {
-      vs.reduce((v, w) => {
-        if (args.length > 1) {
-          this.setEdge(v, w, value);
-        } else {
-          this.setEdge(v, w);
-        }
-        return w;
-      });
-    }
+    var self = this;
+    var args = arguments;
+    _.reduce(vs, function (v, w) {
+      if (args.length > 1) {
+        self.setEdge(v, w, value);
+      } else {
+        self.setEdge(v, w);
+      }
+      return w;
+    });
     return this;
   }
   /*
    * setEdge(v, w, [value, [name]])
    * setEdge({ v, w, [name] }, [value])
    */
-  // setEdge(u1, u2, u3, u4) {
   setEdge() {
     var v, w, name, value;
     var valueSpecified = false;
@@ -354,7 +359,7 @@ export class Graph {
 
     v = '' + v;
     w = '' + w;
-    if (name !== undefined) {
+    if (!_.isUndefined(name)) {
       name = '' + name;
     }
 
@@ -366,7 +371,7 @@ export class Graph {
       return this;
     }
 
-    if (name !== undefined && !this._isMultigraph) {
+    if (!_.isUndefined(name) && !this._isMultigraph) {
       throw new Error('Cannot set a named edge when isMultigraph = false');
     }
 
@@ -393,7 +398,7 @@ export class Graph {
     return this;
   }
   edge(v, w, name) {
-    const e =
+    var e =
       arguments.length === 1
         ? edgeObjToId(this._isDirected, arguments[0])
         : edgeArgsToId(this._isDirected, v, w, name);
@@ -428,21 +433,25 @@ export class Graph {
   inEdges(v, u) {
     var inV = this._in[v];
     if (inV) {
-      var edges = Object.values(inV);
+      var edges = _.values(inV);
       if (!u) {
         return edges;
       }
-      return edges.filter((edge) => edge.v === u);
+      return _.filter(edges, function (edge) {
+        return edge.v === u;
+      });
     }
   }
   outEdges(v, w) {
     var outV = this._out[v];
     if (outV) {
-      var edges = Object.values(outV);
+      var edges = _.values(outV);
       if (!w) {
         return edges;
       }
-      return edges.filter((edge) => edge.w === w);
+      return _.filter(edges, function (edge) {
+        return edge.w === w;
+      });
     }
   }
   nodeEdges(v, w) {
@@ -481,19 +490,18 @@ function edgeArgsToId(isDirected, v_, w_, name) {
     v = w;
     w = tmp;
   }
-  return v + EDGE_KEY_DELIM + w + EDGE_KEY_DELIM + (name === undefined ? DEFAULT_EDGE_NAME : name);
+  return v + EDGE_KEY_DELIM + w + EDGE_KEY_DELIM + (_.isUndefined(name) ? DEFAULT_EDGE_NAME : name);
 }
 
 function edgeArgsToObj(isDirected, v_, w_, name) {
-  let v = '' + v_;
-  let w = '' + w_;
+  var v = '' + v_;
+  var w = '' + w_;
   if (!isDirected && v > w) {
     var tmp = v;
     v = w;
     w = tmp;
   }
-  // var edgeObj = { v, w } as { v: string, w: string, name?: string };
-  var edgeObj = { v, w };
+  var edgeObj = { v: v, w: w };
   if (name) {
     edgeObj.name = name;
   }

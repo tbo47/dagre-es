@@ -1,3 +1,5 @@
+import * as _ from 'lodash-es';
+
 export { longestPath, slack };
 
 /*
@@ -31,24 +33,25 @@ function longestPath(g) {
     }
     visited[v] = true;
 
-    var rank = Math.min(
-      ...g.outEdges(v).map((e) => {
-        if (e == null) {
-          return Number.POSITIVE_INFINITY;
-        }
-
+    var rank = _.min(
+      _.map(g.outEdges(v), function (e) {
         return dfs(e.w) - g.edge(e).minlen;
       }),
     );
 
-    if (rank === Number.POSITIVE_INFINITY) {
+    if (
+      rank === Number.POSITIVE_INFINITY || // return value of _.map([]) for Lodash 3
+      rank === undefined || // return value of _.map([]) for Lodash 4
+      rank === null
+    ) {
+      // return value of _.map([null])
       rank = 0;
     }
 
     return (label.rank = rank);
   }
 
-  g.sources().forEach(dfs);
+  _.forEach(g.sources(), dfs);
 }
 
 /*

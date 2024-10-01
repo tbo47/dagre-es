@@ -3,6 +3,7 @@
  *
  * @import { Graph } from '../graphlib/graph.js';
  */
+import * as _ from 'lodash-es';
 import * as util from './util.js';
 
 export { run, undo };
@@ -25,7 +26,9 @@ export { run, undo };
  */
 function run(g) {
   g.graph().dummyChains = [];
-  g.edges().forEach((edge) => normalizeEdge(g, edge));
+  _.forEach(g.edges(), function (edge) {
+    normalizeEdge(g, edge);
+  });
 }
 
 /**
@@ -85,7 +88,7 @@ function normalizeEdge(g, e) {
 }
 
 function undo(g) {
-  g.graph().dummyChains.forEach((v) => {
+  _.forEach(g.graph().dummyChains, function (v) {
     var node = g.node(v);
     var origLabel = node.edgeLabel;
     var w;

@@ -1,3 +1,4 @@
+import * as _ from 'lodash-es';
 import { Graph } from '../../graphlib/index.js';
 import * as util from '../util.js';
 import { addSubgraphConstraints } from './add-subgraph-constraints.js';
@@ -25,8 +26,8 @@ export { order };
  */
 function order(g) {
   var maxRank = util.maxRank(g),
-    downLayerGraphs = buildLayerGraphs(g, util.range(1, maxRank + 1), 'inEdges'),
-    upLayerGraphs = buildLayerGraphs(g, util.range(maxRank - 1, -1, -1), 'outEdges');
+    downLayerGraphs = buildLayerGraphs(g, _.range(1, maxRank + 1), 'inEdges'),
+    upLayerGraphs = buildLayerGraphs(g, _.range(maxRank - 1, -1, -1), 'outEdges');
 
   var layering = initOrder(g);
   assignOrder(g, layering);
@@ -41,7 +42,7 @@ function order(g) {
     var cc = crossCount(g, layering);
     if (cc < bestCC) {
       lastBest = 0;
-      best = Object.assign({}, layering);
+      best = _.cloneDeep(layering);
       bestCC = cc;
     }
   }
@@ -50,22 +51,27 @@ function order(g) {
 }
 
 function buildLayerGraphs(g, ranks, relationship) {
-  return ranks.map((rank) => buildLayerGraph(g, rank, relationship));
+  return _.map(ranks, function (rank) {
+    return buildLayerGraph(g, rank, relationship);
+  });
 }
 
 function sweepLayerGraphs(layerGraphs, biasRight) {
   var cg = new Graph();
-  layerGraphs.forEach((lg) => {
+  _.forEach(layerGraphs, function (lg) {
     var root = lg.graph().root;
     var sorted = sortSubgraph(lg, root, cg, biasRight);
-    sorted.vs.forEach((v, i) => (lg.node(v).order = i));
+    _.forEach(sorted.vs, function (v, i) {
+      lg.node(v).order = i;
+    });
     addSubgraphConstraints(lg, cg, sorted.vs);
   });
 }
 
 function assignOrder(g, layering) {
-  // Object.values(layering).forEach((layer: [string, number][]) => {
-  Object.values(layering).forEach((layer) => {
-    layer.forEach((v, i) => (g.node(v).order = i));
+  _.forEach(layering, function (layer) {
+    _.forEach(layer, function (v, i) {
+      g.node(v).order = i;
+    });
   });
 }
