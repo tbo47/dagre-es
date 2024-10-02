@@ -13,9 +13,10 @@ It uses [ES](https://262.ecma-international.org/6.0/) modules, thus the name [da
 
 ## Demos
 
-[Simple graph demo](https://codesandbox.io/s/dagre-d3-es-tree-9ywg9) using react, dagre-d3-es.
-
-Clone and run [dagre-es-example](https://github.com/tbo47/dagre-es-example) using angular.
+- [simple graph demo](https://codesandbox.io/s/dagre-d3-es-tree-9ywg9) using react
+- clone and run [dagre-es-example](https://github.com/tbo47/dagre-es-example) using angular
+- [vanilla javascript example](https://tbo47.github.io/dagre-d3-esm_example1/)
+- [jsfiddle vanilla javascript example](https://jsfiddle.net/tbo47/fm9ovqeb/)
 
 ## Install
 
