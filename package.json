@@ -6,6 +6,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
+    "bundle": "chmod +x bundle.sh ; ./bundle.sh",
     "generate_types": "find src -name '*.d.ts' -type f -delete ; tsc --build",
     "prepack": "npm run generate_types",
     "lint": "eslint .",
@@ -31,6 +32,7 @@
     "@types/d3": "^7.4.3",
     "@types/jest": "^29.5.13",
     "@types/lodash-es": "^4.17.12",
+    "esbuild": "^0.24.0",
     "eslint-plugin-import": "^2.30.0",
     "prettier": "^3.3.3",
     "typescript": "^5.6.2",
