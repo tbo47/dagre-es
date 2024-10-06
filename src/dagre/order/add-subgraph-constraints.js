@@ -1,8 +1,12 @@
+/**
+ * @import { Graph } from '../../graphlib/graph.js';
+ */
 import * as _ from 'lodash-es';
 
-export { addSubgraphConstraints };
-
-function addSubgraphConstraints(g, cg, vs) {
+/**
+ * @param { Graph } g
+ */
+export function addSubgraphConstraints(g, cg, vs) {
   var prev = {},
     rootPrev;
 

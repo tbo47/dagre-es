@@ -1,19 +1,20 @@
 import * as _ from 'lodash-es';
 import { Graph } from '../graphlib/index.js';
+import * as acyclic from './acyclic.js';
 import { addBorderSegments } from './add-border-segments.js';
 import * as coordinateSystem from './coordinate-system.js';
-import * as acyclic from './acyclic.js';
-import * as normalize from './normalize.js';
-import { rank } from './rank/index.js';
 import * as nestingGraph from './nesting-graph.js';
+import * as normalize from './normalize.js';
 import { order } from './order/index.js';
 import { parentDummyChains } from './parent-dummy-chains.js';
 import { position } from './position/index.js';
+import { rank } from './rank/index.js';
 import * as util from './util.js';
 
-export { layout };
-
-function layout(g, opts) {
+/**
+ * @param { Graph } g
+ */
+export function layout(g, opts) {
   var time = opts && opts.debugTiming ? util.time : util.notime;
   time('layout', () => {
     var layoutGraph = time('  buildLayoutGraph', () => buildLayoutGraph(g));
@@ -22,6 +23,9 @@ function layout(g, opts) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function runLayout(g, time) {
   time('    makeSpaceForEdgeLabels', () => makeSpaceForEdgeLabels(g));
   time('    removeSelfEdges', () => removeSelfEdges(g));
@@ -112,7 +116,7 @@ var edgeAttrs = ['labelpos'];
  * attributes can influence layout.
  */
 function buildLayoutGraph(inputGraph) {
-  var g = new Graph({ multigraph: true, compound: true });
+  const g = new Graph({ multigraph: true, compound: true });
   var graph = canonicalize(inputGraph.graph());
 
   g.setGraph(
@@ -144,6 +148,9 @@ function buildLayoutGraph(inputGraph) {
  * We also add some minimal padding to the width to push the label for the edge
  * away from the edge itself a bit.
  */
+/**
+ * @param { Graph } g
+ */
 function makeSpaceForEdgeLabels(g) {
   var graph = g.graph();
   graph.ranksep /= 2;
@@ -166,6 +173,9 @@ function makeSpaceForEdgeLabels(g) {
  * so that we can safely remove empty ranks while preserving balance for the
  * label's position.
  */
+/**
+ * @param { Graph } g
+ */
 function injectEdgeLabelProxies(g) {
   _.forEach(g.edges(), function (e) {
     var edge = g.edge(e);
@@ -178,6 +188,9 @@ function injectEdgeLabelProxies(g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function assignRankMinMax(g) {
   var maxRank = 0;
   _.forEach(g.nodes(), function (v) {
@@ -192,6 +205,9 @@ function assignRankMinMax(g) {
   g.graph().maxRank = maxRank;
 }
 
+/**
+ * @param { Graph } g
+ */
 function removeEdgeLabelProxies(g) {
   _.forEach(g.nodes(), function (v) {
     var node = g.node(v);
@@ -202,6 +218,9 @@ function removeEdgeLabelProxies(g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function translateGraph(g) {
   var minX = Number.POSITIVE_INFINITY;
   var maxX = 0;
@@ -259,6 +278,9 @@ function translateGraph(g) {
   graphLabel.height = maxY - minY + marginY;
 }
 
+/**
+ * @param { Graph } g
+ */
 function assignNodeIntersects(g) {
   _.forEach(g.edges(), function (e) {
     var edge = g.edge(e);
@@ -278,6 +300,9 @@ function assignNodeIntersects(g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function fixupEdgeLabelCoords(g) {
   _.forEach(g.edges(), function (e) {
     var edge = g.edge(e);
@@ -297,6 +322,9 @@ function fixupEdgeLabelCoords(g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function reversePointsForReversedEdges(g) {
   _.forEach(g.edges(), function (e) {
     var edge = g.edge(e);
@@ -306,6 +334,9 @@ function reversePointsForReversedEdges(g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function removeBorderNodes(g) {
   _.forEach(g.nodes(), function (v) {
     if (g.children(v).length) {
@@ -329,6 +360,9 @@ function removeBorderNodes(g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function removeSelfEdges(g) {
   _.forEach(g.edges(), function (e) {
     if (e.v === e.w) {
@@ -342,6 +376,9 @@ function removeSelfEdges(g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function insertSelfEdges(g) {
   var layers = util.buildLayerMatrix(g);
   _.forEach(layers, function (layer) {
@@ -369,6 +406,9 @@ function insertSelfEdges(g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function positionSelfEdges(g) {
   _.forEach(g.nodes(), function (v) {
     var node = g.node(v);

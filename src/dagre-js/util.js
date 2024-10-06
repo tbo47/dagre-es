@@ -1,11 +1,15 @@
+/**
+ * @import { Graph } from '../graphlib/graph.js';
+ */
 import * as _ from 'lodash-es';
 
 // Public utility functions
 export { isSubgraph, edgeToId, applyStyle, applyClass, applyTransition };
 
-/*
+/**
  * Returns true if the specified node in the graph is a subgraph node. A
  * subgraph node is one that contains other nodes.
+ * @param { Graph } g
  */
 function isSubgraph(g, v) {
   return !!g.children(v).length;
@@ -32,6 +36,9 @@ function applyClass(dom, classFn, otherClasses) {
   }
 }
 
+/**
+ * @param { Graph } g
+ */
 function applyTransition(selection, g) {
   var graph = g.graph();
 

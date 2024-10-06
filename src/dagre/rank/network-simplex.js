@@ -1,3 +1,6 @@
+/**
+ * @import { Graph } from '../../graphlib/graph.js';
+ */
 import * as _ from 'lodash-es';
 import * as alg from '../../graphlib/alg/index.js';
 import { simplify } from '../util.js';
@@ -14,7 +17,7 @@ networkSimplex.leaveEdge = leaveEdge;
 networkSimplex.enterEdge = enterEdge;
 networkSimplex.exchangeEdges = exchangeEdges;
 
-/*
+/**
  * The network simplex algorithm assigns ranks to each node in the input graph
  * and iteratively improves the ranking to reduce the length of edges.
  *
@@ -46,6 +49,7 @@ networkSimplex.exchangeEdges = exchangeEdges;
  * Much of the algorithms here are derived from Gansner, et al., "A Technique
  * for Drawing Directed Graphs." The structure of the file roughly follows the
  * structure of the overall algorithm.
+ * @param { Graph } g
  */
 function networkSimplex(g) {
   g = simplify(g);
@@ -61,8 +65,9 @@ function networkSimplex(g) {
   }
 }
 
-/*
+/**
  * Initializes cut values for all edges in the tree.
+ * @param { Graph } g
  */
 function initCutValues(t, g) {
   var vs = alg.postorder(t, t.nodes());
@@ -72,15 +77,19 @@ function initCutValues(t, g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function assignCutValue(t, g, child) {
   var childLab = t.node(child);
   var parent = childLab.parent;
   t.edge(child, parent).cutvalue = calcCutValue(t, g, child);
 }
 
-/*
+/**
  * Given the tight tree, its graph, and a child in the graph calculate and
  * return the cut value for the edge between the child and its parent.
+ * @param { Graph } g
  */
 function calcCutValue(t, g, child) {
   var childLab = t.node(child);
@@ -154,6 +163,9 @@ function leaveEdge(tree) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function enterEdge(t, g, edge) {
   var v = edge.v;
   var w = edge.w;
@@ -190,6 +202,9 @@ function enterEdge(t, g, edge) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function exchangeEdges(t, g, e, f) {
   var v = e.v;
   var w = e.w;
@@ -200,6 +215,9 @@ function exchangeEdges(t, g, e, f) {
   updateRanks(t, g);
 }
 
+/**
+ * @param { Graph } g
+ */
 function updateRanks(t, g) {
   var root = _.find(t.nodes(), function (v) {
     return !g.node(v).parent;

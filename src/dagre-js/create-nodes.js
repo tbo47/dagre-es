@@ -1,11 +1,15 @@
+/**
+ * @import { Graph } from '../graphlib/graph.js';
+ */
 import * as d3 from 'd3';
 import { pick } from 'lodash-es';
 import { addLabel } from './label/add-label.js';
 import * as util from './util.js';
 
-export { createNodes, setCreateNodes };
-
-var createNodes = function (selection, g, shapes) {
+/**
+ * @param { Graph } g
+ */
+export var createNodes = function (selection, g, shapes) {
   var simpleNodes = g.nodes().filter(function (v) {
     return !util.isSubgraph(g, v);
   });
@@ -87,6 +91,6 @@ var createNodes = function (selection, g, shapes) {
   return svgNodes;
 };
 
-function setCreateNodes(value) {
+export function setCreateNodes(value) {
   createNodes = value;
 }

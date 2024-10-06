@@ -1,11 +1,8 @@
-/*
+/**
  * Simple doubly linked list implementation derived from Cormen, et al.,
  * "Introduction to Algorithms".
  */
-
-export { List };
-
-class List {
+export class List {
   constructor() {
     var sentinel = {};
     sentinel._next = sentinel._prev = sentinel;

@@ -1,15 +1,22 @@
+/**
+ * @import { Graph } from '../graphlib/graph.js';
+ */
 import * as _ from 'lodash-es';
 
-export { adjust, undo };
-
-function adjust(g) {
+/**
+ * @param { Graph } g
+ */
+export function adjust(g) {
   var rankDir = g.graph().rankdir.toLowerCase();
   if (rankDir === 'lr' || rankDir === 'rl') {
     swapWidthHeight(g);
   }
 }
 
-function undo(g) {
+/**
+ * @param { Graph } g
+ */
+export function undo(g) {
   var rankDir = g.graph().rankdir.toLowerCase();
   if (rankDir === 'bt' || rankDir === 'rl') {
     reverseY(g);
@@ -21,6 +28,9 @@ function undo(g) {
   }
 }
 
+/**
+ * @param { Graph } g
+ */
 function swapWidthHeight(g) {
   _.forEach(g.nodes(), function (v) {
     swapWidthHeightOne(g.node(v));
@@ -36,6 +46,9 @@ function swapWidthHeightOne(attrs) {
   attrs.height = w;
 }
 
+/**
+ * @param { Graph } g
+ */
 function reverseY(g) {
   _.forEach(g.nodes(), function (v) {
     reverseYOne(g.node(v));
@@ -54,6 +67,9 @@ function reverseYOne(attrs) {
   attrs.y = -attrs.y;
 }
 
+/**
+ * @param { Graph } g
+ */
 function swapXY(g) {
   _.forEach(g.nodes(), function (v) {
     swapXYOne(g.node(v));

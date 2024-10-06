@@ -2,18 +2,17 @@ import * as _ from 'lodash-es';
 import { Graph } from '../graphlib/index.js';
 import { List } from './data/list.js';
 
-/*
+var DEFAULT_WEIGHT_FN = _.constant(1);
+
+/**
  * A greedy heuristic for finding a feedback arc set for a graph. A feedback
  * arc set is a set of edges that can be removed to make a graph acyclic.
  * The algorithm comes from: P. Eades, X. Lin, and W. F. Smyth, "A fast and
  * effective heuristic for the feedback arc set problem." This implementation
  * adjusts that from the paper to allow for weighted edges.
+ * @param { Graph } g
  */
-export { greedyFAS };
-
-var DEFAULT_WEIGHT_FN = _.constant(1);
-
-function greedyFAS(g, weightFn) {
+export function greedyFAS(g, weightFn) {
   if (g.nodeCount() <= 1) {
     return [];
   }
@@ -28,6 +27,9 @@ function greedyFAS(g, weightFn) {
   );
 }
 
+/**
+ * @param { Graph } g
+ */
 function doGreedyFAS(g, buckets, zeroIdx) {
   var results = [];
   var sources = buckets[buckets.length - 1];

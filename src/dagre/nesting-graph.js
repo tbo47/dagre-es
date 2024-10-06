@@ -1,9 +1,10 @@
+/**
+ * @import { Graph } from '../graphlib/graph.js';
+ */
 import * as _ from 'lodash-es';
 import * as util from './util.js';
 
-export { run, cleanup };
-
-/*
+/**
  * A nesting graph creates dummy nodes for the tops and bottoms of subgraphs,
  * adds appropriate edges to ensure that all cluster nodes are placed between
  * these boundries, and ensures that the graph is connected.
@@ -25,8 +26,9 @@ export { run, cleanup };
  *
  * The nesting graph idea comes from Sander, "Layout of Compound Directed
  * Graphs."
+ * @param { Graph } g
  */
-function run(g) {
+export function run(g) {
   var root = util.addDummyNode(g, 'root', {}, '_root');
   var depths = treeDepths(g);
   var height = _.max(_.values(depths)) - 1; // Note: depths is an Object not an array
@@ -52,6 +54,9 @@ function run(g) {
   g.graph().nodeRankFactor = nodeSep;
 }
 
+/**
+ * @param { Graph } g
+ */
 function dfs(g, root, nodeSep, weight, height, depths, v) {
   var children = g.children(v);
   if (!children.length) {
@@ -97,6 +102,9 @@ function dfs(g, root, nodeSep, weight, height, depths, v) {
   }
 }
 
+/**
+ * @param { Graph } g
+ */
 function treeDepths(g) {
   var depths = {};
   function dfs(v, depth) {
@@ -124,7 +132,10 @@ function sumWeights(g) {
   );
 }
 
-function cleanup(g) {
+/**
+ * @param { Graph } g
+ */
+export function cleanup(g) {
   var graphLabel = g.graph();
   g.removeNode(graphLabel.nestingRoot);
   delete graphLabel.nestingRoot;

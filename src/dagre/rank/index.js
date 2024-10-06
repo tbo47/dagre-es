@@ -1,10 +1,11 @@
+/**
+ * @import { Graph } from '../../graphlib/graph.js';
+ */
 import { feasibleTree } from './feasible-tree.js';
 import { networkSimplex } from './network-simplex.js';
 import { longestPath } from './util.js';
 
-export { rank };
-
-/*
+/**
  * Assigns a rank to each node in the input graph that respects the "minlen"
  * constraint specified on edges between nodes.
  *
@@ -22,8 +23,9 @@ export { rank };
  *    1. Graph nodes will have a "rank" attribute based on the results of the
  *       algorithm. Ranks can start at any index (including negative), we'll
  *       fix them up later.
+ * @param { Graph } g
  */
-function rank(g) {
+export function rank(g) {
   switch (g.graph().ranker) {
     case 'network-simplex':
       networkSimplexRanker(g);
@@ -42,11 +44,17 @@ function rank(g) {
 // A fast and simple ranker, but results are far from optimal.
 var longestPathRanker = longestPath;
 
+/**
+ * @param { Graph } g
+ */
 function tightTreeRanker(g) {
   longestPath(g);
   feasibleTree(g);
 }
 
+/**
+ * @param { Graph } g
+ */
 function networkSimplexRanker(g) {
   networkSimplex(g);
 }

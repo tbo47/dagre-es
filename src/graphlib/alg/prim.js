@@ -4,6 +4,9 @@ import { Graph } from '../graph.js';
 
 export { prim };
 
+/**
+ * @param { Graph } g
+ */
 function prim(g, weightFunc) {
   var result = new Graph();
   var parents = {};

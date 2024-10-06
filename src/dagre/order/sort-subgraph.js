@@ -1,11 +1,15 @@
+/**
+ * @import { Graph } from '../../graphlib/graph.js';
+ */
 import * as _ from 'lodash-es';
 import { barycenter } from './barycenter.js';
 import { resolveConflicts } from './resolve-conflicts.js';
 import { sort } from './sort.js';
 
-export { sortSubgraph };
-
-function sortSubgraph(g, v, cg, biasRight) {
+/**
+ * @param { Graph } g
+ */
+export function sortSubgraph(g, v, cg, biasRight) {
   var movable = g.children(v);
   var node = g.node(v);
   var bl = node ? node.borderLeft : undefined;

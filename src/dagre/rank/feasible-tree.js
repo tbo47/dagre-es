@@ -2,9 +2,7 @@ import * as _ from 'lodash-es';
 import { Graph } from '../../graphlib/index.js';
 import { slack } from './util.js';
 
-export { feasibleTree };
-
-/*
+/**
  * Constructs a spanning tree with tight edges and adjusted the input node's
  * ranks to achieve this. A tight edge is one that is has a length that matches
  * its "minlen" attribute.
@@ -28,8 +26,9 @@ export { feasibleTree };
  *
  * Returns a tree (undirected graph) that is constructed using only "tight"
  * edges.
+ * @param { Graph } g
  */
-function feasibleTree(g) {
+export function feasibleTree(g) {
   var t = new Graph({ directed: false });
 
   // Choose arbitrary node from which to start our tree
@@ -47,9 +46,10 @@ function feasibleTree(g) {
   return t;
 }
 
-/*
+/**
  * Finds a maximal tree of tight edges and returns the number of nodes in the
  * tree.
+ * @param { Graph } g
  */
 function tightTree(t, g) {
   function dfs(v) {
@@ -68,9 +68,10 @@ function tightTree(t, g) {
   return t.nodeCount();
 }
 
-/*
+/**
  * Finds the edge with the smallest slack that is incident on tree and returns
  * it.
+ * @param { Graph } g
  */
 function findMinSlackEdge(t, g) {
   return _.minBy(g.edges(), function (e) {
@@ -80,6 +81,9 @@ function findMinSlackEdge(t, g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function shiftRanks(t, g, delta) {
   _.forEach(t.nodes(), function (v) {
     g.node(v).rank += delta;

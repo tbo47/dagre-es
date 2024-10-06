@@ -1,9 +1,13 @@
+/**
+ * @import { Graph } from '../graph.js';
+ */
 import * as _ from 'lodash-es';
 import { dijkstra } from './dijkstra.js';
 
-export { dijkstraAll };
-
-function dijkstraAll(g, weightFunc, edgeFunc) {
+/**
+ * @param { Graph } g
+ */
+export function dijkstraAll(g, weightFunc, edgeFunc) {
   return _.transform(
     g.nodes(),
     function (acc, v) {

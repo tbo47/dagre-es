@@ -1,9 +1,7 @@
 import * as _ from 'lodash-es';
 import { Graph } from '../../graphlib/index.js';
 
-export { buildLayerGraph };
-
-/*
+/**
  * Constructs a graph that can be used to sort a layer of nodes. The graph will
  * contain all base and subgraph nodes from the request layer in their original
  * hierarchy and any edges that are incident on these nodes and are of the type
@@ -32,8 +30,9 @@ export { buildLayerGraph };
  *       parameter, are added to the output graph.
  *    5. The weights for copied edges are aggregated as need, since the output
  *       graph is not a multi-graph.
+ * @param { Graph } g
  */
-function buildLayerGraph(g, rank, relationship) {
+export function buildLayerGraph(g, rank, relationship) {
   var root = createRootNode(g),
     result = new Graph({ compound: true })
       .setGraph({ root: root })
@@ -69,6 +68,9 @@ function buildLayerGraph(g, rank, relationship) {
   return result;
 }
 
+/**
+ * @param { Graph } g
+ */
 function createRootNode(g) {
   var v;
   while (g.hasNode((v = _.uniqueId('_root'))));

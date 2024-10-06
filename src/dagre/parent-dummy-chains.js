@@ -1,8 +1,12 @@
+/**
+ * @import { Graph } from '../graphlib/graph.js';
+ */
 import * as _ from 'lodash-es';
 
-export { parentDummyChains };
-
-function parentDummyChains(g) {
+/**
+ * @param { Graph } g
+ */
+export function parentDummyChains(g) {
   var postorderNums = postorder(g);
 
   _.forEach(g.graph().dummyChains, function (v) {
@@ -46,6 +50,9 @@ function parentDummyChains(g) {
 
 // Find a path from v to w through the lowest common ancestor (LCA). Return the
 // full path and the LCA.
+/**
+ * @param { Graph } g
+ */
 function findPath(g, postorderNums, v, w) {
   var vPath = [];
   var wPath = [];
@@ -71,6 +78,9 @@ function findPath(g, postorderNums, v, w) {
   return { path: vPath.concat(wPath.reverse()), lca: lca };
 }
 
+/**
+ * @param { Graph } g
+ */
 function postorder(g) {
   var result = {};
   var lim = 0;

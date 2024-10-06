@@ -4,15 +4,29 @@ var DEFAULT_EDGE_NAME = '\x00';
 var GRAPH_NODE = '\x00';
 var EDGE_KEY_DELIM = '\x01';
 
-// Implementation notes:
-//
-//  * Node id query functions should return string ids for the nodes
-//  * Edge id query functions should return an "edgeObj", edge object, that is
-//    composed of enough information to uniquely identify an edge: {v, w, name}.
-//  * Internally we use an "edgeId", a stringified form of the edgeObj, to
-//    reference edges. This is because we need a performant way to look these
-//    edges up and, object properties, which have string keys, are the closest
-//    we're going to get to a performant hashtable in JavaScript.
+/**
+ * @typedef {Object} Edge
+ * @property {string} [v]
+ * @property {string} [w]
+ * @property {string} [name] - The name that uniquely identifies a multi-edge.
+ *
+ * @typedef {Object} GraphOptions
+ * @property {boolean} [directed=true]
+ * @property {boolean} [multigraph=false]
+ * @property {boolean} [compound=false]
+ *
+ * @typedef {Object} Node
+ * @property {string} label - The label of the node.
+ * @property {number} [paddingX] - The horizontal padding of the node.
+ * @property {number} [paddingY] - The vertical padding of the node.
+ * @property {number} [padding] - The padding of the node for all directions. Overrides `paddingX` and `paddingY`.
+ * @property {number} [paddingLeft] - The left padding of the node.
+ * @property {number} [paddingRight] - The right padding of the node.
+ * @property {number} [_prevWidth]
+ * @property {number} [width]
+ * @property {number} [_prevHeight]
+ * @property {number} [height]
+ */
 
 // Implementation notes:
 //
@@ -24,13 +38,16 @@ var EDGE_KEY_DELIM = '\x01';
 //    edges up and, object properties, which have string keys, are the closest
 //    we're going to get to a performant hashtable in JavaScript.
 export class Graph {
-  constructor(opts = {}) {
+  constructor(/** @type {GraphOptions} */ opts = {}) {
+    /** @type {boolean} */
     this._isDirected = Object.prototype.hasOwnProperty.call(opts, 'directed')
       ? opts.directed
       : true;
+    /** @type {boolean} */
     this._isMultigraph = Object.prototype.hasOwnProperty.call(opts, 'multigraph')
       ? opts.multigraph
       : false;
+    /** @type {boolean} */
     this._isCompound = Object.prototype.hasOwnProperty.call(opts, 'compound')
       ? opts.compound
       : false;
@@ -69,6 +86,10 @@ export class Graph {
     this._sucs = {};
 
     // e -> edgeObj
+    /**
+     * Edge objects for each edge.
+     * @type {Object<string, Edge>}
+     */
     this._edgeObjs = {};
 
     // e -> label
@@ -276,7 +297,6 @@ export class Graph {
     });
 
     _.each(this._edgeObjs, function (e) {
-      // @ts-expect-error
       if (copy.hasNode(e.v) && copy.hasNode(e.w)) {
         copy.setEdge(e, self.edge(e));
       }
@@ -383,6 +403,7 @@ export class Graph {
     // @ts-expect-error
     this._edgeLabels[e] = valueSpecified ? value : this._defaultEdgeLabelFn(v, w, name);
 
+    /** @type {Edge} */
     var edgeObj = edgeArgsToObj(this._isDirected, v, w, name);
     // Ensure we add undirected edges in a consistent way.
     v = edgeObj.v;
@@ -482,6 +503,13 @@ function decrementOrRemoveEntry(map, k) {
   }
 }
 
+/**
+ * @param {boolean} isDirected
+ * @param {string} v_
+ * @param {string} w_
+ * @param {string} name
+ * @returns {string}
+ */
 function edgeArgsToId(isDirected, v_, w_, name) {
   var v = '' + v_;
   var w = '' + w_;
@@ -493,6 +521,13 @@ function edgeArgsToId(isDirected, v_, w_, name) {
   return v + EDGE_KEY_DELIM + w + EDGE_KEY_DELIM + (_.isUndefined(name) ? DEFAULT_EDGE_NAME : name);
 }
 
+/**
+ * @param {boolean} isDirected
+ * @param {string} v_
+ * @param {string} w_
+ * @param {string} name
+ * @returns {Edge}
+ */
 function edgeArgsToObj(isDirected, v_, w_, name) {
   var v = '' + v_;
   var w = '' + w_;
@@ -508,6 +543,6 @@ function edgeArgsToObj(isDirected, v_, w_, name) {
   return edgeObj;
 }
 
-function edgeObjToId(isDirected, edgeObj) {
+function edgeObjToId(/** @type {boolean} */ isDirected, /** @type {Edge} */ edgeObj) {
   return edgeArgsToId(isDirected, edgeObj.v, edgeObj.w, edgeObj.name);
 }

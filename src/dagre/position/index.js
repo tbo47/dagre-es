@@ -1,10 +1,14 @@
+/**
+ * @import { Graph } from '../../graphlib/graph.js';
+ */
 import * as _ from 'lodash-es';
 import * as util from '../util.js';
 import { positionX } from './bk.js';
 
-export { position };
-
-function position(g) {
+/**
+ * @param { Graph } g
+ */
+export function position(g) {
   g = util.asNonCompoundGraph(g);
 
   positionY(g);
@@ -13,6 +17,9 @@ function position(g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function positionY(g) {
   var layering = util.buildLayerMatrix(g);
   var rankSep = g.graph().ranksep;

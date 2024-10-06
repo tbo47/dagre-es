@@ -1,8 +1,9 @@
+/**
+ * @import { Graph } from '../../graphlib/graph.js';
+ */
 import * as _ from 'lodash-es';
 
-export { crossCount };
-
-/*
+/**
  * A function that takes a layering (an array of layers, each with an array of
  * ordererd nodes) and a graph and returns a weighted crossing count.
  *
@@ -17,8 +18,9 @@ export { crossCount };
  *    1. The graph and layering matrix are left unchanged.
  *
  * This algorithm is derived from Barth, et al., "Bilayer Cross Counting."
+ * @param { Graph } g
  */
-function crossCount(g, layering) {
+export function crossCount(g, layering) {
   var cc = 0;
   for (var i = 1; i < layering.length; ++i) {
     cc += twoLayerCrossCount(g, layering[i - 1], layering[i]);
@@ -26,6 +28,9 @@ function crossCount(g, layering) {
   return cc;
 }
 
+/**
+ * @param { Graph } g
+ */
 function twoLayerCrossCount(g, northLayer, southLayer) {
   // Sort all of the edges between the north and south layers by their position
   // in the north layer and then the south. Map these edges to the position of

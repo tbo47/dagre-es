@@ -1,14 +1,10 @@
 /**
- * TypeScript type imports:
- *
  * @import { Graph } from '../graphlib/graph.js';
  */
 import * as _ from 'lodash-es';
 import * as util from './util.js';
 
-export { run, undo };
-
-/*
+/**
  * Breaks any long edges in the graph into short segments that span 1 layer
  * each. This operation is undoable with the denormalize function.
  *
@@ -23,8 +19,9 @@ export { run, undo };
  *    2. Dummy nodes are added where edges have been split into segments.
  *    3. The graph is augmented with a "dummyChains" attribute which contains
  *       the first dummy in each chain of dummy nodes produced.
+ * @param { Graph } g
  */
-function run(g) {
+export function run(g) {
   g.graph().dummyChains = [];
   _.forEach(g.edges(), function (edge) {
     normalizeEdge(g, edge);
@@ -32,7 +29,7 @@ function run(g) {
 }
 
 /**
- * @param {Graph} g
+ * @param { Graph } g
  */
 function normalizeEdge(g, e) {
   var v = e.v;
@@ -87,7 +84,10 @@ function normalizeEdge(g, e) {
   g.setEdge(v, w, { weight: edgeLabel.weight }, name);
 }
 
-function undo(g) {
+/**
+ * @param { Graph } g
+ */
+export function undo(g) {
   _.forEach(g.graph().dummyChains, function (v) {
     var node = g.node(v);
     var origLabel = node.edgeLabel;

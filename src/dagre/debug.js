@@ -2,10 +2,11 @@ import * as _ from 'lodash-es';
 import { Graph } from '../graphlib/index.js';
 import * as util from './util.js';
 
-export { debugOrdering };
-
-/* istanbul ignore next */
-function debugOrdering(g) {
+/**
+ * istanbul ignore next
+ * @param { Graph } g
+ */
+export function debugOrdering(g) {
   var layerMatrix = util.buildLayerMatrix(g);
 
   var h = new Graph({ compound: true, multigraph: true }).setGraph({});

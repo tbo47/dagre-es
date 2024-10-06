@@ -1,9 +1,13 @@
+/**
+ * @import { Graph } from '../graphlib/graph.js';
+ */
 import * as _ from 'lodash-es';
 import { greedyFAS } from './greedy-fas.js';
 
-export { run, undo };
-
-function run(g) {
+/**
+ * @param { Graph } g
+ */
+export function run(g) {
   var fas = g.graph().acyclicer === 'greedy' ? greedyFAS(g, weightFn(g)) : dfsFAS(g);
   _.forEach(fas, function (e) {
     var label = g.edge(e);
@@ -20,6 +24,9 @@ function run(g) {
   }
 }
 
+/**
+ * @param { Graph } g
+ */
 function dfsFAS(g) {
   var fas = [];
   var stack = {};
@@ -45,7 +52,10 @@ function dfsFAS(g) {
   return fas;
 }
 
-function undo(g) {
+/**
+ * @param { Graph } g
+ */
+export function undo(g) {
   _.forEach(g.edges(), function (e) {
     var label = g.edge(e);
     if (label.reversed) {

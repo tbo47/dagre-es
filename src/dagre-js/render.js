@@ -1,3 +1,6 @@
+/**
+ * @import { Graph } from '../graphlib/graph.js';
+ */
 import * as d3 from 'd3';
 import { defaults } from 'lodash-es';
 import { layout } from '../dagre/index.js';
@@ -9,12 +12,15 @@ import { createNodes, setCreateNodes } from './create-nodes.js';
 import { positionClusters } from './position-clusters.js';
 import { positionEdgeLabels } from './position-edge-labels.js';
 import { positionNodes } from './position-nodes.js';
-import { shapes, setShapes } from './shapes.js';
+import { setShapes, shapes } from './shapes.js';
 
 export { render };
 
 // This design is based on http://bost.ocks.org/mike/chart/.
 function render() {
+  /**
+   * @param { Graph } g
+   */
   var fn = function (svg, g) {
     preProcessGraph(g);
 
@@ -91,26 +97,11 @@ var EDGE_DEFAULT_ATTRS = {
 };
 
 /**
- * @typedef {Object} Node
- * @property {string} label - The label of the node.
- * @property {number} [paddingX] - The horizontal padding of the node.
- * @property {number} [paddingY] - The vertical padding of the node.
- * @property {number} [padding] - The padding of the node for all directions. Overrides `paddingX` and `paddingY`.
- * @property {number} [paddingLeft] - The left padding of the node.
- * @property {number} [paddingRight] - The right padding of the node.
- * @property {number} [_prevWidth]
- * @property {number} [width]
- * @property {number} [_prevHeight]
- * @property {number} [height]
- */
-
-/**
  * Pre-processes the graph by setting default labels and padding for nodes.
- * @param {Object} g - The graph object.
+ * @param { Graph } g
  */
 function preProcessGraph(g) {
   g.nodes().forEach((v) => {
-    /** @type {Node} */
     const node = g.node(v);
     if (!Object.prototype.hasOwnProperty.call(node, 'label') && !g.children(v).length) {
       node.label = v;
@@ -163,9 +154,11 @@ function preProcessGraph(g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function postProcessGraph(g) {
   g.nodes().forEach((v) => {
-    /** @type {Node} */
     var node = g.node(v);
 
     // Restore original dimensions

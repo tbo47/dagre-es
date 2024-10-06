@@ -1,9 +1,7 @@
 import * as _ from 'lodash-es';
 import * as util from '../util.js';
 
-export { sort };
-
-function sort(entries, biasRight) {
+export function sort(entries, biasRight) {
   var parts = util.partition(entries, function (entry) {
     return Object.prototype.hasOwnProperty.call(entry, 'barycenter');
   });

@@ -1,8 +1,12 @@
+/**
+ * @import { Graph } from '../../graphlib/graph.js';
+ */
 import * as _ from 'lodash-es';
 
-export { barycenter };
-
-function barycenter(g, movable) {
+/**
+ * @param { Graph } g
+ */
+export function barycenter(g, movable) {
   return _.map(movable, function (v) {
     var inV = g.inEdges(v);
     if (!inV.length) {

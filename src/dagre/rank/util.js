@@ -1,8 +1,9 @@
+/**
+ * @import { Graph } from '../../graphlib/graph.js';
+ */
 import * as _ from 'lodash-es';
 
-export { longestPath, slack };
-
-/*
+/**
  * Initializes ranks for the input graph using the longest path algorithm. This
  * algorithm scales well and is fast in practice, it yields rather poor
  * solutions. Nodes are pushed to the lowest layer possible, leaving the bottom
@@ -22,8 +23,9 @@ export { longestPath, slack };
  * Post-conditions:
  *
  *    1. Each node will be assign an (unnormalized) "rank" property.
+ * @param { Graph } g
  */
-function longestPath(g) {
+export function longestPath(g) {
   var visited = {};
 
   function dfs(v) {
@@ -54,10 +56,11 @@ function longestPath(g) {
   _.forEach(g.sources(), dfs);
 }
 
-/*
+/**
  * Returns the amount of slack for the given edge. The slack is defined as the
  * difference between the length of the edge and its minimum length.
+ * @param { Graph } g
  */
-function slack(g, e) {
+export function slack(g, e) {
   return g.node(e.w).rank - g.node(e.v).rank - g.edge(e).minlen;
 }

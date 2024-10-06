@@ -1,9 +1,13 @@
+/**
+ * @import { Graph } from '../graphlib/graph.js';
+ */
 import * as _ from 'lodash-es';
 import * as util from './util.js';
 
-export { addBorderSegments };
-
-function addBorderSegments(g) {
+/**
+ * @param { Graph } g
+ */
+export function addBorderSegments(g) {
   function dfs(v) {
     var children = g.children(v);
     var node = g.node(v);
@@ -24,6 +28,9 @@ function addBorderSegments(g) {
   _.forEach(g.children(), dfs);
 }
 
+/**
+ * @param { Graph } g
+ */
 function addBorderNode(g, prop, prefix, sg, sgNode, rank) {
   var label = { width: 0, height: 0, rank: rank, borderType: prop };
   var prev = sgNode[prop][rank - 1];

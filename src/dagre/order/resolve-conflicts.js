@@ -1,7 +1,5 @@
 import * as _ from 'lodash-es';
 
-export { resolveConflicts };
-
 /*
  * Given a list of entries of the form {v, barycenter, weight} and a
  * constraint graph this function will resolve any conflicts between the
@@ -27,7 +25,7 @@ export { resolveConflicts };
  *    graph. The property `i` is the lowest original index of any of the
  *    elements in `vs`.
  */
-function resolveConflicts(entries, cg) {
+export function resolveConflicts(entries, cg) {
   var mappedEntries = {};
   _.forEach(entries, function (entry, i) {
     var tmp = (mappedEntries[entry.v] = {

@@ -1,3 +1,6 @@
+/**
+ * @import { Graph } from '../graphlib/graph.js';
+ */
 import * as d3 from 'd3';
 import * as _ from 'lodash-es';
 import { intersectNode } from './intersect/intersect-node.js';
@@ -5,6 +8,9 @@ import * as util from './util.js';
 
 export { createEdgePaths, setCreateEdgePaths };
 
+/**
+ * @param { Graph } g
+ */
 var createEdgePaths = function (selection, g, arrows) {
   var previousPaths = selection
     .selectAll('g.edgePath')
@@ -73,6 +79,9 @@ function makeFragmentRef(url, fragmentId) {
   return baseUrl + '#' + fragmentId;
 }
 
+/**
+ * @param { Graph } g
+ */
 function calcPoints(g, e) {
   var edge = g.edge(e);
   var tail = g.node(e.v);
@@ -109,6 +118,9 @@ function getCoords(elem) {
   return { x: matrix.e, y: matrix.f };
 }
 
+/**
+ * @param { Graph } g
+ */
 function enter(svgPaths, g) {
   var svgPathsEnter = svgPaths.enter().append('g').attr('class', 'edgePath').style('opacity', 0);
   svgPathsEnter
@@ -126,6 +138,9 @@ function enter(svgPaths, g) {
   return svgPathsEnter;
 }
 
+/**
+ * @param { Graph } g
+ */
 function exit(svgPaths, g) {
   var svgPathExit = svgPaths.exit();
   util.applyTransition(svgPathExit, g).style('opacity', 0).remove();

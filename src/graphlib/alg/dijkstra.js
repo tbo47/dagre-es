@@ -1,3 +1,6 @@
+/**
+ * @import { Graph } from '../graph.js';
+ */
 import * as _ from 'lodash-es';
 import { PriorityQueue } from '../data/priority-queue.js';
 
@@ -5,6 +8,9 @@ export { dijkstra };
 
 var DEFAULT_WEIGHT_FUNC = _.constant(1);
 
+/**
+ * @param { Graph } g
+ */
 function dijkstra(g, source, weightFn, edgeFn) {
   return runDijkstra(
     g,
@@ -17,6 +23,9 @@ function dijkstra(g, source, weightFn, edgeFn) {
   );
 }
 
+/**
+ * @param { Graph } g
+ */
 function runDijkstra(g, source, weightFn, edgeFn) {
   var results = {};
   var pq = new PriorityQueue();

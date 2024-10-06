@@ -18,8 +18,9 @@ export {
   notime,
 };
 
-/*
+/**
  * Adds a dummy node to the graph and return v.
+ * @param { Graph } g
  */
 function addDummyNode(g, type, attrs, name) {
   var v;
@@ -32,9 +33,10 @@ function addDummyNode(g, type, attrs, name) {
   return v;
 }
 
-/*
+/**
  * Returns a new graph with only simple edges. Handles aggregation of data
  * associated with multi-edges.
+ * @param { Graph } g
  */
 function simplify(g) {
   var simplified = new Graph().setGraph(g.graph());
@@ -52,6 +54,9 @@ function simplify(g) {
   return simplified;
 }
 
+/**
+ * @param { Graph } g
+ */
 function asNonCompoundGraph(g) {
   var simplified = new Graph({ multigraph: g.isMultigraph() }).setGraph(g.graph());
   _.forEach(g.nodes(), function (v) {
@@ -65,6 +70,9 @@ function asNonCompoundGraph(g) {
   return simplified;
 }
 
+/**
+ * @param { Graph } g
+ */
 function successorWeights(g) {
   var weightMap = _.map(g.nodes(), function (v) {
     var sucs = {};
@@ -76,6 +84,9 @@ function successorWeights(g) {
   return _.zipObject(g.nodes(), weightMap);
 }
 
+/**
+ * @param { Graph } g
+ */
 function predecessorWeights(g) {
   var weightMap = _.map(g.nodes(), function (v) {
     var preds = {};
@@ -126,9 +137,10 @@ function intersectRect(rect, point) {
   return { x: x + sx, y: y + sy };
 }
 
-/*
+/**
  * Given a DAG with each node assigned "rank" and "order" properties, this
  * function will produce a matrix with the ids of each node.
+ * @param { Graph } g
  */
 function buildLayerMatrix(g) {
   var layering = _.map(_.range(maxRank(g) + 1), function () {
@@ -144,9 +156,10 @@ function buildLayerMatrix(g) {
   return layering;
 }
 
-/*
+/**
  * Adjusts the ranks for all nodes in the graph such that all nodes v have
  * rank(v) >= 0 and at least one node w has rank(w) = 0.
+ * @param { Graph } g
  */
 function normalizeRanks(g) {
   var min = _.min(
@@ -162,6 +175,9 @@ function normalizeRanks(g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function removeEmptyRanks(g) {
   // Ranks may not start at 0, so we need to offset them
   var offset = _.min(
@@ -192,6 +208,9 @@ function removeEmptyRanks(g) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function addBorderNode(g, prefix, rank, order) {
   var node = {
     width: 0,
@@ -204,6 +223,9 @@ function addBorderNode(g, prefix, rank, order) {
   return addDummyNode(g, 'border', node, prefix);
 }
 
+/**
+ * @param { Graph } g
+ */
 function maxRank(g) {
   return _.max(
     _.map(g.nodes(), function (v) {

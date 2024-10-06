@@ -1,10 +1,14 @@
+/**
+ * @import { Graph } from '../graph.js';
+ */
 import * as _ from 'lodash-es';
-
-export { floydWarshall };
 
 var DEFAULT_WEIGHT_FUNC = _.constant(1);
 
-function floydWarshall(g, weightFn, edgeFn) {
+/**
+ * @param { Graph } g
+ */
+export function floydWarshall(g, weightFn, edgeFn) {
   return runFloydWarshall(
     g,
     weightFn || DEFAULT_WEIGHT_FUNC,
@@ -15,6 +19,9 @@ function floydWarshall(g, weightFn, edgeFn) {
   );
 }
 
+/**
+ * @param { Graph } g
+ */
 function runFloydWarshall(g, weightFn, edgeFn) {
   var results = {};
   var nodes = g.nodes();

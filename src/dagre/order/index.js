@@ -7,9 +7,7 @@ import { crossCount } from './cross-count.js';
 import { initOrder } from './init-order.js';
 import { sortSubgraph } from './sort-subgraph.js';
 
-export { order };
-
-/*
+/**
  * Applies heuristics to minimize edge crossings in the graph and sets the best
  * order solution as an order attribute on each node.
  *
@@ -23,8 +21,9 @@ export { order };
  *
  *    1. Graph nodes will have an "order" attribute based on the results of the
  *       algorithm.
+ * @param { Graph } g
  */
-function order(g) {
+export function order(g) {
   var maxRank = util.maxRank(g),
     downLayerGraphs = buildLayerGraphs(g, _.range(1, maxRank + 1), 'inEdges'),
     upLayerGraphs = buildLayerGraphs(g, _.range(maxRank - 1, -1, -1), 'outEdges');
@@ -50,6 +49,9 @@ function order(g) {
   assignOrder(g, best);
 }
 
+/**
+ * @param { Graph } g
+ */
 function buildLayerGraphs(g, ranks, relationship) {
   return _.map(ranks, function (rank) {
     return buildLayerGraph(g, rank, relationship);
@@ -68,6 +70,9 @@ function sweepLayerGraphs(layerGraphs, biasRight) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function assignOrder(g, layering) {
   _.forEach(layering, function (layer) {
     _.forEach(layer, function (v, i) {

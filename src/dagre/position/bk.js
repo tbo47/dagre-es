@@ -20,7 +20,7 @@ export {
   balance,
 };
 
-/*
+/**
  * Marks all edges in the graph with a type-1 conflict with the "type1Conflict"
  * property. A type-1 conflict is one where a non-inner segment crosses an
  * inner segment. An inner segment is an edge with both incident nodes marked
@@ -36,6 +36,7 @@ export {
  *
  * This algorithm (safely) assumes that a dummy node will only be incident on a
  * single node in the layers being scanned.
+ * @param { Graph } g
  */
 function findType1Conflicts(g, layering) {
   var conflicts = {};
@@ -77,6 +78,9 @@ function findType1Conflicts(g, layering) {
   return conflicts;
 }
 
+/**
+ * @param { Graph } g
+ */
 function findType2Conflicts(g, layering) {
   var conflicts = {};
 
@@ -121,6 +125,9 @@ function findType2Conflicts(g, layering) {
   return conflicts;
 }
 
+/**
+ * @param { Graph } g
+ */
 function findOtherInnerSegmentNode(g, v) {
   if (g.node(v).dummy) {
     return _.find(g.predecessors(v), function (u) {
@@ -152,13 +159,14 @@ function hasConflict(conflicts, v, w) {
   return !!conflicts[v] && Object.prototype.hasOwnProperty.call(conflicts[v], w);
 }
 
-/*
+/**
  * Try to align nodes into vertical "blocks" where possible. This algorithm
  * attempts to align a node with one of its median neighbors. If the edge
  * connecting a neighbor is a type-1 conflict then we ignore that possibility.
  * If a previous node has already formed a block with a node after the node
  * we're trying to form a block with, we also ignore that possibility - our
  * blocks would be split in that scenario.
+ * @param { Graph } g
  */
 function verticalAlignment(g, layering, conflicts, neighborFn) {
   var root = {},
@@ -200,6 +208,9 @@ function verticalAlignment(g, layering, conflicts, neighborFn) {
   return { root: root, align: align };
 }
 
+/**
+ * @param { Graph } g
+ */
 function horizontalCompaction(g, layering, root, align, reverseSep) {
   // This portion of the algorithm differs from BK due to a number of problems.
   // Instead of their algorithm we construct a new block graph and do two
@@ -257,6 +268,9 @@ function horizontalCompaction(g, layering, root, align, reverseSep) {
   return xs;
 }
 
+/**
+ * @param { Graph } g
+ */
 function buildBlockGraph(g, layering, root, reverseSep) {
   var blockGraph = new Graph(),
     graphLabel = g.graph(),
@@ -279,8 +293,9 @@ function buildBlockGraph(g, layering, root, reverseSep) {
   return blockGraph;
 }
 
-/*
+/**
  * Returns the alignment that has the smallest width of the given alignments.
+ * @param { Graph } g
  */
 function findSmallestWidthAlignment(g, xss) {
   return _.minBy(_.values(xss), function (xs) {
@@ -340,6 +355,9 @@ function balance(xss, align) {
   });
 }
 
+/**
+ * @param { Graph } g
+ */
 function positionX(g) {
   var layering = util.buildLayerMatrix(g);
   var conflicts = _.merge(findType1Conflicts(g, layering), findType2Conflicts(g, layering));
@@ -418,6 +436,9 @@ function sep(nodeSep, edgeSep, reverseSep) {
   };
 }
 
+/**
+ * @param { Graph } g
+ */
 function width(g, v) {
   return g.node(v).width;
 }
