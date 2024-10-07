@@ -52,7 +52,10 @@ export class Graph {
       ? opts.compound
       : false;
 
-    // Label for the graph itself
+    /** 
+     * Label for the graph itself
+     * @type {string | undefined} 
+     */
     this._label = undefined;
 
     // Defaults to be set when creating a new node
@@ -62,10 +65,12 @@ export class Graph {
     this._defaultEdgeLabelFn = _.constant(undefined);
 
     // v -> label
+    /** @type {Object<string, string>} */
     this._nodes = {};
 
     if (this._isCompound) {
       // v -> parent
+      /** @type {Object<string, string>} */
       this._parent = {};
 
       // v -> children
@@ -74,9 +79,11 @@ export class Graph {
     }
 
     // v -> edgeObj
+    /** @type {Object<string, Object<string, Edge>>} */
     this._in = {};
 
     // u -> v -> Number
+    /* @type {Object<string, Object<string, something >>} */
     this._preds = {};
 
     // v -> edgeObj
@@ -93,26 +100,72 @@ export class Graph {
     this._edgeObjs = {};
 
     // e -> label
+    /** @type {Object<string, string>} */
     this._edgeLabels = {};
   }
   /* === Graph functions ========= */
+
+  /**
+   * Whether graph was created with 'directed' flag set to true or not.
+   *
+   * @returns whether the graph edges have an orientation.
+   */
   isDirected() {
     return this._isDirected;
   }
+
+  /**
+   * Whether graph was created with 'multigraph' flag set to true or not.
+   *
+   * @returns whether the pair of nodes of the graph can have multiple edges.
+   */
   isMultigraph() {
     return this._isMultigraph;
   }
+
+  /**
+   * Whether graph was created with 'compound' flag set to true or not.
+   *
+   * @returns whether a node of the graph can have subnodes.
+   */
   isCompound() {
     return this._isCompound;
   }
+
+  /**
+   * Sets the label of the graph.
+   *
+   * @argument label - label value.
+   * @returns the graph, allowing this to be chained with other functions.
+   */
   setGraph(label) {
     this._label = label;
     return this;
   }
+
+  /**
+   * Gets the graph label.
+   *
+   * @returns {string | undefined} currently assigned label for the graph or undefined if no label assigned.
+   */
   graph() {
     return this._label;
   }
   /* === Node functions ========== */
+
+  /**
+   * Sets the default node label. This label will be assigned as default label
+   * in case if no label was specified while setting a node.
+   * Complexity: O(1).
+   *
+   * Sets the default node label factory function. This function will be invoked
+   * each time when setting a node with no label specified and returned value
+   * will be used as a label for node.
+   * Complexity: O(1).
+   *
+   * @argument newDefault - default node label.
+   * @returns the graph, allowing this to be chained with other functions.
+   */
   setDefaultNodeLabel(newDefault) {
     if (!_.isFunction(newDefault)) {
       newDefault = _.constant(newDefault);
@@ -123,6 +176,14 @@ export class Graph {
   nodeCount() {
     return this._nodeCount;
   }
+
+  /**
+   * Gets all nodes of the graph. Note, the in case of compound graph subnodes are
+   * not included in list.
+   * Complexity: O(1).
+   *
+   * @returns {string[]} list of graph nodes.
+   */
   nodes() {
     return _.keys(this._nodes);
   }
@@ -138,6 +199,15 @@ export class Graph {
       return _.isEmpty(self._out[v]);
     });
   }
+
+  /**
+   * Invokes setNode method for each node in names list.
+   * Complexity: O(|names|).
+   *
+   * @argument {string[]} vs - list of nodes names to be set.
+   * @argument {string} value - value to set for each node in list.
+   * @returns the graph, allowing this to be chained with other functions.
+   */
   setNodes(vs, value) {
     var args = arguments;
     var self = this;
@@ -150,6 +220,17 @@ export class Graph {
     });
     return this;
   }
+
+  /**
+   * Creates or updates the value for the node v in the graph. If label is supplied
+   * it is set as the value for the node. If label is not supplied and the node was
+   * created by this call then the default node label will be assigned.
+   * Complexity: O(1).
+   *
+   * @argument {string} v - node name.
+   * @argument {string} [value] - value to set for node.
+   * @returns {Graph} the graph, allowing this to be chained with other functions.
+   */
   setNode(v, value) {
     if (Object.prototype.hasOwnProperty.call(this._nodes, v)) {
       if (arguments.length > 1) {
@@ -172,12 +253,37 @@ export class Graph {
     ++this._nodeCount;
     return this;
   }
+
+  /**
+   * Gets the label of node with specified name.
+   * Complexity: O(|V|).
+   *
+   * @argument {string} v - name of the node.
+   * @returns label value of the node.
+   */
   node(v) {
     return this._nodes[v];
   }
+
+  /**
+   * Detects whether graph has a node with specified name or not.
+   *
+   * @argument {string} v - name of the node.
+   * @returns {boolean} true if graph has node with specified name, false - otherwise.
+   */
   hasNode(v) {
     return Object.prototype.hasOwnProperty.call(this._nodes, v);
   }
+
+  /**
+   * Remove the node with the name from the graph or do nothing if the node is not in
+   * the graph. If the node was removed this function also removes any incident
+   * edges.
+   * Complexity: O(1).
+   *
+   * @argument {string} v - name of the node.
+   * @returns {Graph} the graph, allowing this to be chained with other functions.
+   */
   removeNode(v) {
     if (Object.prototype.hasOwnProperty.call(this._nodes, v)) {
       var removeEdge = (e) => this.removeEdge(this._edgeObjs[e]);
@@ -200,6 +306,17 @@ export class Graph {
     }
     return this;
   }
+
+  /**
+   * Sets node p as a parent for node v if it is defined, or removes the
+   * parent for v if p is undefined. Method throws an exception in case of
+   * invoking it in context of noncompound graph.
+   * Average-case complexity: O(1).
+   *
+   * @argument {string} v - node to be child for p.
+   * @argument {string} [parent] - node to be parent for v.
+   * @returns {Graph} the graph, allowing this to be chained with other functions.
+   */
   setParent(v, parent) {
     if (!this._isCompound) {
       throw new Error('Cannot set parent in a non-compound graph');
@@ -228,6 +345,14 @@ export class Graph {
   _removeFromParentsChildList(v) {
     delete this._children[this._parent[v]][v];
   }
+
+  /**
+   * Gets parent node for node v.
+   * Complexity: O(1).
+   *
+   * @argument {string} v - node to get parent of.
+   * @returns {string | undefined} parent node name or void if v has no parent.
+   */
   parent(v) {
     if (this._isCompound) {
       var parent = this._parent[v];
@@ -236,6 +361,14 @@ export class Graph {
       }
     }
   }
+
+  /**
+   * Gets list of direct children of node v.
+   * Complexity: O(1).
+   *
+   * @argument {string} [v] - node to get children of.
+   * @returns {string[]} children nodes names list.
+   */
   children(v) {
     if (_.isUndefined(v)) {
       v = GRAPH_NODE;
@@ -252,18 +385,45 @@ export class Graph {
       return [];
     }
   }
+
+  /**
+   * Return all nodes that are predecessors of the specified node or undefined if node v is not in
+   * the graph. Behavior is undefined for undirected graphs - use neighbors instead.
+   * Complexity: O(|V|).
+   *
+   * @argument {string} v - node identifier.
+   * @returns {undefined | string[]} node identifiers list or undefined if v is not in the graph.
+   */
   predecessors(v) {
     var predsV = this._preds[v];
     if (predsV) {
       return _.keys(predsV);
     }
   }
+
+  /**
+   * Return all nodes that are successors of the specified node or undefined if node v is not in
+   * the graph. Behavior is undefined for undirected graphs - use neighbors instead.
+   * Complexity: O(|V|).
+   *
+   * @argument {string} v - node identifier.
+   * @returns {undefined | string[]} node identifiers list or undefined if v is not in the graph.
+   */
   successors(v) {
     var sucsV = this._sucs[v];
     if (sucsV) {
       return _.keys(sucsV);
     }
   }
+
+  /**
+   * Return all nodes that are predecessors or successors of the specified node or undefined if
+   * node v is not in the graph.
+   * Complexity: O(|V|).
+   *
+   * @argument {string} v - node identifier.
+   * @returns {undefined | string[]} node identifiers list or undefined if v is not in the graph.
+   */
   neighbors(v) {
     var preds = this.predecessors(v);
     if (preds) {
@@ -279,6 +439,16 @@ export class Graph {
     }
     return neighbors.length === 0;
   }
+
+  /**
+   * Creates new graph with nodes filtered via filter. Edges incident to rejected node
+   * are also removed. In case of compound graph, if parent is rejected by filter,
+   * than all its children are rejected too.
+   * Average-case complexity: O(|E|+|V|).
+   *
+   * @argument {Function} filter - filtration function detecting whether the node should stay or not.
+   * @returns {string} new graph made from current and nodes filtered.
+   */
   filterNodes(filter) {
     // @ts-expect-error
     var copy = new this.constructor({
@@ -302,6 +472,7 @@ export class Graph {
       }
     });
 
+    /** @type {Object<string, string | undefined>} */
     var parents = {};
     function findParent(v) {
       var parent = self.parent(v);
@@ -324,6 +495,15 @@ export class Graph {
     return copy;
   }
   /* === Edge functions ========== */
+
+  /**
+   * Sets the default edge label. This label will be assigned as default label
+   * in case if no label was specified while setting an edge.
+   * Complexity: O(1).
+   *
+   * @argument newDefault - default edge label. String or function.
+   * @returns {Graph} the graph, allowing this to be chained with other functions.
+   */
   setDefaultEdgeLabel(newDefault) {
     if (!_.isFunction(newDefault)) {
       newDefault = _.constant(newDefault);
@@ -334,10 +514,29 @@ export class Graph {
   edgeCount() {
     return this._edgeCount;
   }
+
+  /**
+   * Gets edges of the graph. In case of compound graph subgraphs are not considered.
+   * Complexity: O(|E|).
+   *
+   * @return {Edge[]} graph edges list.
+   */
   edges() {
     return _.values(this._edgeObjs);
   }
+
+  /**
+   * Establish an edges path over the nodes in nodes list. If some edge is already
+   * exists, it will update its label, otherwise it will create an edge between pair
+   * of nodes with label provided or default label if no label provided.
+   * Complexity: O(|nodes|).
+   *
+   * @argument {string[]} vs - list of nodes to be connected in series.
+   * @argument [value] - value to set for each edge between pairs of nodes.
+   * @returns {Graph} the graph, allowing this to be chained with other functions.
+   */
   setPath(vs, value) {
+    /** @type Graph */
     var self = this;
     var args = arguments;
     _.reduce(vs, function (v, w) {
@@ -353,6 +552,18 @@ export class Graph {
   /*
    * setEdge(v, w, [value, [name]])
    * setEdge({ v, w, [name] }, [value])
+   *
+   * Creates or updates the label for the edge (v, w) with the optionally supplied
+   * name. If label is supplied it is set as the value for the edge. If label is not
+   * supplied and the edge was created by this call then the default edge label will
+   * be assigned. The name parameter is only useful with multigraphs.
+   * Complexity: O(1).
+   *
+   * @argument v - edge source node.
+   * @argument w - edge sink node.
+   * @argument label - value to associate with the edge.
+   * @argument name - unique name of the edge in order to identify it in multigraph.
+   * @returns the graph, allowing this to be chained with other functions.
    */
   setEdge() {
     var v, w, name, value;
@@ -418,6 +629,16 @@ export class Graph {
     this._edgeCount++;
     return this;
   }
+
+  /**
+   * Gets the label for the specified edge.
+   * Complexity: O(1).
+   *
+   * @argument {Edge} v - edge source node.
+   * @argument {string} [w] - edge sink node.
+   * @argument {string} [name] - name of the edge (actual for multigraph).
+   * @returns value associated with specified edge.
+   */
   edge(v, w, name) {
     var e =
       arguments.length === 1
@@ -425,6 +646,16 @@ export class Graph {
         : edgeArgsToId(this._isDirected, v, w, name);
     return this._edgeLabels[e];
   }
+
+  /**
+   * Detects whether the graph contains specified edge or not. No subgraphs are considered.
+   * Complexity: O(1).
+   *
+   * @argument {Edge | string} v - edge source node.
+   * @argument {string} [w] - edge sink node.
+   * @argument {string} [name] - name of the edge (actual for multigraph).
+   * @returns whether the graph contains the specified edge or not.
+   */
   hasEdge(v, w, name) {
     var e =
       arguments.length === 1
@@ -432,6 +663,16 @@ export class Graph {
         : edgeArgsToId(this._isDirected, v, w, name);
     return Object.prototype.hasOwnProperty.call(this._edgeLabels, e);
   }
+
+  /**
+   * Removes the specified edge from the graph. No subgraphs are considered.
+   * Complexity: O(1).
+   *
+   * @argument {Edge | string} v - edge source node.
+   * @argument {string} [w] - edge sink node.
+   * @argument {string} [name] - name of the edge (actual for multigraph).
+   * @returns the graph, allowing this to be chained with other functions.
+   */
   removeEdge(v, w, name) {
     var e =
       arguments.length === 1
@@ -451,6 +692,16 @@ export class Graph {
     }
     return this;
   }
+
+  /**
+   * Return all edges that point to the node v. Optionally filters those edges down to just those
+   * coming from node u. Behavior is undefined for undirected graphs - use nodeEdges instead.
+   * Complexity: O(|E|).
+   *
+   * @argument {string} v - edge sink node.
+   * @argument {string} [u] - edge source node.
+   * @returns {Edge[] | undefined} edges descriptors list if v is in the graph, or undefined otherwise.
+   */
   inEdges(v, u) {
     var inV = this._in[v];
     if (inV) {
@@ -463,6 +714,16 @@ export class Graph {
       });
     }
   }
+
+  /**
+   * Return all edges that are pointed at by node v. Optionally filters those edges down to just
+   * those point to w. Behavior is undefined for undirected graphs - use nodeEdges instead.
+   * Complexity: O(|E|).
+   *
+   * @argument {string} v - edge sink node.
+   * @argument {string} [w] - edge source node.
+   * @returns {Edge[] | undefined} edges descriptors list if v is in the graph, or undefined otherwise.
+   */
   outEdges(v, w) {
     var outV = this._out[v];
     if (outV) {
@@ -475,6 +736,16 @@ export class Graph {
       });
     }
   }
+
+  /**
+   * Returns all edges to or from node v regardless of direction. Optionally filters those edges
+   * down to just those between nodes v and w regardless of direction.
+   * Complexity: O(|E|).
+   *
+   * @argument {string} v - edge adjacent node.
+   * @argument {string} [w] - edge adjacent node.
+   * @returns {undefined | Edge[]} edges descriptors list if v is in the graph, or undefined otherwise.
+   */
   nodeEdges(v, w) {
     var inEdges = this.inEdges(v, w);
     if (inEdges) {
@@ -505,7 +776,7 @@ function decrementOrRemoveEntry(map, k) {
 
 /**
  * @param {boolean} isDirected
- * @param {string} v_
+ * @param {string | Edge} v_
  * @param {string} w_
  * @param {string} name
  * @returns {string}
