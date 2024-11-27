@@ -48,7 +48,8 @@ function longestPath(g) {
       rank = 0;
     }
 
-    return (label.rank = rank);
+    if (label) label.rank = rank;
+    return rank;
   }
 
   _.forEach(g.sources(), dfs);
