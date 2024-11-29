@@ -57,8 +57,8 @@ function findType1Conflicts(g, layering) {
       if (w || v === lastNode) {
         _.forEach(layer.slice(scanPos, i + 1), function (scanNode) {
           _.forEach(g.predecessors(scanNode), function (u) {
-            var uLabel = g.node(u),
-              uPos = uLabel.order;
+            const uLabel = g.node(u) || {};
+            const uPos = uLabel.order || 0;
             if ((uPos < k0 || k1 < uPos) && !(uLabel.dummy && g.node(scanNode).dummy)) {
               addConflict(conflicts, u, scanNode);
             }

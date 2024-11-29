@@ -92,6 +92,7 @@ function predecessorWeights(g) {
  * ({x, y, width, height}) if it were pointing at the rectangle's center.
  */
 function intersectRect(rect, point) {
+  if (!rect || !point) return { x: 0, y: 0 };
   var x = rect.x;
   var y = rect.y;
 
@@ -136,6 +137,7 @@ function buildLayerMatrix(g) {
   });
   _.forEach(g.nodes(), function (v) {
     var node = g.node(v);
+    if (!node) node = {};
     var rank = node.rank;
     if (!_.isUndefined(rank)) {
       layering[rank][node.order] = v;
@@ -207,6 +209,7 @@ function addBorderNode(g, prefix, rank, order) {
 function maxRank(g) {
   return _.max(
     _.map(g.nodes(), function (v) {
+      if (!g.node(v)) return 0;
       var rank = g.node(v).rank;
       if (!_.isUndefined(rank)) {
         return rank;

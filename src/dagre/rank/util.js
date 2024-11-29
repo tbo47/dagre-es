@@ -47,7 +47,7 @@ function longestPath(g) {
       // return value of _.map([null])
       rank = 0;
     }
-
+    if (!label) label = {};
     return (label.rank = rank);
   }
 
@@ -59,5 +59,6 @@ function longestPath(g) {
  * difference between the length of the edge and its minimum length.
  */
 function slack(g, e) {
-  return g.node(e.w).rank - g.node(e.v).rank - g.edge(e).minlen;
+  const evRank = g.node(e.v) ? g.node(e.v).rank || 0 : 0;
+  return g.node(e.w).rank - evRank - g.edge(e).minlen;
 }

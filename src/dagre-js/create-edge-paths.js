@@ -100,6 +100,7 @@ function createLine(edge, points) {
 }
 
 function getCoords(elem) {
+  if (!elem) return { x: 0, y: 0 };
   var bbox = elem.getBBox();
   var matrix = elem.ownerSVGElement
     .getScreenCTM()

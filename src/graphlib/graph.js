@@ -230,6 +230,7 @@ export class Graph {
     } else if (this.hasNode(v)) {
       return [];
     }
+    return [];
   }
   predecessors(v) {
     var predsV = this._preds[v];

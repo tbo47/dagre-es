@@ -215,8 +215,10 @@ function updateRanks(t, g) {
       edge = g.edge(parent, v);
       flipped = true;
     }
-
-    g.node(v).rank = g.node(parent).rank + (flipped ? edge.minlen : -edge.minlen);
+    if (g.node(v)) {
+      const parentRank = g.node(parent) ? g.node(parent).rank : 0;
+      g.node(v).rank = parentRank + (flipped ? edge.minlen : -edge.minlen);
+    }
   });
 }
 
