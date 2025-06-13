@@ -1,4 +1,5 @@
 <p align="center">
+  <a href="https://tbo47.github.io/" ><img src="https://img.shields.io/badge/created_by-tbo47-blue.svg" alt="Created by tbo47"></a>
   <a href="https://www.npmjs.com/dagre-d3-es"><img src="https://img.shields.io/npm/v/dagre-d3-es.svg?logo=npm&logoColor=fff&label=NPM+package&color=limegreen" alt="dagre-d3-es on npm" /></a>&nbsp;
   <a href="https://www.npmjs.com/dagre-d3-es"><img src="https://img.shields.io/npm/dw/dagre-d3-es.svg?logo=npm&logoColor=fff&label=NPM+package&color=limegreen" alt="dagre-d3-es on npm" /></a>
 </p>
