@@ -30,6 +30,6 @@ function addHtmlLabel(root, node) {
 
   var client = div.node();
   fo.attr('width', client.offsetWidth).attr('height', client.offsetHeight);
-  
+
   return fo;
 }
