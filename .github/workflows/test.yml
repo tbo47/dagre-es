@@ -27,7 +27,7 @@ jobs:
         run: npm test
       - name: Build the npm package to publish
         run: npm pack
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact
         with:
           name: package
           path: '*.tgz'
