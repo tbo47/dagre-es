@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "bundle": "chmod +x bundle.sh ; ./bundle.sh",
+    "bundle": "chmod +x bundle.sh ; ./bundle.sh && cp dist/dagre-d3*.js ../tbo47.github.io",
     "generate_types": "find src -name '*.d.ts' -type f -delete ; tsc --build",
     "prepack": "npm run generate_types",
     "lint": "eslint .",
