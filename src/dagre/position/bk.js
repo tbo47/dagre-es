@@ -129,7 +129,25 @@ function findOtherInnerSegmentNode(g, v) {
   }
 }
 
+/**
+ * Validates that a key is safe to use as an object property.
+ * Prevents prototype pollution by rejecting proto.
+ * @param {*} key - The key to validate
+ * @returns {boolean} True if the key is safe to use
+ */
+function isSafeKey(key) {
+  if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+    return false;
+  }
+  const keyType = typeof key;
+  return keyType === 'string' || keyType === 'number';
+}
+
 function addConflict(conflicts, v, w) {
+  if (!isSafeKey(v) || !isSafeKey(w)) {
+    return;
+  }
+
   if (v > w) {
     var tmp = v;
     v = w;
