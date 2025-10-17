@@ -38,6 +38,7 @@ export {
  * single node in the layers being scanned.
  */
 function findType1Conflicts(g, layering) {
+  /** @type {{[nodeId: string | number]: {[nodeId: string | number]: true}}} */
   var conflicts = {};
 
   function visitLayer(prevLayer, layer) {
@@ -78,6 +79,7 @@ function findType1Conflicts(g, layering) {
 }
 
 function findType2Conflicts(g, layering) {
+  /** @type {{[nodeId: string | number]: {[nodeId: string | number]: true}}} */
   var conflicts = {};
 
   function scan(south, southPos, southEnd, prevNorthBorder, nextNorthBorder) {
@@ -130,35 +132,33 @@ function findOtherInnerSegmentNode(g, v) {
 }
 
 /**
- * Validates that a key is safe to use as an object property.
- * Prevents prototype pollution by rejecting proto.
- * @param {*} key - The key to validate
- * @returns {boolean} True if the key is safe to use
+ * Sets `conflicts[v][w] = true`, creating objects if needed.
+ *
+ * @param {{[nodeId: string | number]: {[nodeId: string | number]: true}}} conflicts - Object to set.
+ * @param {string | number} v - First Node ID
+ * @param {string | number} w - Second Node ID
  */
-function isSafeKey(key) {
-  if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
-    return false;
-  }
-  const keyType = typeof key;
-  return keyType === 'string' || keyType === 'number';
-}
-
 function addConflict(conflicts, v, w) {
-  if (!isSafeKey(v) || !isSafeKey(w)) {
-    return;
-  }
-
   if (v > w) {
     var tmp = v;
     v = w;
     w = tmp;
   }
 
-  var conflictsV = conflicts[v];
-  if (!conflictsV) {
-    conflicts[v] = conflictsV = {};
+  if (!Object.prototype.hasOwnProperty.call(conflicts, v)) {
+    // can't use conflicts[v] = {} since it's unsafe if v = `__proto__`
+    Object.defineProperty(conflicts, v, {
+      enumerable: true,
+      configurable: true,
+      value: {},
+    });
   }
-  conflictsV[w] = true;
+  var conflictsV = conflicts[v];
+  Object.defineProperty(conflictsV, w, {
+    enumerable: true,
+    configurable: true,
+    value: true,
+  });
 }
 
 function hasConflict(conflicts, v, w) {
