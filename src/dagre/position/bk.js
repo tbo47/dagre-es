@@ -151,6 +151,7 @@ function addConflict(conflicts, v, w) {
       enumerable: true,
       configurable: true,
       value: {},
+      writable: true,
     });
   }
   var conflictsV = conflicts[v];
@@ -158,6 +159,7 @@ function addConflict(conflicts, v, w) {
     enumerable: true,
     configurable: true,
     value: true,
+    writable: true,
   });
 }
 
