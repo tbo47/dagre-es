@@ -29,5 +29,5 @@ jobs:
         run: npm pack
       - uses: actions/upload-artifact@v4
         with:
-          name: package
+          name: package-${{ matrix.node-version }}
           path: '*.tgz'
