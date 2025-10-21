@@ -38,6 +38,7 @@ export {
  * single node in the layers being scanned.
  */
 function findType1Conflicts(g, layering) {
+  /** @type {{[nodeId: string | number]: {[nodeId: string | number]: true}}} */
   var conflicts = {};
 
   function visitLayer(prevLayer, layer) {
@@ -78,6 +79,7 @@ function findType1Conflicts(g, layering) {
 }
 
 function findType2Conflicts(g, layering) {
+  /** @type {{[nodeId: string | number]: {[nodeId: string | number]: true}}} */
   var conflicts = {};
 
   function scan(south, southPos, southEnd, prevNorthBorder, nextNorthBorder) {
@@ -129,6 +131,13 @@ function findOtherInnerSegmentNode(g, v) {
   }
 }
 
+/**
+ * Sets `conflicts[v][w] = true`, creating objects if needed.
+ *
+ * @param {{[nodeId: string | number]: {[nodeId: string | number]: true}}} conflicts - Object to set.
+ * @param {string | number} v - First Node ID
+ * @param {string | number} w - Second Node ID
+ */
 function addConflict(conflicts, v, w) {
   if (v > w) {
     var tmp = v;
@@ -136,11 +145,22 @@ function addConflict(conflicts, v, w) {
     w = tmp;
   }
 
-  var conflictsV = conflicts[v];
-  if (!conflictsV) {
-    conflicts[v] = conflictsV = {};
+  if (!Object.prototype.hasOwnProperty.call(conflicts, v)) {
+    // can't use conflicts[v] = {} since it's unsafe if v = `__proto__`
+    Object.defineProperty(conflicts, v, {
+      enumerable: true,
+      configurable: true,
+      value: {},
+      writable: true,
+    });
   }
-  conflictsV[w] = true;
+  var conflictsV = conflicts[v];
+  Object.defineProperty(conflictsV, w, {
+    enumerable: true,
+    configurable: true,
+    value: true,
+    writable: true,
+  });
 }
 
 function hasConflict(conflicts, v, w) {

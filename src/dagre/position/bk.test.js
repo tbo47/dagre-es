@@ -163,6 +163,13 @@ describe('position/bk', function () {
       expect(hasConflict(conflicts, 'a', 'b')).to.be.true;
       expect(hasConflict(conflicts, 'a', 'c')).to.be.true;
     });
+
+    it('works for nodes named __proto__', function () {
+      var conflicts = {};
+      addConflict(conflicts, '__proto__', 'myAdminKey');
+      expect(hasConflict(conflicts, '__proto__', 'myAdminKey')).to.be.true;
+      expect({}).not.to.have.property('myAdminKey');
+    });
   });
 
   describe('verticalAlignment', function () {
