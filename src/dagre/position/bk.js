@@ -146,11 +146,12 @@ function addConflict(conflicts, v, w) {
   }
 
   if (!Object.prototype.hasOwnProperty.call(conflicts, v)) {
-    // can't use conflicts[v] = {} since it's unsafe if v = `__proto__`
+    // Use Object.create(null) to create an object without prototype chain
+    // This prevents prototype pollution even if v = `__proto__` or other dangerous keys
     Object.defineProperty(conflicts, v, {
       enumerable: true,
       configurable: true,
-      value: {},
+      value: Object.create(null),
       writable: true,
     });
   }
