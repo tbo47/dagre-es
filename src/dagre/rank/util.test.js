@@ -6,6 +6,7 @@ import { longestPath } from './util.js';
 
 describe('rank/util', function () {
   describe('longestPath', function () {
+    /** @type {Graph} */
     var g;
 
     beforeEach(function () {

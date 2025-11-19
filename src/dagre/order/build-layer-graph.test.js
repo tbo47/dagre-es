@@ -5,6 +5,7 @@ import { Graph } from '../../graphlib/graph.js';
 import { buildLayerGraph } from './build-layer-graph.js';
 
 describe('order/buildLayerGraph', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

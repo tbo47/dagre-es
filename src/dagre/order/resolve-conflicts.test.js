@@ -5,6 +5,7 @@ import { Graph } from '../../graphlib/graph.js';
 import { resolveConflicts } from './resolve-conflicts.js';
 
 describe('order/resolveConflicts', function () {
+  /** @type {Graph} */
   var cg;
 
   beforeEach(function () {

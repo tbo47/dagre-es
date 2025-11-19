@@ -7,6 +7,7 @@ import { crossCount } from './cross-count.js';
 import { buildLayerMatrix } from '../util.js';
 
 describe('order', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

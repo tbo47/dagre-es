@@ -17,6 +17,7 @@ import {
 import { Graph } from '../../graphlib/graph.js';
 
 describe('position/bk', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

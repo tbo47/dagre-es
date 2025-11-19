@@ -12,7 +12,14 @@ var exchangeEdges = networkSimplex.exchangeEdges;
 import { normalizeRanks } from '../util.js';
 
 describe('network simplex', function () {
-  var g, t, gansnerGraph, gansnerTree;
+  /** @type {Graph} */
+  var g;
+  /** @type {Graph} */
+  var t;
+  /** @type {Graph} */
+  var gansnerGraph;
+  /** @type {Graph} */
+  var gansnerTree;
 
   beforeEach(function () {
     g = new Graph({ multigraph: true })

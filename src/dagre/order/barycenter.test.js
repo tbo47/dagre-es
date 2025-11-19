@@ -4,6 +4,7 @@ import { barycenter } from './barycenter.js';
 import { Graph } from '../../graphlib/graph.js';
 
 describe('order/barycenter', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

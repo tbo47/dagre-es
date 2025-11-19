@@ -5,6 +5,7 @@ import * as util from './util.js';
 
 describe('util', function () {
   describe('simplify', function () {
+    /** @type {Graph} */
     var g;
 
     beforeEach(function () {

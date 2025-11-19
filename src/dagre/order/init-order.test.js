@@ -5,6 +5,7 @@ import { Graph } from '../../graphlib/graph.js';
 import { initOrder } from './init-order.js';
 
 describe('order/initOrder', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

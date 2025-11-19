@@ -5,6 +5,7 @@ import { layout } from './layout.js';
 import { Graph } from '../graphlib/index.js';
 
 describe('layout', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

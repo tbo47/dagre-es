@@ -3,6 +3,7 @@ import { addBorderSegments } from './add-border-segments.js';
 import { Graph } from '../graphlib/index.js';
 
 describe('addBorderSegments', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

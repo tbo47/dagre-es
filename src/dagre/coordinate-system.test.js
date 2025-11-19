@@ -3,6 +3,7 @@ import * as coordinateSystem from './coordinate-system.js';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('coordinateSystem', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

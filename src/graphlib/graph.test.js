@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { Graph } from './graph.js';
 
 describe('Graph', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

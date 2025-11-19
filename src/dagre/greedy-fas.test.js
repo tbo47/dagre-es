@@ -6,6 +6,7 @@ import { findCycles } from '../graphlib/alg/find-cycles.js';
 import { greedyFAS } from './greedy-fas.js';
 
 describe('greedyFAS', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

@@ -4,6 +4,7 @@ import { position } from './index.js';
 import { Graph } from '../../graphlib/index.js';
 
 describe('position', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

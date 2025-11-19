@@ -7,6 +7,7 @@ import { findCycles } from '../graphlib/alg/find-cycles.js';
 
 describe('acyclic', function () {
   var ACYCLICERS = ['greedy', 'dfs', 'unknown-should-still-work'];
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

@@ -5,6 +5,7 @@ import { components } from '../graphlib/alg/components.js';
 import * as nestingGraph from './nesting-graph.js';
 
 describe('rank/nestingGraph', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {
