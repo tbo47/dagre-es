@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Graph } from '../graphlib/index.js';
 import { components } from '../graphlib/alg/components.js';

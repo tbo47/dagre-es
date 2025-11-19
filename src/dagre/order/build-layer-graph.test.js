@@ -1,5 +1,5 @@
 import * as _ from 'lodash-es';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Graph } from '../../graphlib/graph.js';
 import { buildLayerGraph } from './build-layer-graph.js';

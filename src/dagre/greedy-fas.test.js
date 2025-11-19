@@ -1,5 +1,5 @@
 import * as _ from 'lodash-es';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Graph } from '../graphlib/index.js';
 import { findCycles } from '../graphlib/alg/find-cycles.js';

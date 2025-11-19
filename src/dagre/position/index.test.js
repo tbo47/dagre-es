@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { position } from './index.js';
 import { Graph } from '../../graphlib/index.js';
