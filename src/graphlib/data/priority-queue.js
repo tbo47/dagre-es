@@ -9,17 +9,27 @@ export { PriorityQueue };
  */
 class PriorityQueue {
   constructor() {
+    /**
+     * @private
+     * @type {Array<{key: string, priority: number}>}
+     */
     this._arr = [];
+    /**
+     * @private
+     * @type {Record<string, number>}
+     */
     this._keyIndices = {};
   }
   /**
-   * Returns the number of elements in the queue. Takes `O(1)` time.
+   * @returns {number} the number of elements in the queue.
+   * @remarks Takes `O(1)` time.
    */
   size() {
     return this._arr.length;
   }
   /**
-   * Returns the keys that are in the queue. Takes `O(n)` time.
+   * @returns {string[]} the keys that are in the queue.
+   * @remarks Takes `O(n)` time.
    */
   keys() {
     return this._arr.map(function (x) {
@@ -27,16 +37,17 @@ class PriorityQueue {
     });
   }
   /**
-   * Returns `true` if **key** is in the queue and `false` if not.
+   * @param {Object} key - The key to check for presence in the queue.
+   * @returns {boolean} `true` if **key** is in the queue and `false` if not.
    */
   has(key) {
     return Object.prototype.hasOwnProperty.call(this._keyIndices, key);
   }
   /**
-   * Returns the priority for **key**. If **key** is not present in the queue
-   * then this function returns `undefined`. Takes `O(1)` time.
-   *
-   * @param {Object} key
+   * @param {Object} key - The key to get the priority for.
+   * @returns {number | undefined} the priority for **key**.
+   * If **key** is not present in the queue then this function returns `undefined`.
+   * @remarks Takes `O(1)` time.
    */
   priority(key) {
     var index = this._keyIndices[key];
@@ -45,8 +56,9 @@ class PriorityQueue {
     }
   }
   /**
-   * Returns the key for the minimum element in this queue. If the queue is
-   * empty this function throws an Error. Takes `O(1)` time.
+   * @returns {string} the key for the minimum element in this queue.
+   * @throws {Error} if the queue is empty.
+   * @remarks Takes `O(1)` time.
    */
   min() {
     if (this.size() === 0) {
@@ -55,12 +67,14 @@ class PriorityQueue {
     return this._arr[0].key;
   }
   /**
-   * Inserts a new key into the priority queue. If the key already exists in
-   * the queue this function returns `false`; otherwise it will return `true`.
-   * Takes `O(n)` time.
+   * Inserts a new key into the priority queue.
    *
-   * @param {Object} key the key to add
+   * @remarks Takes `O(n)` time.
+   *
+   * @param {Object} key the key to add. This will be coerced to a `string`.
    * @param {Number} priority the initial priority for the key
+   * @returns {boolean} `true` if the key was added and `false` if it was already
+   * present in the queue.
    */
   add(key, priority) {
     var keyIndices = this._keyIndices;
@@ -76,7 +90,9 @@ class PriorityQueue {
     return false;
   }
   /**
-   * Removes and returns the smallest key in the queue. Takes `O(log n)` time.
+   * Removes and returns the smallest key in the queue.
+   * @returns {string} the key with the smallest priority
+   * @remarks Takes `O(log n)` time.
    */
   removeMin() {
     this._swap(0, this._arr.length - 1);
@@ -86,11 +102,11 @@ class PriorityQueue {
     return min.key;
   }
   /**
-   * Decreases the priority for **key** to **priority**. If the new priority is
-   * greater than the previous priority, this function will throw an Error.
+   * Decreases the priority for **key** to **priority**.
    *
    * @param {Object} key the key for which to raise priority
    * @param {Number} priority the new priority for the key
+   * @throws {Error} if the new priority is  greater than the previous priority.
    */
   decrease(key, priority) {
     var index = this._keyIndices[key];
@@ -108,6 +124,10 @@ class PriorityQueue {
     this._arr[index].priority = priority;
     this._decrease(index);
   }
+  /**
+   * @param {number} i - Lower index.
+   * @private
+   */
   _heapify(i) {
     var arr = this._arr;
     var l = 2 * i;
@@ -124,6 +144,10 @@ class PriorityQueue {
       }
     }
   }
+  /**
+   * @param {number} index - Index to decrease.
+   * @private
+   */
   _decrease(index) {
     var arr = this._arr;
     var priority = arr[index].priority;
@@ -137,6 +161,11 @@ class PriorityQueue {
       index = parent;
     }
   }
+  /**
+   * @param {number} i - First index
+   * @param {number} j - Second index
+   * @private
+   */
   _swap(i, j) {
     var arr = this._arr;
     var keyIndices = this._keyIndices;
