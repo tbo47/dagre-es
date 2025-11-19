@@ -23,6 +23,9 @@ jobs:
         run: npm run lint
       - name: Check for prettier errors (run `npm run format` to fix)
         run: npx prettier --check .
+      - name: Check typescript types
+        # this is not the same as building, since this also checks unit tests
+        run: npx tsc
       - name: Run unit tests
         run: npm test
       - name: Build the npm package to publish
