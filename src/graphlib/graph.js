@@ -4,6 +4,31 @@ var DEFAULT_EDGE_NAME = '\x00';
 var GRAPH_NODE = '\x00';
 var EDGE_KEY_DELIM = '\x01';
 
+/**
+ * @typedef {string} NodeID ID of a node.
+ */
+
+/**
+ * @typedef {`${string}${typeof EDGE_KEY_DELIM}${string}${typeof EDGE_KEY_DELIM}${string}`} EdgeID ID of an edge.
+ */
+
+/**
+ * @typedef {object} EdgeObj
+ * @property {NodeID} v Source node ID.
+ * @property {NodeID} w Target node ID.
+ * @property {string | number} [name] Name of the edge. Needed to uniquely identify
+ * multiple edges between the same pair of nodes in a multigraph.
+ */
+
+/**
+ * @template {unknown} T
+ * @typedef {T[] | Record<any, T>} Collection
+ * Lodash object that can be iterated over with `_.each`.
+ *
+ * Beware, objects with `.length` are treated as arrays, see
+ * https://lodash.com/docs/4.17.15#forEach
+ */
+
 // Implementation notes:
 //
 //  * Node id query functions should return string ids for the nodes
@@ -23,58 +48,138 @@ var EDGE_KEY_DELIM = '\x01';
 //    reference edges. This is because we need a performant way to look these
 //    edges up and, object properties, which have string keys, are the closest
 //    we're going to get to a performant hashtable in JavaScript.
+
+/**
+ * @template [GraphLabel=any] - Label of the graph.
+ * @template [NodeLabel=any] - Label of a node.
+ * Even though this is a "label", this could be any type that the user requires
+ * (and may need to be an object for some layout/ranking algorithms in dagre).
+ * @template [EdgeLabel=any] - Label of an edge.
+ * Even though this is a "label", this could be any type that the user requires,
+ * (and may need to be a object for ranking in dagre).
+ */
 export class Graph {
+  /**
+   * @param {object} [opts] - Graph options.
+   * @param {boolean | undefined} [opts.directed] - If `false`, creates an undirected graph.
+   * @param {boolean | undefined} [opts.multigraph] - If `true`, allows multiple, named-edges between nodes.
+   * @param {boolean | undefined} [opts.compound] - If `true`, allows nodes to be parents of other nodes.
+   */
   constructor(opts = {}) {
+    /**
+     * @type {boolean}
+     * @private
+     */
     this._isDirected = Object.prototype.hasOwnProperty.call(opts, 'directed')
       ? opts.directed
       : true;
+    /**
+     * @type {boolean}
+     * @private
+     */
     this._isMultigraph = Object.prototype.hasOwnProperty.call(opts, 'multigraph')
       ? opts.multigraph
       : false;
+    /**
+     * @type {boolean}
+     * @private
+     */
     this._isCompound = Object.prototype.hasOwnProperty.call(opts, 'compound')
       ? opts.compound
       : false;
 
-    // Label for the graph itself
+    /**
+     * @type {GraphLabel | undefined}
+     * Label for the graph itself
+     */
     this._label = undefined;
 
-    // Defaults to be set when creating a new node
+    /**
+     * Default label to be set when creating a new node.
+     *
+     * @private
+     * @type {(v: NodeID | number) => NodeLabel}
+     */
     this._defaultNodeLabelFn = _.constant(undefined);
 
-    // Defaults to be set when creating a new edge
+    /**
+     * Default label to be set when creating a new edge
+     *
+     * @private
+     * @type {(v: NodeID, w: NodeID, name: string | undefined) => EdgeLabel}
+     */
     this._defaultEdgeLabelFn = _.constant(undefined);
 
-    // v -> label
+    /**
+     * @type {Record<NodeID, NodeLabel>}
+     * @private
+     *
+     * v -> label
+     */
     this._nodes = {};
 
     if (this._isCompound) {
-      // v -> parent
+      /**
+       * @type {Record<NodeID, NodeID>}
+       * @private
+       * v -> parent
+       */
       this._parent = {};
 
-      // v -> children
+      /**
+       * @type {Record<NodeID, Record<NodeID, true>>}
+       * @private
+       * v -> children
+       */
       this._children = {};
       this._children[GRAPH_NODE] = {};
     }
 
-    // v -> edgeObj
+    /**
+     * @type {Record<NodeID, Record<EdgeID, EdgeObj>>}
+     * @private
+     * v -> edgeObj
+     */
     this._in = {};
 
-    // u -> v -> Number
+    /**
+     * @type {Record<NodeID, Record<NodeID, number>>}
+     * @private
+     * u -> v -> Number
+     */
     this._preds = {};
 
-    // v -> edgeObj
+    /**
+     * @type {Record<NodeID, Record<EdgeID, EdgeObj>>}
+     * @private
+     * v -> edgeObj
+     */
     this._out = {};
 
-    // v -> w -> Number
+    /**
+     * @type {Record<NodeID, Record<NodeID, number>>}
+     * @private
+     * v -> w -> Number
+     */
     this._sucs = {};
 
-    // e -> edgeObj
+    /**
+     * @type {Record<EdgeID, EdgeObj>}
+     * @private
+     * e -> edgeObj
+     */
     this._edgeObjs = {};
 
-    // e -> label
+    /**
+     * @type {Record<EdgeID, EdgeLabel>}
+     * @private
+     * e -> label
+     */
     this._edgeLabels = {};
   }
+
   /* === Graph functions ========= */
+
   isDirected() {
     return this._isDirected;
   }
@@ -84,14 +189,28 @@ export class Graph {
   isCompound() {
     return this._isCompound;
   }
+
+  /**
+   * @param {GraphLabel} label - Label for the graph.
+   * @returns {this}
+   */
   setGraph(label) {
     this._label = label;
     return this;
   }
+
+  /**
+   * @returns {GraphLabel | undefined} Label for the graph, or `undefined` if none has been set.
+   */
   graph() {
     return this._label;
   }
   /* === Node functions ========== */
+
+  /**
+   * @param {typeof this._defaultNodeLabelFn | NodeLabel} newDefault - Function that creates the default label for new nodes, or a constant label.
+   * @returns {this}
+   */
   setDefaultNodeLabel(newDefault) {
     if (!_.isFunction(newDefault)) {
       newDefault = _.constant(newDefault);
@@ -102,21 +221,39 @@ export class Graph {
   nodeCount() {
     return this._nodeCount;
   }
+
+  /**
+   * @returns {NodeID[]} Array of all node ids.
+   */
   nodes() {
     return _.keys(this._nodes);
   }
+  /**
+   * @returns {NodeID[]} Array of source node ids (nodes with no in-edges).
+   */
   sources() {
     var self = this;
     return _.filter(this.nodes(), function (v) {
       return _.isEmpty(self._in[v]);
     });
   }
+  /**
+   * @returns {NodeID[]} Array of sink node ids (nodes with no out-edges).
+   */
   sinks() {
     var self = this;
     return _.filter(this.nodes(), function (v) {
       return _.isEmpty(self._out[v]);
     });
   }
+
+  /**
+   * Set/create multiple nodes.
+   *
+   * @param {Collection<NodeID | number>} vs - List of node IDs to create/set.
+   * @param {NodeLabel} [value] - If set, update all nodes with this value.
+   * @returns {this}
+   */
   setNodes(vs, value) {
     var args = arguments;
     var self = this;
@@ -129,6 +266,13 @@ export class Graph {
     });
     return this;
   }
+
+  /**
+   * @param {NodeID | number} v - ID of the node to create/set.
+   * @param {NodeLabel} [value] - If not set, leave the value as-is if the node is already created.
+   * Otherwise, use the default value set by {@link setDefaultNodeLabel}.
+   * @returns {this}
+   */
   setNode(v, value) {
     if (Object.prototype.hasOwnProperty.call(this._nodes, v)) {
       if (arguments.length > 1) {
@@ -137,7 +281,6 @@ export class Graph {
       return this;
     }
 
-    // @ts-expect-error
     this._nodes[v] = arguments.length > 1 ? value : this._defaultNodeLabelFn(v);
     if (this._isCompound) {
       this._parent[v] = GRAPH_NODE;
@@ -151,12 +294,29 @@ export class Graph {
     ++this._nodeCount;
     return this;
   }
+
+  /**
+   * Gets the label for the given node ID, or `undefined` if it does not exist.
+   *
+   * @param {NodeID | number} v - Node ID.
+   * @returns {NodeLabel | undefined}
+   */
   node(v) {
     return this._nodes[v];
   }
+
+  /**
+   * @param {NodeID | number} v - Node ID.
+   * @returns {boolean} Returns `true` if the given node ID exists, else `false`.
+   */
   hasNode(v) {
     return Object.prototype.hasOwnProperty.call(this._nodes, v);
   }
+
+  /**
+   * @param {NodeID | number} v - Node ID to remove.
+   * @returns {this}
+   */
   removeNode(v) {
     if (Object.prototype.hasOwnProperty.call(this._nodes, v)) {
       var removeEdge = (e) => this.removeEdge(this._edgeObjs[e]);
@@ -179,6 +339,16 @@ export class Graph {
     }
     return this;
   }
+
+  /**
+   * Set or remove the parent of a node.
+   *
+   * @param {NodeID | number} v - Node ID to set the parent for.
+   * @param {NodeID | number} [parent] - Parent node ID. If not specified, removes the parent.
+   * @returns {this}
+   * @throws if the graph is not compound.
+   * @throws if setting the parent would create a cycle.
+   */
   setParent(v, parent) {
     if (!this._isCompound) {
       throw new Error('Cannot set parent in a non-compound graph');
@@ -200,13 +370,27 @@ export class Graph {
 
     this.setNode(v);
     this._removeFromParentsChildList(v);
+    // @ts-expect-error -- We coerced parent to a string above
     this._parent[v] = parent;
     this._children[parent][v] = true;
     return this;
   }
+
+  /**
+   * @private
+   * @param {NodeID | number} v - Node ID.
+   */
   _removeFromParentsChildList(v) {
     delete this._children[this._parent[v]][v];
   }
+
+  /**
+   * Gets the parent of the specified node.
+   *
+   * @param {NodeID | number} v - Node ID.
+   * @returns {NodeID | undefined} The parent node ID, or `undefined` if there is no parent
+   * (i.e. node does not exist, it's a root node, or the graph is not compound).
+   */
   parent(v) {
     if (this._isCompound) {
       var parent = this._parent[v];
@@ -215,6 +399,11 @@ export class Graph {
       }
     }
   }
+
+  /**
+   * @param {NodeID | number} [v] - Node ID. If not specified, gets the children of the root.
+   * @returns {NodeID[] | undefined} Array of child node IDs, or `undefined` if the node does not exist.
+   */
   children(v) {
     if (_.isUndefined(v)) {
       v = GRAPH_NODE;
@@ -231,24 +420,44 @@ export class Graph {
       return [];
     }
   }
+
+  /**
+   * @param {NodeID | number} v - Node ID.
+   * @returns {NodeID[] | undefined} Array of predecessor (nodes that have an edge to this node) node IDs, or `undefined` if the node does not exist.
+   */
   predecessors(v) {
     var predsV = this._preds[v];
     if (predsV) {
       return _.keys(predsV);
     }
   }
+
+  /**
+   * @param {NodeID | number} v - Node ID.
+   * @returns {NodeID[] | undefined} Array of successor (nodes that this node has an edge to) node IDs, or `undefined` if the node does not exist.
+   */
   successors(v) {
     var sucsV = this._sucs[v];
     if (sucsV) {
       return _.keys(sucsV);
     }
   }
+
+  /**
+   * @param {NodeID | number} v - Node ID.
+   * @returns {NodeID[] | undefined} Array of neighbor (nodes that share one of the same predecessors) node IDs, or `undefined` if the node does not exist.
+   */
   neighbors(v) {
     var preds = this.predecessors(v);
     if (preds) {
       return _.union(preds, this.successors(v));
     }
   }
+
+  /**
+   * @param {NodeID | number} v - Node ID.
+   * @returns {boolean} True if the node is a leaf (has no successors), false otherwise.
+   */
   isLeaf(v) {
     var neighbors;
     if (this.isDirected()) {
@@ -258,7 +467,15 @@ export class Graph {
     }
     return neighbors.length === 0;
   }
+
+  /**
+   * @param {(v: NodeID) => boolean} filter - Function that returns `true` for nodes to keep.
+   * @returns {Graph<GraphLabel, NodeLabel, EdgeLabel>} A new graph containing only the nodes for which `filter` returns `true`.
+   */
   filterNodes(filter) {
+    /**
+     * @type {Graph<GraphLabel, NodeLabel, EdgeLabel>}
+     */
     // @ts-expect-error
     var copy = new this.constructor({
       directed: this._isDirected,
@@ -276,7 +493,6 @@ export class Graph {
     });
 
     _.each(this._edgeObjs, function (e) {
-      // @ts-expect-error
       if (copy.hasNode(e.v) && copy.hasNode(e.w)) {
         copy.setEdge(e, self.edge(e));
       }
@@ -303,7 +519,13 @@ export class Graph {
 
     return copy;
   }
+
   /* === Edge functions ========== */
+
+  /**
+   * @param {typeof this._defaultEdgeLabelFn | EdgeLabel} newDefault - Function that creates the default label for new edges, or a constant label.
+   * @returns {this}
+   */
   setDefaultEdgeLabel(newDefault) {
     if (!_.isFunction(newDefault)) {
       newDefault = _.constant(newDefault);
@@ -317,6 +539,13 @@ export class Graph {
   edges() {
     return _.values(this._edgeObjs);
   }
+
+  /**
+   * Creates edges between the given Node IDs.
+   * @param {Collection<NodeID>} vs - List of node IDs to create edges between.
+   * @param {EdgeLabel} [value] - If set, update all edges with this value.
+   * @returns {this}
+   */
   setPath(vs, value) {
     var self = this;
     var args = arguments;
@@ -330,9 +559,26 @@ export class Graph {
     });
     return this;
   }
-  /*
-   * setEdge(v, w, [value, [name]])
-   * setEdge({ v, w, [name] }, [value])
+
+  /**
+   * Create or set the given edge.
+   *
+   * @overload
+   * @param {EdgeObj} arg0 - Edge object.
+   * @param {EdgeLabel} [value] - If set, update the edge with this value.
+   * If not set and the edge is being created, calls the function set by {@link setDefaultEdgeLabel}.
+   * @returns {this}
+   */
+  /**
+   * Create or set the given edge.
+   *
+   * @overload
+   * @param {NodeID | number} v - Source node ID. Number values will be coerced to strings.
+   * @param {NodeID | number} w - Target node ID. Number values will be coerced to strings.
+   * @param {EdgeLabel} [value] - If set, update the edge with this value.
+   * If not set and the edge is being created, calls the function set by {@link setDefaultEdgeLabel}.
+   * @param {string | number} [name] - Edge name.
+   * @returns {this}
    */
   setEdge() {
     var v, w, name, value;
@@ -380,7 +626,6 @@ export class Graph {
     this.setNode(v);
     this.setNode(w);
 
-    // @ts-expect-error
     this._edgeLabels[e] = valueSpecified ? value : this._defaultEdgeLabelFn(v, w, name);
 
     var edgeObj = edgeArgsToObj(this._isDirected, v, w, name);
@@ -397,6 +642,21 @@ export class Graph {
     this._edgeCount++;
     return this;
   }
+
+  /**
+   * Get the label for the given edge.
+   * @overload
+   * @param {EdgeObj} v - Edge object.
+   * @returns {EdgeLabel | undefined} The label, or `undefined` if the edge does not exist.
+   */
+  /**
+   * Get the label for the given edge.
+   * @overload
+   * @param {NodeID | number} v - Source node ID.
+   * @param {NodeID | number} w - Target node ID.
+   * @param {string | number} [name] - Edge name.
+   * @returns {EdgeLabel | undefined} The label, or `undefined` if the edge does not exist.
+   */
   edge(v, w, name) {
     var e =
       arguments.length === 1
@@ -404,6 +664,19 @@ export class Graph {
         : edgeArgsToId(this._isDirected, v, w, name);
     return this._edgeLabels[e];
   }
+
+  /**
+   * @overload
+   * @param {EdgeObj} v - Edge object.
+   * @returns {boolean} `true` if the edge exists, else `false`.
+   */
+  /**
+   * @overload
+   * @param {NodeID | number} v - Source node ID.
+   * @param {NodeID | number} w - Target node ID.
+   * @param {string | number} [name] - Edge name.
+   * @returns {boolean} `true` if the edge exists, else `false`.
+   */
   hasEdge(v, w, name) {
     var e =
       arguments.length === 1
@@ -411,6 +684,19 @@ export class Graph {
         : edgeArgsToId(this._isDirected, v, w, name);
     return Object.prototype.hasOwnProperty.call(this._edgeLabels, e);
   }
+
+  /**
+   * @overload
+   * @param {EdgeObj} v - Edge object.
+   * @returns {this}
+   */
+  /**
+   * @overload
+   * @param {NodeID | number} v - Source node ID.
+   * @param {NodeID | number} w - Target node ID.
+   * @param {string | number} [name] - Edge name.
+   * @returns {this}
+   */
   removeEdge(v, w, name) {
     var e =
       arguments.length === 1
@@ -430,6 +716,12 @@ export class Graph {
     }
     return this;
   }
+
+  /**
+   * @param {NodeID | number} v - Target node ID.
+   * @param {NodeID | number} [u] - If set, filters edges to only those between nodes `v` and `u`.
+   * @returns {EdgeObj[] | undefined} Array of incoming edges to node `v`, or `undefined` if node `v` does not exist.
+   */
   inEdges(v, u) {
     var inV = this._in[v];
     if (inV) {
@@ -442,6 +734,12 @@ export class Graph {
       });
     }
   }
+
+  /**
+   * @param {NodeID | number} v - Target node ID.
+   * @param {NodeID | number} [w] - If set, filters edges to only those between nodes `v` and `w`.
+   * @returns {EdgeObj[] | undefined} Array of outgoing edges to node `v`, or `undefined` if node `v` does not exist.
+   */
   outEdges(v, w) {
     var outV = this._out[v];
     if (outV) {
@@ -454,6 +752,13 @@ export class Graph {
       });
     }
   }
+
+  /**
+   * List of all edges to/from node `v`.
+   * @param {NodeID | number} v - Target Node ID.
+   * @param {NodeID | number} [w] - If set, filters edges to only those between nodes `v` and `w`.
+   * @returns {EdgeObj[] | undefined} Array of edges to/from node `v`, or `undefined` if node `v` does not exist.
+   */
   nodeEdges(v, w) {
     var inEdges = this.inEdges(v, w);
     if (inEdges) {
@@ -468,6 +773,10 @@ Graph.prototype._nodeCount = 0;
 /* Number of edges in the graph. Should only be changed by the implementation. */
 Graph.prototype._edgeCount = 0;
 
+/**
+ * @param {Record<NodeID, number>} map - Object mapping node IDs to counts.
+ * @param {NodeID | number} k - Node ID.
+ */
 function incrementOrInitEntry(map, k) {
   if (map[k]) {
     map[k]++;
@@ -476,12 +785,23 @@ function incrementOrInitEntry(map, k) {
   }
 }
 
+/**
+ * @param {Record<NodeID, number>} map - Object mapping node IDs to counts.
+ * @param {NodeID | number} k - Node ID.
+ */
 function decrementOrRemoveEntry(map, k) {
   if (!--map[k]) {
     delete map[k];
   }
 }
 
+/**
+ * @param {boolean} isDirected - If `false`, sorts v and w to ensure a consistent ID.
+ * @param {EdgeObj['v'] | number} v_ - Source node ID.
+ * @param {EdgeObj['w'] | number} w_ - Target node ID.
+ * @param {EdgeObj['name']} [name] - Edge name (for multiple edges between the same nodes).
+ * @returns {EdgeID} Unique ID for the edge.
+ */
 function edgeArgsToId(isDirected, v_, w_, name) {
   var v = '' + v_;
   var w = '' + w_;
@@ -493,6 +813,13 @@ function edgeArgsToId(isDirected, v_, w_, name) {
   return v + EDGE_KEY_DELIM + w + EDGE_KEY_DELIM + (_.isUndefined(name) ? DEFAULT_EDGE_NAME : name);
 }
 
+/**
+ * @param {boolean} isDirected - If `false`, sorts v and w to ensure a consistent ID.
+ * @param {EdgeObj['v'] | number} v_ - Source node ID.
+ * @param {EdgeObj['w'] | number} w_ - Target node ID.
+ * @param {EdgeObj['name']} [name] - Edge name (for multiple edges between the same nodes).
+ * @returns {EdgeObj}
+ */
 function edgeArgsToObj(isDirected, v_, w_, name) {
   var v = '' + v_;
   var w = '' + w_;
@@ -508,6 +835,11 @@ function edgeArgsToObj(isDirected, v_, w_, name) {
   return edgeObj;
 }
 
+/**
+ * @param {boolean} isDirected - If `false`, sorts v and w to ensure a consistent ID.
+ * @param {EdgeObj} edgeObj - Edge object.
+ * @returns {EdgeID} Unique ID for the edge.
+ */
 function edgeObjToId(isDirected, edgeObj) {
   return edgeArgsToId(isDirected, edgeObj.v, edgeObj.w, edgeObj.name);
 }
