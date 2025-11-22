@@ -10,12 +10,13 @@ var EDGE_KEY_DELIM = '\x01';
 
 /**
  * @typedef {`${string}${typeof EDGE_KEY_DELIM}${string}${typeof EDGE_KEY_DELIM}${string}`} EdgeID ID of an edge.
+ * @internal - All public APIs use {@link EdgeObj} instead to refer to edges.
  */
 
 /**
  * @typedef {object} EdgeObj
- * @property {NodeID} v Source node ID.
- * @property {NodeID} w Target node ID.
+ * @property {NodeID} v the id of the source or tail node of an edge
+ * @property {NodeID} w the id of the target or head node of an edge
  * @property {string | number} [name] Name of the edge. Needed to uniquely identify
  * multiple edges between the same pair of nodes in a multigraph.
  */
@@ -50,6 +51,142 @@ var EDGE_KEY_DELIM = '\x01';
 //    we're going to get to a performant hashtable in JavaScript.
 
 /**
+ * @typedef {object} GraphOptions
+ * @property {boolean | undefined} [directed] - set to `true` to get a
+ * directed graph and `false` to get an undirected graph.
+ * An undirected graph does not treat the order of nodes in an edge as
+ * significant.
+ * In other words, `g.edge("a", "b") === g.edge("b", "a")` for
+ * an undirected graph.
+ * Default: `true`
+ * @property {boolean | undefined} [multigraph] - set to `true` to allow a
+ * graph to have multiple edges between the same pair of nodes.
+ * Default: `false`.
+ * @property {boolean | undefined} [compound] - set to `true` to allow a
+ * graph to have compound nodes - nodes which can be the parent of other
+ * nodes.
+ * Default: `false`.
+ */
+
+/**
+ * Graphlib has a single graph type: {@link Graph}. To create a new instance:
+ *
+ * ```js
+ * var g = new Graph();
+ * ```
+ *
+ * By default this will create a directed graph that does not allow multi-edges
+ * or compound nodes.
+ * The following options can be used when constructing a new graph:
+ *
+ * * {@link GraphOptions#directed}: set to `true` to get a directed graph and `false` to get an
+ *   undirected graph.
+ *   An undirected graph does not treat the order of nodes in an edge as
+ *   significant. In other words,
+ *   `g.edge("a", "b") === g.edge("b", "a")` for an undirected graph.
+ *   Default: `true`.
+ * * {@link GraphOptions#multigraph}: set to `true` to allow a graph to have multiple edges
+ *   between the same pair of nodes. Default: `false`.
+ * * {@link GraphOptions#compound}: set to `true` to allow a graph to have compound nodes -
+ *   nodes which can be the parent of other nodes. Default: `false`.
+ *
+ * To set the options, pass in an options object to the `Graph` constructor.
+ * For example, to create a directed compound multigraph:
+ *
+ * ```js
+ * var g = new Graph({ directed: true, compound: true, multigraph: true });
+ * ```
+ *
+ * ### Node and Edge Representation
+ *
+ * In graphlib, a node is represented by a user-supplied String id.
+ * All node related functions use this String id as a way to uniquely identify
+ * the node. Here is an example of interacting with nodes:
+ *
+ * ```js
+ * var g = new Graph();
+ * g.setNode("my-id", "my-label");
+ * g.node("my-id"); // returns "my-label"
+ * ```
+ *
+ * Edges in graphlib are identified by the nodes they connect. For example:
+ *
+ * ```js
+ * var g = new Graph();
+ * g.setEdge("source", "target", "my-label");
+ * g.edge("source", "target"); // returns "my-label"
+ * ```
+ *
+ * However, we need a way to uniquely identify an edge in a single object for
+ * various edge queries (e.g. {@link Graph#outEdges}).
+ * We use {@link EdgeObj}s for this purpose.
+ * They consist of the following properties:
+ *
+ * * {@link EdgeObj#v}: the id of the source or tail node of an edge
+ * * {@link EdgeObj#w}: the id of the target or head node of an edge
+ * * {@link EdgeObj#name} (optional): the name that uniquely identifies a multiedge.
+ *
+ * Any edge function that takes an edge id will also work with an {@link EdgeObj}. For example:
+ *
+ * ```js
+ * var g = new Graph();
+ * g.setEdge("source", "target", "my-label");
+ * g.edge({ v: "source", w: "target" }); // returns "my-label"
+ * ```
+ *
+ * ### Multigraphs
+ *
+ * A [multigraph](https://en.wikipedia.org/wiki/Multigraph) is a graph that can
+ * have more than one edge between the same pair of nodes.
+ * By default graphlib graphs are not multigraphs, but a multigraph can be
+ * constructed by setting the {@link GraphOptions#multigraph} property to true:
+ *
+ * ```js
+ * var g = new Graph({ multigraph: true });
+ * ```
+ *
+ * With multiple edges between two nodes we need some way to uniquely identify
+ * each edge. We call this the {@link EdgeObj#name} property.
+ * Here's an example of creating a couple of edges between the same nodes:
+ *
+ * ```js
+ * var g = new Graph({ multigraph: true });
+ * g.setEdge("a", "b", "edge1-label", "edge1");
+ * g.setEdge("a", "b", "edge2-label", "edge2");
+ * g.edge("a", "b", "edge1"); // returns "edge1-label"
+ * g.edge("a", "b", "edge2"); // returns "edge2-label"
+ * g.edges(); // returns [{ v: "a", w: "b", name: "edge1" },
+ *            //          { v: "a", w: "b", name: "edge2" }]
+ * ```
+ *
+ * A multigraph still allows an edge with no name to be created:
+ *
+ * ```js
+ * var g = new Graph({ multigraph: true });
+ * g.setEdge("a", "b", "my-label");
+ * g.edge({ v: "a", w: "b" }); // returns "my-label"
+ * ```
+ *
+ * ### Compound Graphs
+ *
+ * A compound graph is one where a node can be the parent of other nodes.
+ * The child nodes form a "subgraph".
+ * Here's an example of constructing and interacting with a compound graph:
+ *
+ * ```js
+ * var g = new Graph({ compound: true });
+ * g.setParent("a", "parent");
+ * g.setParent("b", "parent");
+ * g.parent("a");      // returns "parent"
+ * g.parent("b");      // returns "parent"
+ * g.parent("parent"); // returns undefined
+ * ```
+ *
+ * ### Default Labels
+ *
+ * When a node or edge is created without a label, a default label can be assigned.
+ * See {@link setDefaultNodeLabel} and {@link setDefaultEdgeLabel}.
+ *
  * @template [GraphLabel=any] - Label of the graph.
  * @template [NodeLabel=any] - Label of a node.
  * Even though this is a "label", this could be any type that the user requires
@@ -60,10 +197,7 @@ var EDGE_KEY_DELIM = '\x01';
  */
 export class Graph {
   /**
-   * @param {object} [opts] - Graph options.
-   * @param {boolean | undefined} [opts.directed] - If `false`, creates an undirected graph.
-   * @param {boolean | undefined} [opts.multigraph] - If `true`, allows multiple, named-edges between nodes.
-   * @param {boolean | undefined} [opts.compound] - If `true`, allows nodes to be parents of other nodes.
+   * @param {GraphOptions} [opts] - Graph options.
    */
   constructor(opts = {}) {
     /**
@@ -180,17 +314,47 @@ export class Graph {
 
   /* === Graph functions ========= */
 
+  /**
+   *
+   * @returns {boolean} `true` if the graph is [directed](https://en.wikipedia.org/wiki/Directed_graph).
+   * A directed graph treats the order of nodes in an edge as significant whereas an
+   * [undirected](https://en.wikipedia.org/wiki/Graph_(mathematics)#Undirected_graph)
+   * graph does not.
+   * This example demonstrates the difference:
+   *
+   * @example
+   *
+   * ```js
+   * var directed = new Graph({ directed: true });
+   * directed.setEdge("a", "b", "my-label");
+   * directed.edge("a", "b"); // returns "my-label"
+   * directed.edge("b", "a"); // returns undefined
+   *
+   * var undirected = new Graph({ directed: false });
+   * undirected.setEdge("a", "b", "my-label");
+   * undirected.edge("a", "b"); // returns "my-label"
+   * undirected.edge("b", "a"); // returns "my-label"
+   * ```
+   */
   isDirected() {
     return this._isDirected;
   }
+  /**
+   * @returns {boolean} `true` if the graph is a multigraph.
+   */
   isMultigraph() {
     return this._isMultigraph;
   }
+  /**
+   * @returns {boolean} `true` if the graph is compound.
+   */
   isCompound() {
     return this._isCompound;
   }
 
   /**
+   * Sets the label for the graph to `label`.
+   *
    * @param {GraphLabel} label - Label for the graph.
    * @returns {this}
    */
@@ -200,7 +364,17 @@ export class Graph {
   }
 
   /**
-   * @returns {GraphLabel | undefined} Label for the graph, or `undefined` if none has been set.
+   * @returns {GraphLabel | undefined} the currently assigned label for the graph.
+   * If no label has been assigned, returns `undefined`.
+   *
+   * @example
+   *
+   * ```js
+   * var g = new Graph();
+   * g.graph(); // returns undefined
+   * g.setGraph("graph-label");
+   *  g.graph(); // returns "graph-label"
+   * ```
    */
   graph() {
     return this._label;
@@ -208,7 +382,12 @@ export class Graph {
   /* === Node functions ========== */
 
   /**
-   * @param {typeof this._defaultNodeLabelFn | NodeLabel} newDefault - Function that creates the default label for new nodes, or a constant label.
+   * Sets a new default value that is assigned to nodes that are created without
+   * a label.
+   *
+   * @param {typeof this._defaultNodeLabelFn | NodeLabel} newDefault - If a function,
+   * it is called with the id of the node being created.
+   * Otherwise, it is assigned as the label directly.
    * @returns {this}
    */
   setDefaultNodeLabel(newDefault) {
@@ -218,18 +397,27 @@ export class Graph {
     this._defaultNodeLabelFn = newDefault;
     return this;
   }
+
+  /**
+   * @returns {number} the number of nodes in the graph.
+   */
   nodeCount() {
     return this._nodeCount;
   }
 
   /**
-   * @returns {NodeID[]} Array of all node ids.
+   * @returns {NodeID[]} the ids of the nodes in the graph.
+   *
+   * @remarks
+   * Use {@link node()} to get the label for each node.
+   * Takes `O(|V|)` time.
    */
   nodes() {
     return _.keys(this._nodes);
   }
   /**
-   * @returns {NodeID[]} Array of source node ids (nodes with no in-edges).
+   * @returns {NodeID[]} those nodes in the graph that have no in-edges.
+   * @remarks Takes `O(|V|)` time.
    */
   sources() {
     var self = this;
@@ -238,7 +426,8 @@ export class Graph {
     });
   }
   /**
-   * @returns {NodeID[]} Array of sink node ids (nodes with no out-edges).
+   * @returns {NodeID[]} those nodes in the graph that have no out-edges.
+   * @remarks Takes `O(|V|)` time.
    */
   sinks() {
     var self = this;
@@ -248,11 +437,12 @@ export class Graph {
   }
 
   /**
-   * Set/create multiple nodes.
+   * Invokes setNode method for each node in `vs` list.
    *
    * @param {Collection<NodeID | number>} vs - List of node IDs to create/set.
    * @param {NodeLabel} [value] - If set, update all nodes with this value.
    * @returns {this}
+   * @remarks Complexity: O(|names|).
    */
   setNodes(vs, value) {
     var args = arguments;
@@ -268,10 +458,14 @@ export class Graph {
   }
 
   /**
+   * Creates or updates the value for the node `v` in the graph.
+   *
    * @param {NodeID | number} v - ID of the node to create/set.
-   * @param {NodeLabel} [value] - If not set, leave the value as-is if the node is already created.
-   * Otherwise, use the default value set by {@link setDefaultNodeLabel}.
-   * @returns {this}
+   * @param {NodeLabel} [value] - If supplied, it is set as the value for the node.
+   * If not supplied and the node was created by this call then
+   * {@link setDefaultNodeLabel} will be used to set the node's value.
+   * @returns {this} the graph, allowing this to be chained with other functions.
+   * @remarks Takes `O(1)` time.
    */
   setNode(v, value) {
     if (Object.prototype.hasOwnProperty.call(this._nodes, v)) {
@@ -296,26 +490,38 @@ export class Graph {
   }
 
   /**
-   * Gets the label for the given node ID, or `undefined` if it does not exist.
+   * Gets the label of node with specified name.
    *
    * @param {NodeID | number} v - Node ID.
-   * @returns {NodeLabel | undefined}
+   * @returns {NodeLabel | undefined} the label assigned to the node with the id `v`
+   * if it is in the graph.
+   * Otherwise returns `undefined`.
+   * @remarks Takes `O(1)` time.
    */
   node(v) {
     return this._nodes[v];
   }
 
   /**
+   * Detects whether graph has a node with specified name or not.
+   *
    * @param {NodeID | number} v - Node ID.
-   * @returns {boolean} Returns `true` if the given node ID exists, else `false`.
+   * @returns {boolean} Returns `true` the graph has a node with the id.
+   * @remarks Takes `O(1)` time.
    */
   hasNode(v) {
     return Object.prototype.hasOwnProperty.call(this._nodes, v);
   }
 
   /**
+   * Remove the node with the id `v` in the graph or do nothing if the node is
+   * not in the graph.
+   *
+   * If the node was removed this function also removes any incident edges.
+   *
    * @param {NodeID | number} v - Node ID to remove.
-   * @returns {this}
+   * @returns {this} the graph, allowing this to be chained with other functions.
+   * @remarks Takes `O(|E|)` time.
    */
   removeNode(v) {
     if (Object.prototype.hasOwnProperty.call(this._nodes, v)) {
@@ -341,13 +547,15 @@ export class Graph {
   }
 
   /**
-   * Set or remove the parent of a node.
+   * Sets the parent for `v` to `parent` if it is defined or removes the parent
+   * for `v` if `parent` is undefined.
    *
    * @param {NodeID | number} v - Node ID to set the parent for.
-   * @param {NodeID | number} [parent] - Parent node ID. If not specified, removes the parent.
-   * @returns {this}
+   * @param {NodeID | number} [parent] - Parent node ID. If not defined, removes the parent.
+   * @returns {this} the graph, allowing this to be chained with other functions.
    * @throws if the graph is not compound.
    * @throws if setting the parent would create a cycle.
+   * @remarks Takes `O(1)` time.
    */
   setParent(v, parent) {
     if (!this._isCompound) {
@@ -385,11 +593,14 @@ export class Graph {
   }
 
   /**
-   * Gets the parent of the specified node.
+   * Get parent node for node `v`.
    *
    * @param {NodeID | number} v - Node ID.
-   * @returns {NodeID | undefined} The parent node ID, or `undefined` if there is no parent
-   * (i.e. node does not exist, it's a root node, or the graph is not compound).
+   * @returns {NodeID | undefined} the node that is a parent of node `v`
+   * or `undefined` if node `v` does not have a parent or is not a member of
+   * the graph.
+   * Always returns `undefined` for graphs that are not compound.
+   * @remarks Takes `O(1)` time.
    */
   parent(v) {
     if (this._isCompound) {
@@ -401,8 +612,14 @@ export class Graph {
   }
 
   /**
-   * @param {NodeID | number} [v] - Node ID. If not specified, gets the children of the root.
-   * @returns {NodeID[] | undefined} Array of child node IDs, or `undefined` if the node does not exist.
+   * Gets list of direct children of node v.
+   *
+   * @param {NodeID | number} [v] - Node ID. If not specified, gets nodes
+   * with no parent (top-level nodes).
+   * @returns {NodeID[] | undefined} all nodes that are children of node `v` or
+   * `undefined` if node `v` is not in the graph.
+   * Always returns `[]` for graphs that are not compound.
+   * @remarks Takes `O(|V|)` time.
    */
   children(v) {
     if (_.isUndefined(v)) {
@@ -423,7 +640,11 @@ export class Graph {
 
   /**
    * @param {NodeID | number} v - Node ID.
-   * @returns {NodeID[] | undefined} Array of predecessor (nodes that have an edge to this node) node IDs, or `undefined` if the node does not exist.
+   * @returns {NodeID[] | undefined} all nodes that are predecessors of the
+   * specified node or `undefined` if node `v` is not in the graph.
+   * @remarks
+   * Behavior is undefined for undirected graphs - use {@link neighbors} instead.
+   * Takes `O(|V|)` time.
    */
   predecessors(v) {
     var predsV = this._preds[v];
@@ -434,7 +655,11 @@ export class Graph {
 
   /**
    * @param {NodeID | number} v - Node ID.
-   * @returns {NodeID[] | undefined} Array of successor (nodes that this node has an edge to) node IDs, or `undefined` if the node does not exist.
+   * @returns {NodeID[] | undefined} all nodes that are successors of the
+   * specified node or `undefined` if node `v` is not in the graph.
+   * @remarks
+   * Behavior is undefined for undirected graphs - use {@link neighbors} instead.
+   * Takes `O(|V|)` time.
    */
   successors(v) {
     var sucsV = this._sucs[v];
@@ -445,7 +670,10 @@ export class Graph {
 
   /**
    * @param {NodeID | number} v - Node ID.
-   * @returns {NodeID[] | undefined} Array of neighbor (nodes that share one of the same predecessors) node IDs, or `undefined` if the node does not exist.
+   * @returns {NodeID[] | undefined} all nodes that are predecessors or
+   * successors of the specified node
+   * or `undefined` if node `v` is not in the graph.
+   * @remarks Takes `O(|V|)` time.
    */
   neighbors(v) {
     var preds = this.predecessors(v);
@@ -469,8 +697,16 @@ export class Graph {
   }
 
   /**
+   * Creates new graph with nodes filtered via `filter`.
+   * Edges incident to rejected node
+   * are also removed.
+   * 
+   * In case of compound graph, if parent is rejected by `filter`,
+   * than all its children are rejected too.
+
    * @param {(v: NodeID) => boolean} filter - Function that returns `true` for nodes to keep.
    * @returns {Graph<GraphLabel, NodeLabel, EdgeLabel>} A new graph containing only the nodes for which `filter` returns `true`.
+   * @remarks Average-case complexity: O(|E|+|V|).
    */
   filterNodes(filter) {
     /**
@@ -523,7 +759,12 @@ export class Graph {
   /* === Edge functions ========== */
 
   /**
-   * @param {typeof this._defaultEdgeLabelFn | EdgeLabel} newDefault - Function that creates the default label for new edges, or a constant label.
+   * Sets a new default value that is assigned to edges that are created without
+   * a label.
+   *
+   * @param {typeof this._defaultEdgeLabelFn | EdgeLabel} newDefault - If a function,
+   * it is called with the parameters `(v, w, name)`.
+   * Otherwise, it is assigned as the label directly.
    * @returns {this}
    */
   setDefaultEdgeLabel(newDefault) {
@@ -533,18 +774,40 @@ export class Graph {
     this._defaultEdgeLabelFn = newDefault;
     return this;
   }
+
+  /**
+   * @returns {number} the number of edges in the graph.
+   * @remarks Complexity: O(1).
+   */
   edgeCount() {
     return this._edgeCount;
   }
+
+  /**
+   * Gets edges of the graph.
+   *
+   * @returns {EdgeObj[]} the {@link EdgeObj} for each edge in the graph.
+   *
+   * @remarks
+   * In case of compound graph subgraphs are not considered.
+   * Use {@link edge()} to get the label for each edge.
+   * Takes `O(|E|)` time.
+   */
   edges() {
     return _.values(this._edgeObjs);
   }
 
   /**
-   * Creates edges between the given Node IDs.
+   * Establish an edges path over the nodes in nodes list.
+   *
+   * If some edge is already exists, it will update its label, otherwise it will
+   * create an edge between pair of nodes with label provided or default label
+   * if no label provided.
+   *
    * @param {Collection<NodeID>} vs - List of node IDs to create edges between.
    * @param {EdgeLabel} [value] - If set, update all edges with this value.
    * @returns {this}
+   * @remarks Complexity: O(|nodes|).
    */
   setPath(vs, value) {
     var self = this;
@@ -561,24 +824,30 @@ export class Graph {
   }
 
   /**
-   * Create or set the given edge.
+   * Creates or updates the label for the edge (`v`, `w`) with the optionally
+   * supplied `name`.
    *
    * @overload
    * @param {EdgeObj} arg0 - Edge object.
-   * @param {EdgeLabel} [value] - If set, update the edge with this value.
-   * If not set and the edge is being created, calls the function set by {@link setDefaultEdgeLabel}.
-   * @returns {this}
+   * @param {EdgeLabel} [value] - If supplied, it is set as the label for the edge.
+   * If not supplied and the edge was created by this call then
+   * {@link setDefaultEdgeLabel} will be used to assign the edge's label.
+   * @returns {this} the graph, allowing this to be chained with other functions.
+   * @remarks Takes `O(1)` time.
    */
   /**
-   * Create or set the given edge.
+   * Creates or updates the label for the edge (`v`, `w`) with the optionally
+   * supplied `name`.
    *
    * @overload
    * @param {NodeID | number} v - Source node ID. Number values will be coerced to strings.
    * @param {NodeID | number} w - Target node ID. Number values will be coerced to strings.
-   * @param {EdgeLabel} [value] - If set, update the edge with this value.
-   * If not set and the edge is being created, calls the function set by {@link setDefaultEdgeLabel}.
-   * @param {string | number} [name] - Edge name.
-   * @returns {this}
+   * @param {EdgeLabel} [value] - If supplied, it is set as the label for the edge.
+   * If not supplied and the edge was created by this call then
+   * {@link setDefaultEdgeLabel} will be used to assign the edge's label.
+   * @param {string | number} [name] - Edge name. Only useful with multigraphs.
+   * @returns {this} the graph, allowing this to be chained with other functions.
+   * @remarks Takes `O(1)` time.
    */
   setEdge() {
     var v, w, name, value;
@@ -644,18 +913,30 @@ export class Graph {
   }
 
   /**
-   * Get the label for the given edge.
+   * Gets the label for the specified edge.
+   *
    * @overload
    * @param {EdgeObj} v - Edge object.
-   * @returns {EdgeLabel | undefined} The label, or `undefined` if the edge does not exist.
+   * @returns {EdgeLabel | undefined} the label for the edge (`v`, `w`) if the
+   * graph has an edge between `v` and `w` with the optional `name`.
+   * Returned `undefined` if there is no such edge in the graph.
+   * @remarks
+   * `v` and `w` can be interchanged for undirected graphs.
+   * Takes `O(1)` time.
    */
   /**
-   * Get the label for the given edge.
+   * Gets the label for the specified edge.
+   *
    * @overload
    * @param {NodeID | number} v - Source node ID.
    * @param {NodeID | number} w - Target node ID.
-   * @param {string | number} [name] - Edge name.
-   * @returns {EdgeLabel | undefined} The label, or `undefined` if the edge does not exist.
+   * @param {string | number} [name] - Edge name. Only useful with multigraphs.
+   * @returns {EdgeLabel | undefined} the label for the edge (`v`, `w`) if the
+   * graph has an edge between `v` and `w` with the optional `name`.
+   * Returned `undefined` if there is no such edge in the graph.
+   * @remarks
+   * `v` and `w` can be interchanged for undirected graphs.
+   * Takes `O(1)` time.
    */
   edge(v, w, name) {
     var e =
@@ -666,16 +947,30 @@ export class Graph {
   }
 
   /**
+   * Detects whether the graph contains specified edge or not.
+   *
    * @overload
    * @param {EdgeObj} v - Edge object.
-   * @returns {boolean} `true` if the edge exists, else `false`.
+   * @returns {boolean} `true` if the graph has an edge between `v` and `w`
+   * with the optional `name`.
+   * @remarks
+   * `v` and `w` can be interchanged for undirected graphs.
+   * No subgraphs are considered.
+   * Takes `O(1)` time.
    */
   /**
+   * Detects whether the graph contains specified edge or not.
+   *
    * @overload
    * @param {NodeID | number} v - Source node ID.
    * @param {NodeID | number} w - Target node ID.
-   * @param {string | number} [name] - Edge name.
-   * @returns {boolean} `true` if the edge exists, else `false`.
+   * @param {string | number} [name] - Edge name. Only useful with multigraphs.
+   * @returns {boolean} `true` if the graph has an edge between `v` and `w`
+   * with the optional `name`.
+   * @remarks
+   * `v` and `w` can be interchanged for undirected graphs.
+   * No subgraphs are considered.
+   * Takes `O(1)` time.
    */
   hasEdge(v, w, name) {
     var e =
@@ -686,16 +981,29 @@ export class Graph {
   }
 
   /**
+   * Removes the edge (`v`, `w`) if the graph has an edge between `v` and `w`
+   * with the optional `name`. If not this function does nothing.
+   *
    * @overload
    * @param {EdgeObj} v - Edge object.
    * @returns {this}
+   * @remarks
+   * `v` and `w` can be interchanged for undirected graphs.
+   * No subgraphs are considered.
+   * Takes `O(1)` time.
    */
   /**
+   * Removes the edge (`v`, `w`) if the graph has an edge between `v` and `w`
+   * with the optional `name`. If not this function does nothing.
+   *
    * @overload
    * @param {NodeID | number} v - Source node ID.
    * @param {NodeID | number} w - Target node ID.
-   * @param {string | number} [name] - Edge name.
+   * @param {string | number} [name] - Edge name. Only useful with multigraphs.
    * @returns {this}
+   * @remarks
+   * `v` and `w` can be interchanged for undirected graphs.
+   * Takes `O(1)` time.
    */
   removeEdge(v, w, name) {
     var e =
@@ -719,8 +1027,13 @@ export class Graph {
 
   /**
    * @param {NodeID | number} v - Target node ID.
-   * @param {NodeID | number} [u] - If set, filters edges to only those between nodes `v` and `u`.
-   * @returns {EdgeObj[] | undefined} Array of incoming edges to node `v`, or `undefined` if node `v` does not exist.
+   * @param {NodeID | number} [u] - Optionally filters edges down to just those
+   * coming from node `u`.
+   * @returns {EdgeObj[] | undefined} all edges that point to the node `v`.
+   * Returns `undefined` if node `v` is not in the graph.
+   * @remarks
+   * Behavior is undefined for undirected graphs - use {@link nodeEdges} instead.
+   * Takes `O(|E|)` time.
    */
   inEdges(v, u) {
     var inV = this._in[v];
@@ -737,8 +1050,13 @@ export class Graph {
 
   /**
    * @param {NodeID | number} v - Target node ID.
-   * @param {NodeID | number} [w] - If set, filters edges to only those between nodes `v` and `w`.
-   * @returns {EdgeObj[] | undefined} Array of outgoing edges to node `v`, or `undefined` if node `v` does not exist.
+   * @param {NodeID | number} [w] - Optionally filters edges down to just those
+   * that point to `w`.
+   * @returns {EdgeObj[] | undefined} all edges that point to the node `v`.
+   * Returns `undefined` if node `v` is not in the graph.
+   * @remarks
+   * Behavior is undefined for undirected graphs - use {@link nodeEdges} instead.
+   * Takes `O(|E|)` time.
    */
   outEdges(v, w) {
     var outV = this._out[v];
@@ -754,10 +1072,12 @@ export class Graph {
   }
 
   /**
-   * List of all edges to/from node `v`.
    * @param {NodeID | number} v - Target Node ID.
-   * @param {NodeID | number} [w] - If set, filters edges to only those between nodes `v` and `w`.
-   * @returns {EdgeObj[] | undefined} Array of edges to/from node `v`, or `undefined` if node `v` does not exist.
+   * @param {NodeID | number} [w] - If set, filters those edges down to just
+   * those between nodes `v` and `w` regardless of direction
+   * @returns {EdgeObj[] | undefined} all edges to or from node `v` regardless
+   * of direction. Returns `undefined` if node `v` is not in the graph.
+   * @remarks Takes `O(|E|)` time.
    */
   nodeEdges(v, w) {
     var inEdges = this.inEdges(v, w);
