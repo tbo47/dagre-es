@@ -51,6 +51,10 @@ describe('alg.prim', function () {
   });
 });
 
+/**
+ * @param {Graph} g - The graph to generate a weight function for.
+ * @returns {Parameters<typeof prim>[1]} A weight function for the graph `g`.
+ */
 function weightFn(g) {
   return function (edge) {
     return g.edge(edge);

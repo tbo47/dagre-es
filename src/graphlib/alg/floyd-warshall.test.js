@@ -56,6 +56,10 @@ describe('alg.floydWarshall', function () {
   });
 });
 
+/**
+ * @param {Graph} g - The graph to generate a weight function for.
+ * @returns {Parameters<typeof floydWarshall>[1]} A weight function for the graph `g`.
+ */
 function weightFn(g) {
   return function (edge) {
     return g.edge(edge);

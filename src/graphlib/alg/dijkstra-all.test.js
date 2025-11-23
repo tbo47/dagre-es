@@ -20,6 +20,10 @@ describe('alg.dijkstraAll', function () {
   });
 });
 
+/**
+ * @param {Graph} g - The graph to generate a weight function for.
+ * @returns {Parameters<typeof dijkstraAll>[1]} A weight function for the graph `g`.
+ */
 function weight(g) {
   return function (e) {
     return g.edge(e);

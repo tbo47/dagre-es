@@ -3,6 +3,10 @@ import { describe, expect, it } from 'vitest';
 import { Graph } from '../graph.js';
 import { tarjan } from './tarjan.js';
 
+/**
+ * @import { NodeID } from '../graph.js';
+ */
+
 describe('alg.tarjan', function () {
   it('returns an empty array for an empty graph', function () {
     expect(tarjan(new Graph())).to.eql([]);
@@ -36,7 +40,12 @@ describe('alg.tarjan', function () {
   });
 });
 
-// A helper that sorts components and their contents
+/**
+ * A helper that sorts components and their contents
+ *
+ * @param {NodeID[][]} cmpts - The components to sort.
+ * @returns {NodeID[][]} The sorted components.
+ */
 function sort(cmpts) {
   return cmpts.map((cmpt) => cmpt.sort()).sort((a, b) => a[0].localeCompare(b[0]));
 }

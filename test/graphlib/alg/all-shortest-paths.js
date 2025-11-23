@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { Graph } from '../../../src/graphlib/graph.js';
 
+/**
+ * @import { floydWarshall } from '../../../src/graphlib/alg/index.js';
+ */
+
+/**
+ * @param {typeof floydWarshall} sp - The all-shortest-paths function to test.
+ */
 export function allShortestPathsTests(sp) {
   describe('allShortestPaths', function () {
     it('returns 0 for the node itself', function () {
@@ -121,6 +128,10 @@ export function allShortestPathsTests(sp) {
   });
 }
 
+/**
+ * @param {Graph} g - The graph to generate a weight function for.
+ * @returns {Parameters<typeof floydWarshall>[1]} A weight function for the graph `g`.
+ */
 function weightFn(g) {
   return function (e) {
     return g.edge(e);
