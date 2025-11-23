@@ -57,6 +57,13 @@ describe('json', function () {
   });
 });
 
+/**
+ * @template [GraphLabel=any] - Label of the graph.
+ * @template [NodeLabel=any] - Label of a node.
+ * @template [EdgeLabel=any] - Label of an edge.
+ * @param {Graph<GraphLabel, NodeLabel, EdgeLabel>} g - The graph to serialize and deserialize.
+ * @returns {Graph<GraphLabel, NodeLabel, EdgeLabel>} Copy of g after write and read.
+ */
 function rw(g) {
   return read(write(g));
 }
