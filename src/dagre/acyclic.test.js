@@ -1,5 +1,5 @@
 import * as _ from 'lodash-es';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import * as acyclic from './acyclic.js';
 import { Graph } from '../graphlib/index.js';
@@ -7,6 +7,7 @@ import { findCycles } from '../graphlib/alg/find-cycles.js';
 
 describe('acyclic', function () {
   var ACYCLICERS = ['greedy', 'dfs', 'unknown-should-still-work'];
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

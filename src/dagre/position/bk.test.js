@@ -1,5 +1,5 @@
 import * as _ from 'lodash-es';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { buildLayerMatrix } from '../util.js';
 import {
@@ -17,6 +17,7 @@ import {
 import { Graph } from '../../graphlib/graph.js';
 
 describe('position/bk', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {
@@ -150,6 +151,7 @@ describe('position/bk', function () {
 
   describe('hasConflict', function () {
     it('can test for a type-1 conflict regardless of edge orientation', function () {
+      /** @type {Parameters<typeof addConflict>[0]} */
       var conflicts = {};
       addConflict(conflicts, 'b', 'a');
       expect(hasConflict(conflicts, 'a', 'b')).to.be.true;
@@ -157,6 +159,7 @@ describe('position/bk', function () {
     });
 
     it('works for multiple conflicts with the same node', function () {
+      /** @type {Parameters<typeof addConflict>[0]} */
       var conflicts = {};
       addConflict(conflicts, 'a', 'b');
       addConflict(conflicts, 'a', 'c');
@@ -165,6 +168,7 @@ describe('position/bk', function () {
     });
 
     it('works for nodes named __proto__', function () {
+      /** @type {Parameters<typeof addConflict>[0]} */
       var conflicts = {};
       addConflict(conflicts, '__proto__', 'myAdminKey');
       expect(hasConflict(conflicts, '__proto__', 'myAdminKey')).to.be.true;
@@ -178,6 +182,7 @@ describe('position/bk', function () {
       g.setNode('b', { rank: 1, order: 0 });
 
       var layering = buildLayerMatrix(g);
+      /** @type {Parameters<typeof addConflict>[0]} */
       var conflicts = {};
 
       var result = verticalAlignment(g, layering, conflicts, g.predecessors.bind(g));
@@ -193,6 +198,7 @@ describe('position/bk', function () {
       g.setEdge('a', 'b');
 
       var layering = buildLayerMatrix(g);
+      /** @type {Parameters<typeof addConflict>[0]} */
       var conflicts = {};
 
       var result = verticalAlignment(g, layering, conflicts, g.predecessors.bind(g));
@@ -210,6 +216,7 @@ describe('position/bk', function () {
       g.setEdge('b', 'c');
 
       var layering = buildLayerMatrix(g);
+      /** @type {Parameters<typeof addConflict>[0]} */
       var conflicts = {};
 
       var result = verticalAlignment(g, layering, conflicts, g.predecessors.bind(g));
@@ -231,6 +238,7 @@ describe('position/bk', function () {
       g.setEdge('b', 'c');
 
       var layering = buildLayerMatrix(g);
+      /** @type {Parameters<typeof addConflict>[0]} */
       var conflicts = {};
 
       var result = verticalAlignment(g, layering, conflicts, g.predecessors.bind(g));
@@ -248,6 +256,7 @@ describe('position/bk', function () {
       g.setEdge('b', 'c');
 
       var layering = buildLayerMatrix(g);
+      /** @type {Parameters<typeof addConflict>[0]} */
       var conflicts = {};
 
       addConflict(conflicts, 'a', 'c');
@@ -269,6 +278,7 @@ describe('position/bk', function () {
       g.setEdge('b', 'd');
 
       var layering = buildLayerMatrix(g);
+      /** @type {Parameters<typeof addConflict>[0]} */
       var conflicts = {};
 
       var result = verticalAlignment(g, layering, conflicts, g.predecessors.bind(g));
@@ -290,6 +300,7 @@ describe('position/bk', function () {
       g.setEdge('c', 'd');
 
       var layering = buildLayerMatrix(g);
+      /** @type {Parameters<typeof addConflict>[0]} */
       var conflicts = {};
 
       var result = verticalAlignment(g, layering, conflicts, g.predecessors.bind(g));
@@ -308,6 +319,7 @@ describe('position/bk', function () {
       g.setPath(['a', 'c', 'd']);
 
       var layering = buildLayerMatrix(g);
+      /** @type {Parameters<typeof addConflict>[0]} */
       var conflicts = {};
 
       var result = verticalAlignment(g, layering, conflicts, g.predecessors.bind(g));

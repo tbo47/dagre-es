@@ -1,9 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { barycenter } from './barycenter.js';
 import { Graph } from '../../graphlib/graph.js';
 
 describe('order/barycenter', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

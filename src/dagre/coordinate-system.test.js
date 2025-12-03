@@ -1,8 +1,9 @@
 import { Graph } from '../graphlib/index.js';
 import * as coordinateSystem from './coordinate-system.js';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('coordinateSystem', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

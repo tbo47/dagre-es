@@ -1,11 +1,14 @@
 import * as _ from 'lodash-es';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Graph } from '../../graphlib/graph.js';
 import { addSubgraphConstraints } from './add-subgraph-constraints.js';
 
 describe('order/addSubgraphConstraints', function () {
-  var g, cg;
+  /** @type {Graph} */
+  var g;
+  /** @type {Graph} */
+  var cg;
 
   beforeEach(function () {
     g = new Graph({ compound: true });

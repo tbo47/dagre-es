@@ -1,8 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { addBorderSegments } from './add-border-segments.js';
 import { Graph } from '../graphlib/index.js';
 
 describe('addBorderSegments', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

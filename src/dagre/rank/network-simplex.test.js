@@ -1,5 +1,5 @@
 import * as _ from 'lodash-es';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { Graph } from '../../graphlib/graph.js';
 import { networkSimplex } from './network-simplex.js';
 import { longestPath } from './util.js';
@@ -12,7 +12,14 @@ var exchangeEdges = networkSimplex.exchangeEdges;
 import { normalizeRanks } from '../util.js';
 
 describe('network simplex', function () {
-  var g, t, gansnerGraph, gansnerTree;
+  /** @type {Graph} */
+  var g;
+  /** @type {Graph} */
+  var t;
+  /** @type {Graph} */
+  var gansnerGraph;
+  /** @type {Graph} */
+  var gansnerTree;
 
   beforeEach(function () {
     g = new Graph({ multigraph: true })

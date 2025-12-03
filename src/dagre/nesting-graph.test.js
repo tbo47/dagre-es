@@ -1,10 +1,11 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Graph } from '../graphlib/index.js';
 import { components } from '../graphlib/alg/components.js';
 import * as nestingGraph from './nesting-graph.js';
 
 describe('rank/nestingGraph', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

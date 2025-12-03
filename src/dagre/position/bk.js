@@ -226,6 +226,7 @@ function horizontalCompaction(g, layering, root, align, reverseSep) {
   // sweeps. The first sweep places blocks with the smallest possible
   // coordinates. The second sweep removes unused space by moving blocks to the
   // greatest coordinates without violating separation.
+  /** @type {Record<import('../../graphlib/graph.js').NodeID, number>} */
   var xs = {},
     blockG = buildBlockGraph(g, layering, root, reverseSep),
     borderType = reverseSep ? 'borderLeft' : 'borderRight';

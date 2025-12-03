@@ -1,5 +1,5 @@
 import * as _ from 'lodash-es';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Graph } from '../../graphlib/graph.js';
 import { order } from './index.js';
@@ -7,6 +7,7 @@ import { crossCount } from './cross-count.js';
 import { buildLayerMatrix } from '../util.js';
 
 describe('order', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
     "checkJs": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
+    "noEmit": true,
     "lib": ["dom", "dom.iterable", "es2020"],
+    "skipLibCheck": true,
     "module": "node16"
   },
-  "include": ["src/**/*.js"],
-  "exclude": ["src/**/*.test.js"]
+  "include": ["src/**/*.js"]
 }

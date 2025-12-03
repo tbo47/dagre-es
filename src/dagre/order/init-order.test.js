@@ -1,10 +1,11 @@
 import * as _ from 'lodash-es';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Graph } from '../../graphlib/graph.js';
 import { initOrder } from './init-order.js';
 
 describe('order/initOrder', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

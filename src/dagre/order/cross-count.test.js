@@ -1,9 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Graph } from '../../graphlib/graph.js';
 import { crossCount } from './cross-count.js';
 
 describe('crossCount', function () {
+  /** @type {Graph} */
   var g;
 
   beforeEach(function () {

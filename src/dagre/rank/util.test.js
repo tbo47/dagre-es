@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Graph } from '../../graphlib/graph.js';
 import { normalizeRanks } from '../util.js';
@@ -6,6 +6,7 @@ import { longestPath } from './util.js';
 
 describe('rank/util', function () {
   describe('longestPath', function () {
+    /** @type {Graph} */
     var g;
 
     beforeEach(function () {
