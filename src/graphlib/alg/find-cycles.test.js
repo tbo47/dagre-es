@@ -3,6 +3,10 @@ import { describe, expect, it } from 'vitest';
 import { Graph } from '../graph.js';
 import { findCycles } from './find-cycles.js';
 
+/**
+ * @import { NodeID } from '../graph.js';
+ */
+
 describe('alg.findCycles', function () {
   it('returns an empty array for an empty graph', function () {
     expect(findCycles(new Graph())).to.eql([]);
@@ -42,7 +46,12 @@ describe('alg.findCycles', function () {
   });
 });
 
-// A helper that sorts components and their contents
+/**
+ * A helper that sorts components and their contents
+ *
+ * @param {NodeID[][]} cmpts - The components to sort.
+ * @returns {NodeID[][]} The sorted components.
+ */
 function sort(cmpts) {
   return cmpts.map((cmpt) => cmpt.sort()).sort((a, b) => a[0].localeCompare(b[0]));
 }

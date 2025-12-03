@@ -89,6 +89,10 @@ describe('alg.dijkstra', function () {
   });
 });
 
+/**
+ * @param {Graph} g - The graph to generate a weight function for.
+ * @returns {Parameters<typeof dijkstra>[2]} A weight function for the graph `g`.
+ */
 function weightFn(g) {
   return function (e) {
     return g.edge(e);

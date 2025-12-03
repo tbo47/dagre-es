@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { PriorityQueue } from './priority-queue.js';
 
 describe('data.PriorityQueue', function () {
+  /** @type {PriorityQueue} */
   var pq;
 
   beforeEach(function () {
