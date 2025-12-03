@@ -28,8 +28,8 @@ function addHtmlLabel(root, node) {
   // Fix for firefox
   div.style('white-space', 'nowrap');
 
-  var client = div.node().getBoundingClientRect();
-  fo.attr('width', client.width).attr('height', client.height);
+  var client = div.node();
+  fo.attr('width', client.offsetWidth).attr('height', client.offsetHeight);
 
   return fo;
 }
