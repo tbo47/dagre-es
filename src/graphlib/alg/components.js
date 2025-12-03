@@ -15,7 +15,7 @@ export { components };
  *
  * @example
  *
- * ![](https://github.com/cpettitt/graphlib/wiki/images/components.png)
+ * ![](https://github.com/dagrejs/graphlib/wiki/images/components.png)
  *
  * ```js
  * graphlib.alg.components(g);
