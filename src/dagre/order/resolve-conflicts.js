@@ -59,10 +59,10 @@ function resolveConflicts(entries, cg) {
     return !entry.indegree;
   });
 
-  return doResolveConflicts(sourceSet);
+  return doResolveConflicts(sourceSet, _.values(mappedEntries));
 }
 
-function doResolveConflicts(sourceSet) {
+function doResolveConflicts(sourceSet, allEntries) {
   var entries = [];
 
   function handleIn(vEntry) {
@@ -82,6 +82,9 @@ function doResolveConflicts(sourceSet) {
 
   function handleOut(vEntry) {
     return function (wEntry) {
+      if (wEntry.done) {
+        return;
+      }
       wEntry['in'].push(vEntry);
       if (--wEntry.indegree === 0) {
         sourceSet.push(wEntry);
@@ -89,11 +92,28 @@ function doResolveConflicts(sourceSet) {
     };
   }
 
-  while (sourceSet.length) {
-    var entry = sourceSet.pop();
-    entries.push(entry);
-    _.forEach(entry['in'].reverse(), handleIn(entry));
-    _.forEach(entry.out, handleOut(entry));
+  for (;;) {
+    while (sourceSet.length) {
+      var entry = sourceSet.pop();
+      entry.done = true;
+      entries.push(entry);
+      _.forEach(entry['in'].reverse(), handleIn(entry));
+      _.forEach(entry.out, handleOut(entry));
+    }
+    // Entries still waiting sit on a cycle of constraints, which no order
+    // can satisfy. Release the one that would come first and carry on
+    // rather than leave them out of the order.
+    var stuck = _.filter(allEntries, function (e) {
+      return !e.done;
+    });
+    if (!stuck.length) {
+      break;
+    }
+    var freed = _.minBy(stuck, function (e) {
+      return _.isUndefined(e.barycenter) ? Number.POSITIVE_INFINITY : e.barycenter;
+    });
+    freed.indegree = 0;
+    sourceSet.push(freed);
   }
 
   return _.map(
