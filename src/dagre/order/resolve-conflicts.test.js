@@ -97,6 +97,17 @@ describe('order/resolveConflicts', function () {
     expect(results[0].weight).equals(4);
   });
 
+  it('keeps every node when the constraints form a cycle', function () {
+    var input = [
+      { v: 'a', barycenter: 3, weight: 1 },
+      { v: 'b', barycenter: 2, weight: 1 },
+      { v: 'c', barycenter: 1, weight: 1 },
+    ];
+    cg.setPath(['a', 'b', 'c', 'a']);
+    var vs = _.flatMap(resolveConflicts(input, cg), 'vs');
+    expect(_.sortBy(vs)).eqls(['a', 'b', 'c']);
+  });
+
   it('does nothing to a node lacking both a barycenter and a constraint', function () {
     var input = [{ v: 'a' }, { v: 'b', barycenter: 1, weight: 2 }];
     expect(_.sortBy(resolveConflicts(input, cg), 'vs')).eqls([
