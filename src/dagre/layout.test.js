@@ -241,6 +241,76 @@ describe('layout', function () {
     });
   });
 
+  it('can layout subgraphs whose ordering constraints would form a cycle', function () {
+    // Each sweep in order() records which subgraph is left of which. In this
+    // graph the subgraphs span different ranks, so three pairwise orders can
+    // close a cycle; resolveConflicts then dropped the members of the cycle
+    // and layout threw "Cannot set properties of undefined (setting 'order')".
+    g.graph().rankdir = 'LR';
+    var subgraphs = {
+      sg1: ['m'],
+      sg2: ['k', 'l'],
+      sg3: ['i', 'j'],
+      sg4: ['f', 'g', 'h'],
+      sg5: ['d', 'e'],
+      sg6: ['b', 'c'],
+    };
+    var edges = [
+      ['n', 'j'],
+      ['o', 'p'],
+      ['i', 'f'],
+      ['p', 'n'],
+      ['p', 'l'],
+      ['j', 'k'],
+      ['j', 'g'],
+      ['q', 'r'],
+      ['f', 'd'],
+      ['s', 'h'],
+      ['d', 's'],
+      ['g', 'e'],
+      ['h', 't'],
+      ['u', 'v'],
+      ['m', 'f'],
+      ['m', 'h'],
+      ['m', 'a'],
+      ['t', 'w'],
+      ['x', 'q'],
+      ['r', 'i'],
+      ['r', 'c'],
+      ['w', 'u'],
+      ['w', 'm'],
+      ['v', 'o'],
+      ['v', 'b'],
+      ['a', 'q'],
+      ['a', 'f'],
+      ['a', 'h'],
+      ['a', 'w'],
+      ['c', 'q'],
+      ['c', 'l'],
+      ['c', 'a'],
+    ];
+    // Insertion order matters: dagre's passes walk nodes in that order.
+    _.forEach(subgraphs, function (members, sg) {
+      g.setNode(sg, {});
+    });
+    _.forEach('abcdefghijklmnopqrstuvwx', function (v) {
+      g.setNode(v, { width: 50, height: 30 });
+    });
+    _.forEach(subgraphs, function (members, sg) {
+      _.forEach(members, function (v) {
+        g.setParent(v, sg);
+      });
+    });
+    _.forEach(edges, function (e) {
+      g.setEdge(e[0], e[1]);
+    });
+    layout(g);
+    _.forEach(g.nodes(), function (v) {
+      expect(g.node(v).x, v).to.be.a('number');
+      expect(g.node(v).y, v).to.be.a('number');
+    });
+  });
+
   it('adds dimensions to the graph', function () {
     g.setNode('a', { width: 100, height: 50 });
     layout(g);
