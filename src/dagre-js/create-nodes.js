@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { pick } from 'lodash-es';
+import { pick } from 'es-toolkit/compat';
 import { addLabel } from './label/add-label.js';
 import * as util from './util.js';
 

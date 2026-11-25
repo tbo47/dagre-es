@@ -1,4 +1,4 @@
-import * as _ from 'lodash-es';
+import * as _ from 'es-toolkit/compat';
 
 var DEFAULT_EDGE_NAME = '\x00';
 var GRAPH_NODE = '\x00';

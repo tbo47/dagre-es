@@ -1,4 +1,4 @@
-import * as _ from 'lodash-es';
+import * as _ from 'es-toolkit/compat';
 import { PriorityQueue } from '../data/priority-queue.js';
 import { Graph } from '../graph.js';
 

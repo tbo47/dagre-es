@@ -26,9 +26,10 @@ module.exports = {
   rules: {
     'import/no-cycle': 'error',
     // make sure that all files have an extension (required by ESM)
+    // `ignorePackages` exempts package subpaths such as `es-toolkit/compat`
     'import/extensions': [
       'error',
-      'always',
+      'ignorePackages',
       {
         js: 'always',
         jsx: 'never',

@@ -3,7 +3,7 @@
  *
  * @import { Graph } from '../graphlib/graph.js';
  */
-import * as _ from 'lodash-es';
+import * as _ from 'es-toolkit/compat';
 import * as util from './util.js';
 
 export { run, undo };

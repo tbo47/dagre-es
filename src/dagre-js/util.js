@@ -1,4 +1,4 @@
-import * as _ from 'lodash-es';
+import * as _ from 'es-toolkit/compat';
 
 // Public utility functions
 export { isSubgraph, edgeToId, applyStyle, applyClass, applyTransition };

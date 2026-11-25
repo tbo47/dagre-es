@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { defaults } from 'lodash-es';
+import { defaults } from 'es-toolkit/compat';
 import { layout } from '../dagre/index.js';
 import { arrows, setArrows } from './arrows.js';
 import { createClusters, setCreateClusters } from './create-clusters.js';
