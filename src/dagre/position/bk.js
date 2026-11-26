@@ -433,7 +433,6 @@ function sep(nodeSep, edgeSep, reverseSep) {
     if (delta) {
       sum += reverseSep ? delta : -delta;
     }
-    delta = 0;
 
     return sum;
   };

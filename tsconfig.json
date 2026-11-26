@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "checkJs": true,
+    "strict": false,
     "noEmit": true,
     "lib": ["dom", "dom.iterable", "es2020"],
     "skipLibCheck": true,
