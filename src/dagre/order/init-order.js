@@ -1,4 +1,4 @@
-import * as _ from 'lodash-es';
+import * as _ from 'es-toolkit/compat';
 
 /*
  * Assigns an initial order value for each node by performing a DFS search

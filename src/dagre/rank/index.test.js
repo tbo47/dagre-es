@@ -1,4 +1,4 @@
-import * as _ from 'lodash-es';
+import * as _ from 'es-toolkit/compat';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { rank } from './index.js';

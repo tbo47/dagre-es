@@ -1,4 +1,4 @@
-import * as _ from 'lodash-es';
+import * as _ from 'es-toolkit/compat';
 import * as alg from '../../graphlib/alg/index.js';
 import { simplify } from '../util.js';
 import { feasibleTree } from './feasible-tree.js';

@@ -1,4 +1,4 @@
-import * as _ from 'lodash-es';
+import * as _ from 'es-toolkit/compat';
 import { barycenter } from './barycenter.js';
 import { resolveConflicts } from './resolve-conflicts.js';
 import { sort } from './sort.js';
