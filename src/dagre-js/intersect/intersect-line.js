@@ -26,7 +26,7 @@ function intersectLine(p1, p2, q1, q2) {
   // Check signs of r3 and r4. If both point 3 and point 4 lie on
   // same side of line 1, the line segments do not intersect.
   if (r3 !== 0 && r4 !== 0 && sameSign(r3, r4)) {
-    return /*DONT_INTERSECT*/;
+    return; /*DONT_INTERSECT*/
   }
 
   // Compute a2, b2, c2 where line joining points 3 and 4 is G(x,y) = a2 x + b2 y + c2 = 0
@@ -42,13 +42,13 @@ function intersectLine(p1, p2, q1, q2) {
   // on same side of second line segment, the line segments do
   // not intersect.
   if (r1 !== 0 && r2 !== 0 && sameSign(r1, r2)) {
-    return /*DONT_INTERSECT*/;
+    return; /*DONT_INTERSECT*/
   }
 
   // Line segments intersect: compute intersection point.
   denom = a1 * b2 - a2 * b1;
   if (denom === 0) {
-    return /*COLLINEAR*/;
+    return; /*COLLINEAR*/
   }
 
   offset = Math.abs(denom / 2);

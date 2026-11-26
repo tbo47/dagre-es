@@ -59,7 +59,7 @@ function normalizeEdge(g, e) {
    */
 
   /** @type {Attrs | undefined} */
-  var attrs = undefined;
+  var attrs;
   var dummy, i;
   for (i = 0, ++vRank; vRank < wRank; ++i, ++vRank) {
     edgeLabel.points = [];

@@ -29,10 +29,7 @@ function parentDummyChains(g) {
       }
 
       if (!ascending) {
-        while (
-          pathIdx < path.length - 1 &&
-          g.node((pathV = path[pathIdx + 1])).minRank <= node.rank
-        ) {
+        while (pathIdx < path.length - 1 && g.node(path[pathIdx + 1]).minRank <= node.rank) {
           pathIdx++;
         }
         pathV = path[pathIdx];
